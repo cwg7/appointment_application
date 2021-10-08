@@ -174,27 +174,7 @@ public class AddAppointmentController implements Initializable {
 
 
     }
-   /* public int populateContacts() throws SQLException {
-        ObservableList<Contacts> contactsList = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT Contact_ID FROM contacts";
-        Statement st = null;
-        ResultSet rs;
 
-        //PreparedStatement stm = connection.prepareStatement(query);
-
-        rs = st.executeQuery(query);
-
-        while (rs.next()) {
-            int idList = rs.getInt("Contact_ID");
-            // add group names to the array list
-
-        }
-        contactsList.add(idList)
-        return contactsList;
-
-        rs.close();
-    }*/
 
     @FXML
     public void backToMainButtonClick(ActionEvent event) throws IOException {

@@ -65,6 +65,8 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn <Appointment, Integer> contactCol;
 
+    //hidden comment
+
 
 
     public static ObservableList<Appointment> getAppointments() {

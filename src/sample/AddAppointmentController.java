@@ -236,6 +236,8 @@ public class AddAppointmentController implements Initializable {
             // HERE IS WHERE I NEED TO GET CONTACT NAME SELECTION, AND THEN GET THE CONTACT_ID OF SELECTED CONTACT NAME,
             // THEN FEED CONTACT ID TO THE APPOINTMENT CONSTRUCTOR
 
+            //THIS IS A NEW COMMENT
+
 
 
 

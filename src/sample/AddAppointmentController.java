@@ -91,6 +91,8 @@ public class AddAppointmentController implements Initializable {
     ComboBox<Integer> userID_box;
     @FXML
     ComboBox<String> contactName_box;
+    @FXML
+    private Label lblContactName;
 
 
 
@@ -195,7 +197,13 @@ public class AddAppointmentController implements Initializable {
         customerTable.setDisable(true);
 
     }
-    public void preparedInsert() {
+
+
+
+
+
+
+    public void preparedInsert(){
         //verify();
         PreparedStatement pstatement;
         String sql = "INSERT into appointments(Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?,?)";
@@ -211,7 +219,21 @@ public class AddAppointmentController implements Initializable {
             pstatement.setInt(8, Integer.parseInt(tfCustomerID.getText()));
             //pstatement.setInt(9, Integer.parseInt(tfUserID.getText()));
             pstatement.setInt(9, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
-            pstatement.setInt(10, Integer.parseInt(String.valueOf(contact_box.getSelectionModel().getSelectedItem())));
+            //pstatement.setInt(10, Integer.parseInt(String.valueOf(contact_box.getSelectionModel().getSelectedItem())));
+
+            ObservableList<Contacts> contactsObservableList = AddAppointmentController.getContactsList();
+            String contactNameToAdd = contactName_box.getSelectionModel().getSelectedItem();
+            int contactIDToAdd = 0;
+            for (Contacts contact : contactsObservableList)
+
+            {
+                if (contactNameToAdd.equals(contact.getContact_name())) {
+                    contactIDToAdd = contact.getContact_id();
+                }
+
+
+            }
+            pstatement.setInt(10, Integer.parseInt(String.valueOf(contactIDToAdd)));
 
             // HERE IS WHERE I NEED TO GET CONTACT NAME SELECTION, AND THEN GET THE CONTACT_ID OF SELECTED CONTACT NAME,
             // THEN FEED CONTACT ID TO THE APPOINTMENT CONSTRUCTOR
@@ -282,7 +304,7 @@ rs.close();
 
 
         DBQuery.getContactsList();
-        contact_box.setItems(DBQuery.getContactsIDList());
+//        contact_box.setItems(DBQuery.getContactsIDList());
 
         userID_box.setItems(DBQuery.getUserIDList());
         //DBQuery.getContactsNameList();

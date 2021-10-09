@@ -3,6 +3,7 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sample.AddAppointmentController;
+import sample.Contacts;
 
 import java.sql.*;
 
@@ -97,6 +98,21 @@ public class DBQuery {
         }
         return userIDList;
     }
+
+ /*   private int getContactIDfromList(String temp)
+    {
+        for(String contact : contactsNameList)
+        {
+            if(Contacts.getContact_name().trim().toLowerCase().contains(temp.trim().toLowerCase()))
+            {
+                return contact.getContact_id();
+            }
+        }
+        return -1;
+    }
+*/
+
+
 
 
 

@@ -25,19 +25,17 @@
       <Label fx:id="lblTitle" layoutX="241.0" layoutY="75.0" text="Title" />
       <Label fx:id="lblDescription" layoutX="222.0" layoutY="106.0" text="Description" />
       <Label fx:id="lblLocation" layoutX="229.0" layoutY="136.0" text="Location" />
-      <Label fx:id="lblType" layoutX="239.0" layoutY="172.0" text="Type" />
+      <Label fx:id="lblType" layoutX="239.0" layoutY="164.0" text="Type" />
       <TextField fx:id="tfTitle" layoutX="272.0" layoutY="71.0" prefHeight="25.0" prefWidth="108.0" />
       <TextField fx:id="tfDescription" layoutX="286.0" layoutY="102.0" prefHeight="25.0" prefWidth="87.0" />
       <TextField fx:id="tfLocation" layoutX="279.0" layoutY="132.0" prefHeight="25.0" prefWidth="102.0" />
-      <TextField fx:id="tfType" layoutX="279.0" layoutY="168.0" prefHeight="25.0" prefWidth="102.0" />
+      <TextField fx:id="tfType" layoutX="279.0" layoutY="160.0" prefHeight="25.0" prefWidth="102.0" />
       <Label fx:id="lblStart" layoutX="397.0" layoutY="75.0" text="Start Time" />
       <Label fx:id="lblEnd" layoutX="399.0" layoutY="106.0" text="End Time" />
       <TextField fx:id="tfStart" layoutX="453.0" layoutY="71.0" />
       <TextField fx:id="tfEnd" layoutX="453.0" layoutY="102.0" />
       <Label fx:id="lblUserID" layoutX="405.0" layoutY="136.0" text="User ID" />
       <Button fx:id="addAppointmentButton" layoutX="456.0" layoutY="236.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Save New Appointment" />
-      <ComboBox fx:id="contact_box" layoutX="452.0" layoutY="168.0" prefWidth="150.0" />
-      <Label fx:id="lblContact" layoutX="385.0" layoutY="172.0" prefHeight="17.0" prefWidth="61.0" text="Contact ID" />
       <TableView fx:id="contactsTable" layoutX="602.0" layoutY="35.0" prefHeight="176.0" prefWidth="186.0">
         <columns>
           <TableColumn fx:id="contactIDCol" prefWidth="75.0" text="Contact ID" />
@@ -45,6 +43,7 @@
         </columns>
       </TableView>
       <ComboBox fx:id="userID_box" layoutX="452.0" layoutY="132.0" prefWidth="150.0" />
-      <ComboBox fx:id="contactName_box" layoutX="453.0" layoutY="211.0" prefWidth="150.0" />
+      <ComboBox fx:id="contactName_box" layoutX="452.0" layoutY="181.0" prefWidth="150.0" />
+      <Label fx:id="lblContactName" layoutX="367.0" layoutY="185.0" text="Contact Name" />
    </children>
 </AnchorPane>

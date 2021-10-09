@@ -206,19 +206,19 @@ public class AddAppointmentController implements Initializable {
     public void preparedInsert(){
         //verify();
         PreparedStatement pstatement;
-        String sql = "INSERT into appointments(Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT into appointments(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?)";
         try {
             pstatement = DBConnection.getConnection().prepareStatement(sql);
-            pstatement.setInt(1, Integer.parseInt(tfCustomerID.getText()));
-            pstatement.setString(2, tfTitle.getText());
-            pstatement.setString(3, tfDescription.getText());
-            pstatement.setString(4, tfLocation.getText());
-            pstatement.setString(5, tfType.getText());
-            pstatement.setTimestamp(6, valueOf(tfStart.getText()));
-            pstatement.setTimestamp(7, valueOf(tfEnd.getText()));
-            pstatement.setInt(8, Integer.parseInt(tfCustomerID.getText()));
+            //pstatement.setInt(1, Integer.parseInt(tfCustomerID.getText()));
+            pstatement.setString(1, tfTitle.getText());
+            pstatement.setString(2, tfDescription.getText());
+            pstatement.setString(3, tfLocation.getText());
+            pstatement.setString(4, tfType.getText());
+            pstatement.setTimestamp(5, valueOf(tfStart.getText()));
+            pstatement.setTimestamp(6, valueOf(tfEnd.getText()));
+            pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
             //pstatement.setInt(9, Integer.parseInt(tfUserID.getText()));
-            pstatement.setInt(9, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
+            pstatement.setInt(8, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
             //pstatement.setInt(10, Integer.parseInt(String.valueOf(contact_box.getSelectionModel().getSelectedItem())));
 
             ObservableList<Contacts> contactsObservableList = AddAppointmentController.getContactsList();
@@ -233,7 +233,7 @@ public class AddAppointmentController implements Initializable {
 
 
             }
-            pstatement.setInt(10, Integer.parseInt(String.valueOf(contactIDToAdd)));
+            pstatement.setInt(9, Integer.parseInt(String.valueOf(contactIDToAdd)));
 
             // HERE IS WHERE I NEED TO GET CONTACT NAME SELECTION, AND THEN GET THE CONTACT_ID OF SELECTED CONTACT NAME,
             // THEN FEED CONTACT ID TO THE APPOINTMENT CONSTRUCTOR

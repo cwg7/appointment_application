@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -33,5 +34,9 @@
       <Button fx:id="modButton" layoutX="451.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleModClick" text="Modify Customer" />
       <Button fx:id="mainMenuButton" layoutX="14.0" layoutY="561.0" mnemonicParsing="false" onAction="#backToMain" text="Back to Main Menu" />
       <Button fx:id="deleteButton" layoutX="608.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete Customer" />
+      <ComboBox fx:id="country_box" layoutX="522.0" layoutY="439.0" onAction="#onCountrySelect" prefWidth="150.0" />
+      <ComboBox fx:id="division2_box" layoutX="522.0" layoutY="478.0" onAction="#onDivisionSelect" prefWidth="150.0" />
+      <Label fx:id="lblCountry" layoutX="446.0" layoutY="443.0" text="Country" />
+      <Label fx:id="lblDivision2" layoutX="446.0" layoutY="478.0" text="Division" />
    </children>
 </AnchorPane>

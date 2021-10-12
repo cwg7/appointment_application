@@ -7,6 +7,7 @@ public class Customer {
     private String postalCode;
     private String phoneNumber;
     private int division_id;
+    private String countryName;
 
     public Customer(int id, String name, String address, String postalCode, String phoneNumber, int division_id) {
         this.id = id;
@@ -16,9 +17,23 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.division_id = division_id;
     }
+  /*  public Customer(int id, String name, String address, String postalCode, String phoneNumber, int division_id, String countryName) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.division_id = division_id;
+        this.countryName = countryName;
+    }
 
+    public String getCountryName() {
+        return countryName;
+    }*/
 
-
+    public void setCountryName(String countryName){
+        this.countryName = countryName;
+    }
 
     public int getId() {
         return id;

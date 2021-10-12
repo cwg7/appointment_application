@@ -32,8 +32,8 @@
       <TextField fx:id="tfType" layoutX="279.0" layoutY="160.0" prefHeight="25.0" prefWidth="102.0" />
       <Label fx:id="lblStart" layoutX="397.0" layoutY="75.0" text="Start Time" />
       <Label fx:id="lblEnd" layoutX="399.0" layoutY="106.0" text="End Time" />
-      <TextField fx:id="tfStart" layoutX="453.0" layoutY="71.0" />
-      <TextField fx:id="tfEnd" layoutX="453.0" layoutY="102.0" />
+      <TextField fx:id="tfStart" layoutX="453.0" layoutY="71.0" promptText="YYYY:MM:DD HH:MM" />
+      <TextField fx:id="tfEnd" layoutX="453.0" layoutY="102.0" promptText="YYYY:MM:DD HH:MM" />
       <Label fx:id="lblUserID" layoutX="405.0" layoutY="136.0" text="User ID" />
       <Button fx:id="addAppointmentButton" layoutX="456.0" layoutY="236.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Save New Appointment" />
       <TableView fx:id="contactsTable" layoutX="602.0" layoutY="35.0" prefHeight="176.0" prefWidth="186.0">

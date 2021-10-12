@@ -99,18 +99,167 @@ public class DBQuery {
         return userIDList;
     }
 
- /*   private int getContactIDfromList(String temp)
-    {
-        for(String contact : contactsNameList)
-        {
-            if(Contacts.getContact_name().trim().toLowerCase().contains(temp.trim().toLowerCase()))
-            {
-                return contact.getContact_id();
+    public static ObservableList<String> countryList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getCountryList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+        countryList.clear();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM countries";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                countryList.add(rs.getString("Country"));
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return -1;
+        return countryList;
+    }
+
+    public static ObservableList<String> usDivisionList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getUsDivisionList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division FROM first_level_divisions WHERE Country_ID = 1";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                usDivisionList.add(rs.getString("Division"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return usDivisionList;
+    }
+
+    public static ObservableList<String> uKDivisionList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getUKDivisionList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division FROM first_level_divisions WHERE Country_ID = 2";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                uKDivisionList.add(rs.getString("Division"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return uKDivisionList;
+    }
+
+    public static ObservableList<String> canadaDivisionList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getCanadaDivisionList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division FROM first_level_divisions WHERE Country_ID = 3";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                canadaDivisionList.add(rs.getString("Division"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return canadaDivisionList;
+    }
+
+    public static ObservableList<String> allDivisionList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getAllDivisionList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM first_level_divisions";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                allDivisionList.add(rs.getString("Division"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return allDivisionList;
+    }
+
+    public static ObservableList<Integer> divisionIDList = FXCollections.observableArrayList();
+
+    public static ObservableList<Integer> getDivisionIDList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division_ID FROM first_level_divisions";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                divisionIDList.add(rs.getInt("Division_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return divisionIDList;
+    }
+
+
+
+/*
+    public static ObservableList<String> countryListOL = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getCountryListOL() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division FROM first_level_divisions";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                countryListOL.add(rs.getString("Division_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return countryListOL;
     }
 */
+
+
+
 
 
 

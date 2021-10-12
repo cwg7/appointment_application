@@ -96,16 +96,16 @@ public class AddAppointmentController implements Initializable {
 
 
 
+
+
     private Stage stage;
     private Scene scene;
 
-    /*ObservableList<Contacts> contactsObservableList = DBQuery.getAllContacts();
-    ObservableList<String> allContactsNames = FXCollections.observableArrayList();
-    contactsObservableList.forEach(Contacts -> allContactsNames.add(Contacts.getContactName()));*/
 
     public AddAppointmentController() throws SQLException {
     }
 
+   
 
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -221,19 +221,19 @@ public class AddAppointmentController implements Initializable {
             pstatement.setInt(8, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
             //pstatement.setInt(10, Integer.parseInt(String.valueOf(contact_box.getSelectionModel().getSelectedItem())));
 
-            ObservableList<Contacts> contactsObservableList = AddAppointmentController.getContactsList();
-            String contactNameToAdd = contactName_box.getSelectionModel().getSelectedItem();
-            int contactIDToAdd = 0;
-            for (Contacts contact : contactsObservableList)
+            ObservableList<Contacts> contactsOL = AddAppointmentController.getContactsList();
+            String tempContactName = contactName_box.getSelectionModel().getSelectedItem();
+            int contactID = 0;
+            for (Contacts contact : contactsOL)
 
             {
-                if (contactNameToAdd.equals(contact.getContact_name())) {
-                    contactIDToAdd = contact.getContact_id();
+                if (tempContactName.equals(contact.getContact_name())) {
+                    contactID = contact.getContact_id();
                 }
 
 
             }
-            pstatement.setInt(9, Integer.parseInt(String.valueOf(contactIDToAdd)));
+            pstatement.setInt(9, Integer.parseInt(String.valueOf(contactID)));
 
             // HERE IS WHERE I NEED TO GET CONTACT NAME SELECTION, AND THEN GET THE CONTACT_ID OF SELECTED CONTACT NAME,
             // THEN FEED CONTACT ID TO THE APPOINTMENT CONSTRUCTOR
@@ -269,29 +269,21 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    public void modAppointmentButtonClick(ActionEvent event) throws IOException {
 
-    /*ArrayList<Integer> contactIDs = new ArrayList<Integer>();
-    Connection conn = DBConnection.getConnection();
-    //String query = "SELECT * FROM customers";
-    Statement st;
-    //ResultSet rs;
-    String query = "SELECT Contact_ID FROM contacts";
-    PreparedStatement stm = DBConnection.prepareStatement(query);
-
-    ResultSet rs = stm.get().executeQuery(query);
-
-while (rs.next()) {
-        String groupName = rs.getString("group_name");
-        // add group names to the array list
-        groupNames.add(groupName)
+        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
-rs.close();
 
-*/
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        //tfStart.se
         DBQuery.userIDList.clear();
         DBQuery.getContactsList().clear();
         DBQuery.contactsNameList.clear();

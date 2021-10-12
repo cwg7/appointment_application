@@ -64,6 +64,14 @@ public class ModCustomerController implements Initializable {
     private Button mainMenuButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    ComboBox<String> country_box;
+    @FXML
+    ComboBox<String> division2_box;
+    @FXML
+    private Label lblCountry;
+    @FXML
+    private Label lblDivision2;
 
     private Stage stage;
     private Scene scene;
@@ -94,8 +102,11 @@ public class ModCustomerController implements Initializable {
 
     @FXML
     public void handleModClick(ActionEvent event) throws IOException {
+        //String countrySelection = country_box.getValue().toString();
+        //String divisionSelection = division2_box.getValue().toString();
         Customer selectedCustomer;
         selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
+
         if (selectedCustomer == null){
             Alerts.modHandler();
         }
@@ -114,8 +125,13 @@ public class ModCustomerController implements Initializable {
             tfPostal.setText(selectedCustomer.getPostalCode());
             tfPhone.setDisable(false);
             tfPhone.setText(selectedCustomer.getPhoneNumber());
-            tfDivision.setDisable(false);
+            tfDivision.setDisable(true);
             tfDivision.setText(String.valueOf(divisionID));
+            country_box.setDisable(false);
+            division2_box.setDisable(false);
+            //country_box.setItems(selectedCustomer.getCountryName());
+            //country_box.setItems(divisionID.get);
+
             // tfDivision.setInt(Integer.parseInt(tfDivision.getText()));
             
 
@@ -192,12 +208,122 @@ public class ModCustomerController implements Initializable {
             pstatement.setString(2, tfAddress.getText());
             pstatement.setString(3, tfPostal.getText());
             pstatement.setString(4, tfPhone.getText());
-            pstatement.setInt(5, Integer.parseInt(tfDivision.getText()));
+            //pstatement.setInt(5, Integer.parseInt(tfDivision.getText()));
+            //pstatement.setInt(6, selectedCustomer.getId());
+            ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
+            String tempVal = division2_box.getSelectionModel().getSelectedItem();
+            int divisionID = 0;
+            for (Division division : divisionsOL)
+
+            {
+                if (tempVal.equals(division.getDivision_name())) {
+                    divisionID = division.getId();
+                }
+
+
+            }
+            pstatement.setInt(5, Integer.parseInt(String.valueOf(divisionID)));
             pstatement.setInt(6, selectedCustomer.getId());
+
+
+
             pstatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+
+    }
+
+    @FXML
+    public void onCountrySelect(ActionEvent event) throws IOException {
+        division2_box.setDisable(false);
+        //division2_box.getItems().clear();
+
+        String tempVal = country_box.getValue();
+
+        if (tempVal != null)
+
+        switch (tempVal) {
+            case "U.S":
+                division2_box.setItems(DBQuery.getUsDivisionList());
+
+                break;
+            case "UK":
+                division2_box.setItems(DBQuery.getUKDivisionList());
+                break;
+            case "Canada":
+                division2_box.setItems(DBQuery.getCanadaDivisionList());
+                break;
+
+            default:
+                division2_box.setItems(DBQuery.getAllDivisionList());
+
+
+
+
+      /*  if (country_box.getValue().equals("U.S")) {
+            // division2_box.setItems(null);
+            division2_box.setItems(DBQuery.getUsDivisionList());
+
+        }
+
+        else if (country_box.getValue().equals("UK")) {
+            division2_box.setItems(DBQuery.getUKDivisionList());
+            //break;
+        } else if (country_box.getValue().equals("Canada")) {
+            division2_box.setItems(DBQuery.getCanadaDivisionList());
+
+        }
+*/
+
+                //}
+
+        }
+    }
+
+    @FXML
+    public void onDivisionSelect(ActionEvent event) throws IOException {
+
+        ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
+        //String tempVal = division2_box.getSelectionModel().getSelectedItem();
+
+        //Thread.sleep(1000);
+        String tempVal = country_box.getValue();
+
+        int divisionID = 0;
+
+
+        for (Division division : divisionsOL) {
+
+            if (tempVal.equals(division.getDivision_name())) {
+                tempVal = division.getDivision_name();
+                divisionID = division.getId();
+                tfDivision.setText(String.valueOf(divisionID));
+            }
+        }
+
+        switch(tempVal){
+            case "U.S": division2_box.setItems(DBQuery.getUsDivisionList());
+
+                break;
+            case "UK": division2_box.setItems(DBQuery.getUKDivisionList());
+                break;
+            case "Canada": division2_box.setItems(DBQuery.getCanadaDivisionList());
+                break;
+
+            default: division2_box.setItems(DBQuery.getAllDivisionList());
+
+                String divisionName = division2_box.getValue();
+
+
+
+
+        }
+
+
+
+
 
 
     }
@@ -238,6 +364,10 @@ public class ModCustomerController implements Initializable {
         tfPostal.setDisable(true);
         tfPhone.setDisable(true);
         tfDivision.setDisable(true);
+        country_box.setDisable(true);
+        division2_box.setDisable(true);
+        country_box.setItems(DBQuery.getCountryList());
+        division2_box.setItems(DBQuery.getAllDivisionList());
         
 
 

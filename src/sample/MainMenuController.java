@@ -63,7 +63,11 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn <Appointment, Integer> userIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> contactCol;
+   private TableColumn <Appointment, Integer> contactCol;
+    @FXML
+    private TableColumn <Appointment, String> contactNameCol;
+    //@FXML
+    //private TableColumn <Appointment, String> contactCol;
 
     //hidden comment
 
@@ -106,7 +110,9 @@ public class MainMenuController implements Initializable {
         endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end_time"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customer_id"));
         userIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("user_id"));
+        //contactCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         contactCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contact_id"));
+        //contactNameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         apptTable.setItems(list);
 
 

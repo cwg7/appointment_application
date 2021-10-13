@@ -152,6 +152,7 @@ import static sample.Division.*;
             tfAddress.clear();
             tfPostalCode.clear();
             tfPhone.clear();
+            country_box.equals(null);
             //tfDivision.clear();
         }
 

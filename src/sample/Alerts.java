@@ -23,12 +23,30 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void modHandler2(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to select an appointment to modify before pressing the modify button");
+        alert.showAndWait();
+    }
+
     public static void delHandler(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initModality(Modality.NONE);
         alert.setTitle("Error");
         alert.setHeaderText("Warning");
         alert.setContentText("Please be sure to select a customer to modify before pressing the delete button");
+        alert.showAndWait();
+    }
+
+    public static void delHandler2(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to select an appointment to delete before pressing the delete button");
         alert.showAndWait();
     }
 
@@ -41,4 +59,14 @@ public class Alerts {
         alert.setContentText("Customer has been successfully deleted from the database ");
         alert.showAndWait();
         }
+
+    public static void deleteSuccessful2(){
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Deletion Successful");
+        alert.setHeaderText("Deletion Successful!");
+        alert.setContentText("Appointment has been successfully deleted from the database ");
+        alert.showAndWait();
+    }
     }

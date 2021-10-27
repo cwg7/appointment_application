@@ -2,6 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,8 +13,13 @@ import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
+import java.time.ZoneId;
+import java.util.ResourceBundle;
 
-public class LoginForm {
+public class LoginForm implements Initializable {
+    @FXML
+    private Label lblZoneID;
     @FXML
     private Label lblUserName;
     @FXML
@@ -48,5 +54,11 @@ public class LoginForm {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblZoneID.setText("Zone ID: " +ZoneId.systemDefault().toString());
     }
 }

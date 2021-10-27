@@ -7,6 +7,8 @@ import sample.Contacts;
 
 import java.sql.*;
 
+import static java.sql.Timestamp.valueOf;
+
 public class DBQuery {
     private static PreparedStatement statement;
 
@@ -232,7 +234,31 @@ public class DBQuery {
         return divisionIDList;
     }
 
+ /*   public static ObservableList<Division> getDivisionName() {
+        ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?";
+        Statement st;
+        ResultSet rs;
 
+        // rs.getInt("Customer_ID"),
+
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            Division division;
+            while (rs.next()) {
+                division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
+                        rs.getInt("Country_ID"));
+                newDivisionIDList.add(division);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return newDivisionIDList;
+    }*/
 
 /*
     public static ObservableList<String> countryListOL = FXCollections.observableArrayList();
@@ -257,6 +283,26 @@ public class DBQuery {
         return countryListOL;
     }
 */
+
+    public static ObservableList<String> getContactNames() {
+        ObservableList<String> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Contact_Name FROM contacts";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                contactsNameList.add(rs.getString("Division"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return contactsNameList;
+    }
 
 
 

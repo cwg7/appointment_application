@@ -17,7 +17,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.division_id = division_id;
     }
-  /*  public Customer(int id, String name, String address, String postalCode, String phoneNumber, int division_id, String countryName) {
+    public Customer(int id, String name, String address, String postalCode, String phoneNumber, int division_id, String countryName) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -29,7 +29,7 @@ public class Customer {
 
     public String getCountryName() {
         return countryName;
-    }*/
+    }
 
     public void setCountryName(String countryName){
         this.countryName = countryName;

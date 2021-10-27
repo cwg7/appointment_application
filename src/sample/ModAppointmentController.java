@@ -29,6 +29,9 @@ import static java.sql.Timestamp.valueOf;
 public class ModAppointmentController implements Initializable {
 
     @FXML
+    private ScrollBar scrollBar;
+
+    @FXML
     private TableView <Appointment> appointmentsTable;
 
     @FXML
@@ -264,6 +267,7 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+
     @FXML
     public void saveChanges(ActionEvent event) throws IOException {
         preparedUpdate();
@@ -288,6 +292,7 @@ public class ModAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         MainMenuController.getAppointments();
         showAppointments();
+
         tfApptID.setDisable(true);
         tfTitle.setDisable(true);
         tfDescription.setDisable(true);

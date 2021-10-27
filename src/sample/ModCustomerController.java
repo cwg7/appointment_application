@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
+
+import static java.sql.Timestamp.valueOf;
 import static sample.DBConnection.getConnection;
 
 import java.io.IOException;
@@ -106,6 +108,7 @@ public class ModCustomerController implements Initializable {
         //String divisionSelection = division2_box.getValue().toString();
         Customer selectedCustomer;
         selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
+        //selectedCustomer.get
 
         if (selectedCustomer == null){
             Alerts.modHandler();
@@ -113,6 +116,12 @@ public class ModCustomerController implements Initializable {
         else {
         int selectedCustomerID = selectedCustomer.getId();
         int divisionID = selectedCustomer.getDivision_id();
+        //String countryName = selectedCustomer.getCountryName();
+
+
+
+
+
 
         // = (Customer) modCustomersTable.getSelectionModel().getSelectedItems();
 
@@ -128,6 +137,7 @@ public class ModCustomerController implements Initializable {
             tfDivision.setDisable(true);
             tfDivision.setText(String.valueOf(divisionID));
             country_box.setDisable(false);
+
             division2_box.setDisable(false);
             //country_box.setItems(selectedCustomer.getCountryName());
             //country_box.setItems(divisionID.get);
@@ -327,6 +337,31 @@ public class ModCustomerController implements Initializable {
 
 
     }
+
+ /*   public void preparedCountrySelect() {
+        Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
+        //int selectedA = selectedCustomer.getAppointment_id();
+        int divisionID = selectedCustomer.getDivision_id();
+
+        PreparedStatement pstatement;
+        String sql = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?";
+        try {
+            // assert pstatement != null;
+            pstatement = DBConnection.getConnection().prepareStatement(sql);
+           // pstatement.setString(1, tfTitle.getText());
+            pstatement.setString(1, country_box.setItems(sql));
+
+
+
+
+            pstatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+    }
+*/
 
     public void showCustomers() {
         ObservableList<Customer> list = getCustomerList();

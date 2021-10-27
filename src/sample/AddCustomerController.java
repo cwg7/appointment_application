@@ -294,7 +294,7 @@ import static sample.Division.*;
             default:
                 division2_box.setItems(DBQuery.getAllDivisionList());
 
-                String divisionName = division2_box.getValue();
+                //String divisionName = division2_box.getValue();
 
 
 

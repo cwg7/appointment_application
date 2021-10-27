@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -29,29 +30,30 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="selectButton" layoutX="99.0" layoutY="447.0" mnemonicParsing="false" onAction="#selectButtonClick" text="Select Appointment" />
-      <TextField fx:id="tfApptID" layoutX="99.0" layoutY="497.0" />
-      <TextField fx:id="tfTitle" layoutX="99.0" layoutY="541.0" />
-      <TextField fx:id="tfDescription" layoutX="99.0" layoutY="570.0" />
-      <Label layoutX="38.0" layoutY="501.0" text="Appt ID" />
-      <Label layoutX="45.0" layoutY="536.0" text="Title" />
-      <Label layoutX="28.0" layoutY="574.0" text="Description" />
-      <Label layoutX="35.0" layoutY="610.0" text="Location" />
-      <Label layoutX="31.0" layoutY="644.0" text="Contact ID" />
-      <Label layoutX="44.0" layoutY="678.0" text="Type" />
-      <TextField fx:id="tfLocation" layoutX="99.0" layoutY="606.0" />
-      <TextField fx:id="tfContactID" layoutX="99.0" layoutY="640.0" />
-      <TextField fx:id="tfType" layoutX="99.0" layoutY="674.0" />
-      <Button fx:id="mainMenuButton" layoutX="21.0" layoutY="753.0" mnemonicParsing="false" onAction="#goToMain" text="Back to Main Menu" />
+      <Button fx:id="selectButton" layoutX="557.0" layoutY="439.0" mnemonicParsing="false" onAction="#selectButtonClick" text="Select Appointment" />
+      <TextField fx:id="tfApptID" layoutX="81.0" layoutY="447.0" />
+      <TextField fx:id="tfTitle" layoutX="81.0" layoutY="485.0" />
+      <TextField fx:id="tfDescription" layoutX="81.0" layoutY="520.0" />
+      <Label layoutX="24.0" layoutY="451.0" text="Appt ID" />
+      <Label layoutX="33.0" layoutY="489.0" text="Title" />
+      <Label layoutX="14.0" layoutY="524.0" text="Description" />
+      <Label layoutX="21.0" layoutY="562.0" text="Location" />
+      <Label layoutX="16.0" layoutY="602.0" text="Contact ID" />
+      <Label layoutX="31.0" layoutY="638.0" text="Type" />
+      <TextField fx:id="tfLocation" layoutX="81.0" layoutY="562.0" />
+      <TextField fx:id="tfContactID" layoutX="81.0" layoutY="598.0" />
+      <TextField fx:id="tfType" layoutX="81.0" layoutY="634.0" />
+      <Button fx:id="mainMenuButton" layoutX="22.0" layoutY="662.0" mnemonicParsing="false" onAction="#goToMain" text="Back to Main Menu" />
       <Label fx:id="lblStart" layoutX="339.0" layoutY="501.0" text="Start Time" />
       <Label fx:id="lblEnd" layoutX="339.0" layoutY="536.0" text="End Time" />
       <TextField fx:id="tfStart" layoutX="400.0" layoutY="497.0" />
       <TextField fx:id="tfEnd" layoutX="400.0" layoutY="532.0" />
       <TextField fx:id="tfUserID" layoutX="400.0" layoutY="606.0" />
       <Label fx:id="lblUserID" layoutX="344.0" layoutY="610.0" text="User ID" />
-      <Button fx:id="saveChangesButton" layoutX="413.0" layoutY="674.0" mnemonicParsing="false" onAction="#saveChanges" text="Save Changes" />
+      <Button fx:id="saveChangesButton" layoutX="430.0" layoutY="650.0" mnemonicParsing="false" onAction="#saveChanges" text="Save Changes" />
       <Label fx:id="lblCustomerID" layoutX="322.0" layoutY="574.0" text="Customer ID" />
       <TextField fx:id="tfCustomerID" layoutX="400.0" layoutY="570.0" />
-      <Button fx:id="deleteButton" layoutX="720.0" layoutY="447.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Delete Appointment" />
+      <Button fx:id="deleteButton" layoutX="719.0" layoutY="439.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Delete Appointment" />
+      <ScrollBar fx:id="scrollBar" layoutX="879.0" layoutY="14.0" orientation="VERTICAL" prefHeight="674.0" prefWidth="14.0" />
    </children>
 </AnchorPane>

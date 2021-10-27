@@ -18,7 +18,9 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import sample.Appointment;
 
@@ -101,6 +103,21 @@ public class ModAppointmentController implements Initializable {
     private Stage stage;
     private Scene scene;
 
+    private LocalDate selectedDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
+
+    @FXML
+    private Label lblDate;
+
+    @FXML
+    private DatePicker datePicker;
+
+    @FXML
+    private ComboBox<LocalTime> cbStartTime;
+    @FXML
+    private ComboBox<LocalTime> cbEndTime;
+
 
     public void showAppointments() {
         ObservableList<Appointment> list = MainMenuController.getAppointments();
@@ -121,12 +138,27 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    //LocalDateTime startTimeObject;
     public void selectButtonClick(ActionEvent event) {
+
+
+
+        //startTimeObject = startTime;
+
+
         if (appointmentsTable.getItems() != null) {
            // ObservableList<Appointment> appointment = appointmentsTable.getSelectionModel().getSelectedItems();
             //tfApptID =
             Appointment selectedAppointment;
             selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
+
+            LocalDateTime startTime = selectedAppointment.getStart_time();
+            LocalDate selectedDate = startTime.toLocalDate();
+            LocalTime startClock = startTime.toLocalTime();
+
+            LocalDateTime endTime = selectedAppointment.getEnd_time();
+            LocalTime endClock =  endTime.toLocalTime();
+
             //Customer selectedCustomer;
             //selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
 
@@ -149,8 +181,8 @@ public class ModAppointmentController implements Initializable {
                 tfLocation.setDisable(false);
                 tfContactID.setDisable(false);
                 tfUserID.setDisable(false);
-                tfStart.setDisable(false);
-                tfEnd.setDisable(false);
+                //tfStart.setDisable(false);
+                //tfEnd.setDisable(false);
                 tfType.setDisable(false);
                 tfCustomerID.setDisable(false);
                 tfApptID.setText(String.valueOf(selectedAppointment.getAppointment_id()));
@@ -163,6 +195,14 @@ public class ModAppointmentController implements Initializable {
                 tfEnd.setText(String.valueOf(Timestamp.valueOf(selectedAppointment.getEnd_time())));
                 tfCustomerID.setText(String.valueOf(selectedAppointment.getCustomer_id()));
                 tfUserID.setText(String.valueOf(selectedAppointment.getUser_id()));
+
+                datePicker.setValue(selectedDate);
+                cbStartTime.setValue(startClock);
+                cbEndTime.setValue(endClock);
+
+                setComboBoxStart();
+                setComboBoxEnd();
+
 
 
                /* tfAddress.setDisable(false);
@@ -204,8 +244,19 @@ public class ModAppointmentController implements Initializable {
             pstatement.setString(2, tfDescription.getText());
             pstatement.setString(3, tfLocation.getText());
             pstatement.setString(4, tfType.getText());
-            pstatement.setTimestamp(5, valueOf(tfStart.getText()));
-            pstatement.setTimestamp(6, valueOf(tfEnd.getText()));
+
+            selectedDate = datePicker.getValue();
+            LocalTime startTime = cbStartTime.getValue();
+            LocalTime endTime = cbEndTime.getValue();
+
+            LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate,startTime);
+            LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate,endTime);
+
+
+            //pstatement.setTimestamp(5, valueOf(tfStart.getText()));
+            pstatement.setTimestamp(5, Timestamp.valueOf(startTimeAndDate));
+            pstatement.setTimestamp(6, Timestamp.valueOf(endTimeAndDate));
+           // pstatement.setTimestamp(6, valueOf(tfEnd.getText()));
 
             pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
             pstatement.setInt(8, Integer.parseInt(tfUserID.getText()));
@@ -279,6 +330,205 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    public void setComboBoxStart(){
+         cbStartTime.getItems().add(LocalTime.parse("00:00"));
+        cbStartTime.getItems().add(LocalTime.parse("00:15"));
+        cbStartTime.getItems().add(LocalTime.parse("00:30"));
+        cbStartTime.getItems().add(LocalTime.parse("00:45"));
+        cbStartTime.getItems().add(LocalTime.parse("01:00"));
+        cbStartTime.getItems().add(LocalTime.parse("01:15"));
+        cbStartTime.getItems().add(LocalTime.parse("01:30"));
+        cbStartTime.getItems().add(LocalTime.parse("01:45"));
+        cbStartTime.getItems().add(LocalTime.parse("02:00"));
+        cbStartTime.getItems().add(LocalTime.parse("02:15"));
+        cbStartTime.getItems().add(LocalTime.parse("02:30"));
+        cbStartTime.getItems().add(LocalTime.parse("02:45"));
+        cbStartTime.getItems().add(LocalTime.parse("03:00"));
+        cbStartTime.getItems().add(LocalTime.parse("03:15"));
+        cbStartTime.getItems().add(LocalTime.parse("03:30"));
+        cbStartTime.getItems().add(LocalTime.parse("03:45"));
+        cbStartTime.getItems().add(LocalTime.parse("04:00"));
+        cbStartTime.getItems().add(LocalTime.parse("04:15"));
+        cbStartTime.getItems().add(LocalTime.parse("04:30"));
+        cbStartTime.getItems().add(LocalTime.parse("04:45"));
+        cbStartTime.getItems().add(LocalTime.parse("05:00"));
+        cbStartTime.getItems().add(LocalTime.parse("05:15"));
+        cbStartTime.getItems().add(LocalTime.parse("05:30"));
+        cbStartTime.getItems().add(LocalTime.parse("05:45"));
+        cbStartTime.getItems().add(LocalTime.parse("06:00"));
+        cbStartTime.getItems().add(LocalTime.parse("06:15"));
+        cbStartTime.getItems().add(LocalTime.parse("06:30"));
+        cbStartTime.getItems().add(LocalTime.parse("06:45"));
+        cbStartTime.getItems().add(LocalTime.parse("07:00"));
+        cbStartTime.getItems().add(LocalTime.parse("07:15"));
+        cbStartTime.getItems().add(LocalTime.parse("07:30"));
+        cbStartTime.getItems().add(LocalTime.parse("07:45"));
+        cbStartTime.getItems().add(LocalTime.parse("08:00"));
+        cbStartTime.getItems().add(LocalTime.parse("08:15"));
+        cbStartTime.getItems().add(LocalTime.parse("08:30"));
+        cbStartTime.getItems().add(LocalTime.parse("08:45"));
+        cbStartTime.getItems().add(LocalTime.parse("09:00"));
+        cbStartTime.getItems().add(LocalTime.parse("09:15"));
+        cbStartTime.getItems().add(LocalTime.parse("09:30"));
+        cbStartTime.getItems().add(LocalTime.parse("09:45"));
+        cbStartTime.getItems().add(LocalTime.parse("10:00"));
+        cbStartTime.getItems().add(LocalTime.parse("10:15"));
+        cbStartTime.getItems().add(LocalTime.parse("10:30"));
+        cbStartTime.getItems().add(LocalTime.parse("10:45"));
+        cbStartTime.getItems().add(LocalTime.parse("11:00"));
+        cbStartTime.getItems().add(LocalTime.parse("11:15"));
+        cbStartTime.getItems().add(LocalTime.parse("11:30"));
+        cbStartTime.getItems().add(LocalTime.parse("11:45"));
+        cbStartTime.getItems().add(LocalTime.parse("12:00"));
+        cbStartTime.getItems().add(LocalTime.parse("12:15"));
+        cbStartTime.getItems().add(LocalTime.parse("12:30"));
+        cbStartTime.getItems().add(LocalTime.parse("12:45"));
+        cbStartTime.getItems().add(LocalTime.parse("13:00"));
+        cbStartTime.getItems().add(LocalTime.parse("13:15"));
+        cbStartTime.getItems().add(LocalTime.parse("13:30"));
+        cbStartTime.getItems().add(LocalTime.parse("13:45"));
+        cbStartTime.getItems().add(LocalTime.parse("14:00"));
+        cbStartTime.getItems().add(LocalTime.parse("14:15"));
+        cbStartTime.getItems().add(LocalTime.parse("14:30"));
+        cbStartTime.getItems().add(LocalTime.parse("14:45"));
+        cbStartTime.getItems().add(LocalTime.parse("15:00"));
+        cbStartTime.getItems().add(LocalTime.parse("15:15"));
+        cbStartTime.getItems().add(LocalTime.parse("15:30"));
+        cbStartTime.getItems().add(LocalTime.parse("15:45"));
+        cbStartTime.getItems().add(LocalTime.parse("16:00"));
+        cbStartTime.getItems().add(LocalTime.parse("16:15"));
+        cbStartTime.getItems().add(LocalTime.parse("16:30"));
+        cbStartTime.getItems().add(LocalTime.parse("16:45"));
+        cbStartTime.getItems().add(LocalTime.parse("17:00"));
+        cbStartTime.getItems().add(LocalTime.parse("17:15"));
+        cbStartTime.getItems().add(LocalTime.parse("17:30"));
+        cbStartTime.getItems().add(LocalTime.parse("17:45"));
+        cbStartTime.getItems().add(LocalTime.parse("18:00"));
+        cbStartTime.getItems().add(LocalTime.parse("18:15"));
+        cbStartTime.getItems().add(LocalTime.parse("18:30"));
+        cbStartTime.getItems().add(LocalTime.parse("18:45"));
+        cbStartTime.getItems().add(LocalTime.parse("19:00"));
+        cbStartTime.getItems().add(LocalTime.parse("19:15"));
+        cbStartTime.getItems().add(LocalTime.parse("19:30"));
+        cbStartTime.getItems().add(LocalTime.parse("19:45"));
+        cbStartTime.getItems().add(LocalTime.parse("20:00"));
+        cbStartTime.getItems().add(LocalTime.parse("20:15"));
+        cbStartTime.getItems().add(LocalTime.parse("20:30"));
+        cbStartTime.getItems().add(LocalTime.parse("20:45"));
+        cbStartTime.getItems().add(LocalTime.parse("21:00"));
+        cbStartTime.getItems().add(LocalTime.parse("21:15"));
+        cbStartTime.getItems().add(LocalTime.parse("21:30"));
+        cbStartTime.getItems().add(LocalTime.parse("21:45"));
+        cbStartTime.getItems().add(LocalTime.parse("22:00"));
+        cbStartTime.getItems().add(LocalTime.parse("22:15"));
+        cbStartTime.getItems().add(LocalTime.parse("22:30"));
+        cbStartTime.getItems().add(LocalTime.parse("22:45"));
+        cbStartTime.getItems().add(LocalTime.parse("23:00"));
+        cbStartTime.getItems().add(LocalTime.parse("23:15"));
+        cbStartTime.getItems().add(LocalTime.parse("23:30"));
+        cbStartTime.getItems().add(LocalTime.parse("23:45"));
+    }
+
+    public void setComboBoxEnd(){
+        cbEndTime.getItems().add(LocalTime.parse("00:00"));
+        cbEndTime.getItems().add(LocalTime.parse("00:15"));
+        cbEndTime.getItems().add(LocalTime.parse("00:30"));
+        cbEndTime.getItems().add(LocalTime.parse("00:45"));
+        cbEndTime.getItems().add(LocalTime.parse("01:00"));
+        cbEndTime.getItems().add(LocalTime.parse("01:15"));
+        cbEndTime.getItems().add(LocalTime.parse("01:30"));
+        cbEndTime.getItems().add(LocalTime.parse("01:45"));
+        cbEndTime.getItems().add(LocalTime.parse("02:00"));
+        cbEndTime.getItems().add(LocalTime.parse("02:15"));
+        cbEndTime.getItems().add(LocalTime.parse("02:30"));
+        cbEndTime.getItems().add(LocalTime.parse("02:45"));
+        cbEndTime.getItems().add(LocalTime.parse("03:00"));
+        cbEndTime.getItems().add(LocalTime.parse("03:15"));
+        cbEndTime.getItems().add(LocalTime.parse("03:30"));
+        cbEndTime.getItems().add(LocalTime.parse("03:45"));
+        cbEndTime.getItems().add(LocalTime.parse("04:00"));
+        cbEndTime.getItems().add(LocalTime.parse("04:15"));
+        cbEndTime.getItems().add(LocalTime.parse("04:30"));
+        cbEndTime.getItems().add(LocalTime.parse("04:45"));
+        cbEndTime.getItems().add(LocalTime.parse("05:00"));
+        cbEndTime.getItems().add(LocalTime.parse("05:15"));
+        cbEndTime.getItems().add(LocalTime.parse("05:30"));
+        cbEndTime.getItems().add(LocalTime.parse("05:45"));
+        cbEndTime.getItems().add(LocalTime.parse("06:00"));
+        cbEndTime.getItems().add(LocalTime.parse("06:15"));
+        cbEndTime.getItems().add(LocalTime.parse("06:30"));
+        cbEndTime.getItems().add(LocalTime.parse("06:45"));
+        cbEndTime.getItems().add(LocalTime.parse("07:00"));
+        cbEndTime.getItems().add(LocalTime.parse("07:15"));
+        cbEndTime.getItems().add(LocalTime.parse("07:30"));
+        cbEndTime.getItems().add(LocalTime.parse("07:45"));
+        cbEndTime.getItems().add(LocalTime.parse("08:00"));
+        cbEndTime.getItems().add(LocalTime.parse("08:15"));
+        cbEndTime.getItems().add(LocalTime.parse("08:30"));
+        cbEndTime.getItems().add(LocalTime.parse("08:45"));
+        cbEndTime.getItems().add(LocalTime.parse("09:00"));
+        cbEndTime.getItems().add(LocalTime.parse("09:15"));
+        cbEndTime.getItems().add(LocalTime.parse("09:30"));
+        cbEndTime.getItems().add(LocalTime.parse("09:45"));
+        cbEndTime.getItems().add(LocalTime.parse("10:00"));
+        cbEndTime.getItems().add(LocalTime.parse("10:15"));
+        cbEndTime.getItems().add(LocalTime.parse("10:30"));
+        cbEndTime.getItems().add(LocalTime.parse("10:45"));
+        cbEndTime.getItems().add(LocalTime.parse("11:00"));
+        cbEndTime.getItems().add(LocalTime.parse("11:15"));
+        cbEndTime.getItems().add(LocalTime.parse("11:30"));
+        cbEndTime.getItems().add(LocalTime.parse("11:45"));
+        cbEndTime.getItems().add(LocalTime.parse("12:00"));
+        cbEndTime.getItems().add(LocalTime.parse("12:15"));
+        cbEndTime.getItems().add(LocalTime.parse("12:30"));
+        cbEndTime.getItems().add(LocalTime.parse("12:45"));
+        cbEndTime.getItems().add(LocalTime.parse("13:00"));
+        cbEndTime.getItems().add(LocalTime.parse("13:15"));
+        cbEndTime.getItems().add(LocalTime.parse("13:30"));
+        cbEndTime.getItems().add(LocalTime.parse("13:45"));
+        cbEndTime.getItems().add(LocalTime.parse("14:00"));
+        cbEndTime.getItems().add(LocalTime.parse("14:15"));
+        cbEndTime.getItems().add(LocalTime.parse("14:30"));
+        cbEndTime.getItems().add(LocalTime.parse("14:45"));
+        cbEndTime.getItems().add(LocalTime.parse("15:00"));
+        cbEndTime.getItems().add(LocalTime.parse("15:15"));
+        cbEndTime.getItems().add(LocalTime.parse("15:30"));
+        cbEndTime.getItems().add(LocalTime.parse("15:45"));
+        cbEndTime.getItems().add(LocalTime.parse("16:00"));
+        cbEndTime.getItems().add(LocalTime.parse("16:15"));
+        cbEndTime.getItems().add(LocalTime.parse("16:30"));
+        cbEndTime.getItems().add(LocalTime.parse("16:45"));
+        cbEndTime.getItems().add(LocalTime.parse("17:00"));
+        cbEndTime.getItems().add(LocalTime.parse("17:15"));
+        cbEndTime.getItems().add(LocalTime.parse("17:30"));
+        cbEndTime.getItems().add(LocalTime.parse("17:45"));
+        cbEndTime.getItems().add(LocalTime.parse("18:00"));
+        cbEndTime.getItems().add(LocalTime.parse("18:15"));
+        cbEndTime.getItems().add(LocalTime.parse("18:30"));
+        cbEndTime.getItems().add(LocalTime.parse("18:45"));
+        cbEndTime.getItems().add(LocalTime.parse("19:00"));
+        cbEndTime.getItems().add(LocalTime.parse("19:15"));
+        cbEndTime.getItems().add(LocalTime.parse("19:30"));
+        cbEndTime.getItems().add(LocalTime.parse("19:45"));
+        cbEndTime.getItems().add(LocalTime.parse("20:00"));
+        cbEndTime.getItems().add(LocalTime.parse("20:15"));
+        cbEndTime.getItems().add(LocalTime.parse("20:30"));
+        cbEndTime.getItems().add(LocalTime.parse("20:45"));
+        cbEndTime.getItems().add(LocalTime.parse("21:00"));
+        cbEndTime.getItems().add(LocalTime.parse("21:15"));
+        cbEndTime.getItems().add(LocalTime.parse("21:30"));
+        cbEndTime.getItems().add(LocalTime.parse("21:45"));
+        cbEndTime.getItems().add(LocalTime.parse("22:00"));
+        cbEndTime.getItems().add(LocalTime.parse("22:15"));
+        cbEndTime.getItems().add(LocalTime.parse("22:30"));
+        cbEndTime.getItems().add(LocalTime.parse("22:45"));
+        cbEndTime.getItems().add(LocalTime.parse("23:00"));
+        cbEndTime.getItems().add(LocalTime.parse("23:15"));
+        cbEndTime.getItems().add(LocalTime.parse("23:30"));
+        cbEndTime.getItems().add(LocalTime.parse("23:45"));
+
+    }
+
 
     @FXML
     public void goToMain(ActionEvent event) throws IOException {
@@ -303,6 +553,202 @@ public class ModAppointmentController implements Initializable {
         tfEnd.setDisable(true);
         tfCustomerID.setDisable(true);
         tfUserID.setDisable(true);
+
+        //cbStartTime.getItems().add(LocalTime.parse("1:00"));
+        //cbStartTime.setDisable(true);
+       /* cbStartTime.getItems().add(LocalTime.parse("00:00"));
+        cbStartTime.getItems().add(LocalTime.parse("00:15"));
+        cbStartTime.getItems().add(LocalTime.parse("00:30"));
+        cbStartTime.getItems().add(LocalTime.parse("00:45"));
+        cbStartTime.getItems().add(LocalTime.parse("01:00"));
+        cbStartTime.getItems().add(LocalTime.parse("01:15"));
+        cbStartTime.getItems().add(LocalTime.parse("01:30"));
+        cbStartTime.getItems().add(LocalTime.parse("01:45"));
+        cbStartTime.getItems().add(LocalTime.parse("02:00"));
+        cbStartTime.getItems().add(LocalTime.parse("02:15"));
+        cbStartTime.getItems().add(LocalTime.parse("02:30"));
+        cbStartTime.getItems().add(LocalTime.parse("02:45"));
+        cbStartTime.getItems().add(LocalTime.parse("03:00"));
+        cbStartTime.getItems().add(LocalTime.parse("03:15"));
+        cbStartTime.getItems().add(LocalTime.parse("03:30"));
+        cbStartTime.getItems().add(LocalTime.parse("03:45"));
+        cbStartTime.getItems().add(LocalTime.parse("04:00"));
+        cbStartTime.getItems().add(LocalTime.parse("04:15"));
+        cbStartTime.getItems().add(LocalTime.parse("04:30"));
+        cbStartTime.getItems().add(LocalTime.parse("04:45"));
+        cbStartTime.getItems().add(LocalTime.parse("05:00"));
+        cbStartTime.getItems().add(LocalTime.parse("05:15"));
+        cbStartTime.getItems().add(LocalTime.parse("05:30"));
+        cbStartTime.getItems().add(LocalTime.parse("05:45"));
+        cbStartTime.getItems().add(LocalTime.parse("06:00"));
+        cbStartTime.getItems().add(LocalTime.parse("06:15"));
+        cbStartTime.getItems().add(LocalTime.parse("06:30"));
+        cbStartTime.getItems().add(LocalTime.parse("06:45"));
+        cbStartTime.getItems().add(LocalTime.parse("07:00"));
+        cbStartTime.getItems().add(LocalTime.parse("07:15"));
+        cbStartTime.getItems().add(LocalTime.parse("07:30"));
+        cbStartTime.getItems().add(LocalTime.parse("07:45"));
+        cbStartTime.getItems().add(LocalTime.parse("08:00"));
+        cbStartTime.getItems().add(LocalTime.parse("08:15"));
+        cbStartTime.getItems().add(LocalTime.parse("08:30"));
+        cbStartTime.getItems().add(LocalTime.parse("08:45"));
+        cbStartTime.getItems().add(LocalTime.parse("09:00"));
+        cbStartTime.getItems().add(LocalTime.parse("09:15"));
+        cbStartTime.getItems().add(LocalTime.parse("09:30"));
+        cbStartTime.getItems().add(LocalTime.parse("09:45"));
+        cbStartTime.getItems().add(LocalTime.parse("10:00"));
+        cbStartTime.getItems().add(LocalTime.parse("10:15"));
+        cbStartTime.getItems().add(LocalTime.parse("10:30"));
+        cbStartTime.getItems().add(LocalTime.parse("10:45"));
+        cbStartTime.getItems().add(LocalTime.parse("11:00"));
+        cbStartTime.getItems().add(LocalTime.parse("11:15"));
+        cbStartTime.getItems().add(LocalTime.parse("11:30"));
+        cbStartTime.getItems().add(LocalTime.parse("11:45"));
+        cbStartTime.getItems().add(LocalTime.parse("12:00"));
+        cbStartTime.getItems().add(LocalTime.parse("12:15"));
+        cbStartTime.getItems().add(LocalTime.parse("12:30"));
+        cbStartTime.getItems().add(LocalTime.parse("12:45"));
+        cbStartTime.getItems().add(LocalTime.parse("13:00"));
+        cbStartTime.getItems().add(LocalTime.parse("13:15"));
+        cbStartTime.getItems().add(LocalTime.parse("13:30"));
+        cbStartTime.getItems().add(LocalTime.parse("13:45"));
+        cbStartTime.getItems().add(LocalTime.parse("14:00"));
+        cbStartTime.getItems().add(LocalTime.parse("14:15"));
+        cbStartTime.getItems().add(LocalTime.parse("14:30"));
+        cbStartTime.getItems().add(LocalTime.parse("14:45"));
+        cbStartTime.getItems().add(LocalTime.parse("15:00"));
+        cbStartTime.getItems().add(LocalTime.parse("15:15"));
+        cbStartTime.getItems().add(LocalTime.parse("15:30"));
+        cbStartTime.getItems().add(LocalTime.parse("15:45"));
+        cbStartTime.getItems().add(LocalTime.parse("16:00"));
+        cbStartTime.getItems().add(LocalTime.parse("16:15"));
+        cbStartTime.getItems().add(LocalTime.parse("16:30"));
+        cbStartTime.getItems().add(LocalTime.parse("16:45"));
+        cbStartTime.getItems().add(LocalTime.parse("17:00"));
+        cbStartTime.getItems().add(LocalTime.parse("17:15"));
+        cbStartTime.getItems().add(LocalTime.parse("17:30"));
+        cbStartTime.getItems().add(LocalTime.parse("17:45"));
+        cbStartTime.getItems().add(LocalTime.parse("18:00"));
+        cbStartTime.getItems().add(LocalTime.parse("18:15"));
+        cbStartTime.getItems().add(LocalTime.parse("18:30"));
+        cbStartTime.getItems().add(LocalTime.parse("18:45"));
+        cbStartTime.getItems().add(LocalTime.parse("19:00"));
+        cbStartTime.getItems().add(LocalTime.parse("19:15"));
+        cbStartTime.getItems().add(LocalTime.parse("19:30"));
+        cbStartTime.getItems().add(LocalTime.parse("19:45"));
+        cbStartTime.getItems().add(LocalTime.parse("20:00"));
+        cbStartTime.getItems().add(LocalTime.parse("20:15"));
+        cbStartTime.getItems().add(LocalTime.parse("20:30"));
+        cbStartTime.getItems().add(LocalTime.parse("20:45"));
+        cbStartTime.getItems().add(LocalTime.parse("21:00"));
+        cbStartTime.getItems().add(LocalTime.parse("21:15"));
+        cbStartTime.getItems().add(LocalTime.parse("21:30"));
+        cbStartTime.getItems().add(LocalTime.parse("21:45"));
+        cbStartTime.getItems().add(LocalTime.parse("22:00"));
+        cbStartTime.getItems().add(LocalTime.parse("22:15"));
+        cbStartTime.getItems().add(LocalTime.parse("22:30"));
+        cbStartTime.getItems().add(LocalTime.parse("22:45"));
+        cbStartTime.getItems().add(LocalTime.parse("23:00"));
+        cbStartTime.getItems().add(LocalTime.parse("23:15"));
+        cbStartTime.getItems().add(LocalTime.parse("23:30"));
+        cbStartTime.getItems().add(LocalTime.parse("23:45"));
+
+        cbEndTime.getItems().add(LocalTime.parse("00:00"));
+        cbEndTime.getItems().add(LocalTime.parse("00:15"));
+        cbEndTime.getItems().add(LocalTime.parse("00:30"));
+        cbEndTime.getItems().add(LocalTime.parse("00:45"));
+        cbEndTime.getItems().add(LocalTime.parse("01:00"));
+        cbEndTime.getItems().add(LocalTime.parse("01:15"));
+        cbEndTime.getItems().add(LocalTime.parse("01:30"));
+        cbEndTime.getItems().add(LocalTime.parse("01:45"));
+        cbEndTime.getItems().add(LocalTime.parse("02:00"));
+        cbEndTime.getItems().add(LocalTime.parse("02:15"));
+        cbEndTime.getItems().add(LocalTime.parse("02:30"));
+        cbEndTime.getItems().add(LocalTime.parse("02:45"));
+        cbEndTime.getItems().add(LocalTime.parse("03:00"));
+        cbEndTime.getItems().add(LocalTime.parse("03:15"));
+        cbEndTime.getItems().add(LocalTime.parse("03:30"));
+        cbEndTime.getItems().add(LocalTime.parse("03:45"));
+        cbEndTime.getItems().add(LocalTime.parse("04:00"));
+        cbEndTime.getItems().add(LocalTime.parse("04:15"));
+        cbEndTime.getItems().add(LocalTime.parse("04:30"));
+        cbEndTime.getItems().add(LocalTime.parse("04:45"));
+        cbEndTime.getItems().add(LocalTime.parse("05:00"));
+        cbEndTime.getItems().add(LocalTime.parse("05:15"));
+        cbEndTime.getItems().add(LocalTime.parse("05:30"));
+        cbEndTime.getItems().add(LocalTime.parse("05:45"));
+        cbEndTime.getItems().add(LocalTime.parse("06:00"));
+        cbEndTime.getItems().add(LocalTime.parse("06:15"));
+        cbEndTime.getItems().add(LocalTime.parse("06:30"));
+        cbEndTime.getItems().add(LocalTime.parse("06:45"));
+        cbEndTime.getItems().add(LocalTime.parse("07:00"));
+        cbEndTime.getItems().add(LocalTime.parse("07:15"));
+        cbEndTime.getItems().add(LocalTime.parse("07:30"));
+        cbEndTime.getItems().add(LocalTime.parse("07:45"));
+        cbEndTime.getItems().add(LocalTime.parse("08:00"));
+        cbEndTime.getItems().add(LocalTime.parse("08:15"));
+        cbEndTime.getItems().add(LocalTime.parse("08:30"));
+        cbEndTime.getItems().add(LocalTime.parse("08:45"));
+        cbEndTime.getItems().add(LocalTime.parse("09:00"));
+        cbEndTime.getItems().add(LocalTime.parse("09:15"));
+        cbEndTime.getItems().add(LocalTime.parse("09:30"));
+        cbEndTime.getItems().add(LocalTime.parse("09:45"));
+        cbEndTime.getItems().add(LocalTime.parse("10:00"));
+        cbEndTime.getItems().add(LocalTime.parse("10:15"));
+        cbEndTime.getItems().add(LocalTime.parse("10:30"));
+        cbEndTime.getItems().add(LocalTime.parse("10:45"));
+        cbEndTime.getItems().add(LocalTime.parse("11:00"));
+        cbEndTime.getItems().add(LocalTime.parse("11:15"));
+        cbEndTime.getItems().add(LocalTime.parse("11:30"));
+        cbEndTime.getItems().add(LocalTime.parse("11:45"));
+        cbEndTime.getItems().add(LocalTime.parse("12:00"));
+        cbEndTime.getItems().add(LocalTime.parse("12:15"));
+        cbEndTime.getItems().add(LocalTime.parse("12:30"));
+        cbEndTime.getItems().add(LocalTime.parse("12:45"));
+        cbEndTime.getItems().add(LocalTime.parse("13:00"));
+        cbEndTime.getItems().add(LocalTime.parse("13:15"));
+        cbEndTime.getItems().add(LocalTime.parse("13:30"));
+        cbEndTime.getItems().add(LocalTime.parse("13:45"));
+        cbEndTime.getItems().add(LocalTime.parse("14:00"));
+        cbEndTime.getItems().add(LocalTime.parse("14:15"));
+        cbEndTime.getItems().add(LocalTime.parse("14:30"));
+        cbEndTime.getItems().add(LocalTime.parse("14:45"));
+        cbEndTime.getItems().add(LocalTime.parse("15:00"));
+        cbEndTime.getItems().add(LocalTime.parse("15:15"));
+        cbEndTime.getItems().add(LocalTime.parse("15:30"));
+        cbEndTime.getItems().add(LocalTime.parse("15:45"));
+        cbEndTime.getItems().add(LocalTime.parse("16:00"));
+        cbEndTime.getItems().add(LocalTime.parse("16:15"));
+        cbEndTime.getItems().add(LocalTime.parse("16:30"));
+        cbEndTime.getItems().add(LocalTime.parse("16:45"));
+        cbEndTime.getItems().add(LocalTime.parse("17:00"));
+        cbEndTime.getItems().add(LocalTime.parse("17:15"));
+        cbEndTime.getItems().add(LocalTime.parse("17:30"));
+        cbEndTime.getItems().add(LocalTime.parse("17:45"));
+        cbEndTime.getItems().add(LocalTime.parse("18:00"));
+        cbEndTime.getItems().add(LocalTime.parse("18:15"));
+        cbEndTime.getItems().add(LocalTime.parse("18:30"));
+        cbEndTime.getItems().add(LocalTime.parse("18:45"));
+        cbEndTime.getItems().add(LocalTime.parse("19:00"));
+        cbEndTime.getItems().add(LocalTime.parse("19:15"));
+        cbEndTime.getItems().add(LocalTime.parse("19:30"));
+        cbEndTime.getItems().add(LocalTime.parse("19:45"));
+        cbEndTime.getItems().add(LocalTime.parse("20:00"));
+        cbEndTime.getItems().add(LocalTime.parse("20:15"));
+        cbEndTime.getItems().add(LocalTime.parse("20:30"));
+        cbEndTime.getItems().add(LocalTime.parse("20:45"));
+        cbEndTime.getItems().add(LocalTime.parse("21:00"));
+        cbEndTime.getItems().add(LocalTime.parse("21:15"));
+        cbEndTime.getItems().add(LocalTime.parse("21:30"));
+        cbEndTime.getItems().add(LocalTime.parse("21:45"));
+        cbEndTime.getItems().add(LocalTime.parse("22:00"));
+        cbEndTime.getItems().add(LocalTime.parse("22:15"));
+        cbEndTime.getItems().add(LocalTime.parse("22:30"));
+        cbEndTime.getItems().add(LocalTime.parse("22:45"));
+        cbEndTime.getItems().add(LocalTime.parse("23:00"));
+        cbEndTime.getItems().add(LocalTime.parse("23:15"));
+        cbEndTime.getItems().add(LocalTime.parse("23:30"));
+        cbEndTime.getItems().add(LocalTime.parse("23:45"));*/
 
     }
 

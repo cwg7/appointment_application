@@ -10,7 +10,7 @@ public class Alerts {
         alert.initModality(Modality.NONE);
         alert.setTitle("Error");
         alert.setHeaderText("Alert ");
-        alert.setContentText("Please fill out all textfields to add a new customer");
+        alert.setContentText("Please fill out all fields to add a new customer");
         alert.showAndWait();
     }
 
@@ -49,6 +49,40 @@ public class Alerts {
         alert.setContentText("Please be sure to select an appointment to delete before pressing the delete button");
         alert.showAndWait();
     }
+
+    public static void selectHandler(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to select a customer before pressing the select button");
+        alert.showAndWait();
+
+    }
+
+    public static void invalidFieldHandler(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to fill out all information related to creating a new appointment. This includes making selections for all comboboxes.");
+        alert.showAndWait();
+
+
+    }
+
+    public static void invalidLoginInfo(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Invalid login credentials. Please enter a valid username and password.");
+        alert.showAndWait();
+
+
+    }
+
+
 
     public static void deleteSuccessful(){
 

@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.EventObject;
 import java.util.ResourceBundle;
 import sample.Contacts;
 
@@ -229,76 +230,44 @@ public class AddAppointmentController implements Initializable {
     }
     @FXML
     public void selectCustomerButtonClick(ActionEvent event) throws IOException {
-        Customer selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
-        int selectedCustomerID = selectedCustomer.getId();
-        String selectedCustomerName = selectedCustomer.getName();
-        tfCustomerID.setText(String.valueOf(selectedCustomerID));
-        tfCustomerName.setText(selectedCustomerName);
-        customerTable.setDisable(true);
+        if (customerTable.getSelectionModel().getSelectedItem() == null){
+            Alerts.selectHandler();
+        }
+        else {
+            addAppointmentButton.setDisable(false);
+            Customer selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+            int selectedCustomerID = selectedCustomer.getId();
+            String selectedCustomerName = selectedCustomer.getName();
+            tfCustomerID.setText(String.valueOf(selectedCustomerID));
+            tfCustomerName.setText(selectedCustomerName);
+            customerTable.setDisable(true);
+        }
 
     }
 
 
 
-   /* public void getInfo(ActionEvent event) throws IOException {
 
-        LocalDate ld = datePicker.getValue();
-        LocalTime startTime = cbStartTime.getValue();
-        LocalTime endTime = cbEndTime.getValue();
-
-        LocalDateTime startDateAndTime = LocalDateTime.of(ld, startTime);
-        LocalDateTime endDateAndTime = LocalDateTime.of(ld, endTime);
-
-    }*/
-
-       /* selectedDate = datePicker.getValue();
-        startTimeObject = cbStartTime.getValue();
-        endTimeObject = cbEndTime.getValue();
-        LocalDateTime startTime = LocalDateTime.from(selectedDate, startTimeObject);*/
-        //startDateAndTimeObject = LocalDateTime.from(selectedDate, startTimeObject);
-
-
-     /*   startDateAndTime = LocalDateTime.from(cbStartTime.getValue());
-        endDateAndTime = LocalDateTime.from(cbEndTime.getValue());*/
-
-
-
-    /*LocalDate datePart = LocalDate.parse("2013-01-02");
-    LocalTime timePart = LocalTime.parse("04:05:06");
-    LocalDateTime dt = LocalDateTime.of(datePart, timePart);
-*/
-
-
-    // This method is just to test out time data, trying to combine localDate and localTime
-    // maybe I need to convert localdatetime to localTime first (for start time)
-    // then combine localDate + localTime ??
-/*    public void testButton(ActionEvent event) throws IOException {
-        selectedDate = datePicker.getValue();
-
-        //startDateAndTime = LocalDateTime.of(selectedDate, LocalDateTime.from(startDateAndTime));
-
-        taTestArea.setText("Date Selected: "+ selectedDate + "\n"
-        + "Start time: " + cbStartTime.getValue() + "\n"
-        + "End Time: " + cbEndTime.getValue() + "\n"
-        + "Start Date and Time: " + startDateAndTime);
-
-
-
-    }*/
-
-
-
-/*
-    public void getInfo() {
-        LocalDate ld = datePicker.getValue();
-        LocalTime startTime = cbStartTime.getValue();
-        LocalTime endTime = cbEndTime.getValue();
-
-        LocalDateTime startDateAndTime = LocalDateTime.of(ld, startTime);
-        LocalDateTime endDateAndTime = LocalDateTime.of(ld, endTime);
+    public void validateFields(){
+        if (tfTitle.getText() == null || tfDescription.getText() == null || tfLocation.getText() == null
+                || tfType.getText() == null || datePicker.getValue() == null || cbStartTime.getValue() == null
+                || cbEndTime.getValue() == null || userID_box.getValue() == null || contactName_box.getValue() == null) {
+  //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
+  //
+            Alerts.invalidFieldHandler();
+        }
+        else{
+            tfTitle.clear();
+            tfDescription.clear();
+            tfLocation.clear();
+            tfType.clear();
+            datePicker.setValue(null);
+            cbStartTime.setValue(null);
+            cbEndTime.setValue(null);
+            userID_box.setValue(null);
+            contactName_box.setValue(null);
+        }
     }
-*/
-
 
 
     public void preparedInsert(){
@@ -355,6 +324,8 @@ public class AddAppointmentController implements Initializable {
 
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
         //getInfo();
+        //validateFields();
+        //^validation check is not working
         preparedInsert();
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -380,6 +351,7 @@ public class AddAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         //tfStart.se
+        addAppointmentButton.setDisable(true);
         DBQuery.userIDList.clear();
         DBQuery.getContactsList().clear();
         DBQuery.contactsNameList.clear();

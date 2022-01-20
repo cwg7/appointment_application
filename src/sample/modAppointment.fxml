@@ -46,8 +46,8 @@
       <TextField fx:id="tfContactID" layoutX="81.0" layoutY="598.0" />
       <TextField fx:id="tfType" layoutX="81.0" layoutY="634.0" />
       <Button fx:id="mainMenuButton" layoutX="22.0" layoutY="761.0" mnemonicParsing="false" onAction="#goToMain" text="Back to Main Menu" />
-      <Label fx:id="lblStart" layoutX="329.0" layoutY="533.0" text="Start Time" />
-      <Label fx:id="lblEnd" layoutX="330.0" layoutY="566.0" text="End Time" />
+      <Label fx:id="lblStart" layoutX="304.0" layoutY="533.0" text="Old Start Time" />
+      <Label fx:id="lblEnd" layoutX="306.0" layoutY="566.0" text="Old End Time" />
       <TextField fx:id="tfStart" layoutX="400.0" layoutY="529.0" />
       <TextField fx:id="tfEnd" layoutX="400.0" layoutY="562.0" />
       <TextField fx:id="tfUserID" layoutX="401.0" layoutY="634.0" />
@@ -59,7 +59,10 @@
       <ScrollBar fx:id="scrollBar" layoutX="879.0" layoutY="14.0" orientation="VERTICAL" prefHeight="674.0" prefWidth="14.0" />
       <DatePicker fx:id="datePicker" layoutX="389.0" layoutY="485.0" />
       <Label fx:id="lblDate" layoutX="342.0" layoutY="489.0" text="Date" />
-      <ComboBox fx:id="cbStartTime" layoutX="631.0" layoutY="529.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbEndTime" layoutX="631.0" layoutY="571.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbStartTime" layoutX="678.0" layoutY="529.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbEndTime" layoutX="678.0" layoutY="571.0" prefWidth="150.0" />
+      <Label text="Label" />
+      <Label fx:id="lblNewStartTime" layoutX="563.0" layoutY="533.0" text="New Start Time" />
+      <Label fx:id="lblNewEndTime" layoutX="565.0" layoutY="575.0" text="New End Time" />
    </children>
 </AnchorPane>

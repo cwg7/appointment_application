@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sample.Countries;
+import sample.DBQuery;
 import org.w3c.dom.Text;
 
 import static java.sql.Timestamp.valueOf;
@@ -78,6 +80,11 @@ public class ModCustomerController implements Initializable {
     private Stage stage;
     private Scene scene;
 
+    @FXML
+    private TextField tfCountry2;
+
+    public ObservableList<String> allCountries = DBQuery.getAllCountries();
+
 
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -103,7 +110,7 @@ public class ModCustomerController implements Initializable {
     }
 
     @FXML
-    public void handleModClick(ActionEvent event) throws IOException {
+    public void handleModClick(ActionEvent event) throws IOException, SQLException {
         //String countrySelection = country_box.getValue().toString();
         //String divisionSelection = division2_box.getValue().toString();
         Customer selectedCustomer;
@@ -116,7 +123,13 @@ public class ModCustomerController implements Initializable {
         else {
         int selectedCustomerID = selectedCustomer.getId();
         int divisionID = selectedCustomer.getDivision_id();
-        //String countryName = selectedCustomer.getCountryName();
+
+            //String countryName = selectedCustomer.getCountryName();
+        Countries countryName;
+
+
+
+            //String countryName = selectedCustomer.getCountryName();
 
 
 
@@ -136,9 +149,52 @@ public class ModCustomerController implements Initializable {
             tfPhone.setText(selectedCustomer.getPhoneNumber());
             tfDivision.setDisable(true);
             tfDivision.setText(String.valueOf(divisionID));
+            //tfCountry2.setText(countryName);
+
             country_box.setDisable(false);
+            //country_box.setValue(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
+           // tfCountry2.setText(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
+
+           // country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
+            
+
+            //country_box.setItems(DBQuery.getDivisionName(divisionID));
+
+            //country_box.setItems(countryName);
+            //country_box.setValue(countryName);
+            //country_box.setValue(DBQuery.getDivisionName());
 
             division2_box.setDisable(false);
+            division2_box.setValue(DBQuery.getDivisionName(divisionID).getDivision_name());
+
+            int countryID = DBQuery.getCountryIdByDivisionId(divisionID);
+
+            //tfCountry2.setText(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
+
+            //country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
+            country_box.setValue(DBQuery.getCountryNameByCountryID(countryID));
+
+            //tfCountry2.setText("YO");
+
+           /* if (tfCountry2.getText() == "1") {
+                country_box.setValue("U.S");
+            }
+            if (tfCountry2.getText() == "2") {
+                country_box.setValue("UK");
+            }
+                if (tfCountry2.getText() == "3") {
+                    country_box.setValue("Canada");
+                }
+            */
+
+
+
+
+            //country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
+
+            //division2_box.setValue(String.valueOf(divisionID));
+            //division2_box.setValue(String.valueOf(divisionID));
+
             //country_box.setItems(selectedCustomer.getCountryName());
             //country_box.setItems(divisionID.get);
 
@@ -156,6 +212,13 @@ public class ModCustomerController implements Initializable {
     @FXML
     public void handleDelete(ActionEvent event) throws IOException {
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
+        int customerID = selectedCustomer.getId();
+
+
+
+
+
+
         if (selectedCustomer == null) {
             Alerts.delHandler();
 
@@ -185,6 +248,7 @@ public class ModCustomerController implements Initializable {
 
         @FXML
     public void saveButtonClick(ActionEvent event) throws IOException {
+
         preparedUpdate();
         modCustomersTable.setDisable(false);
         showCustomers();
@@ -299,6 +363,7 @@ public class ModCustomerController implements Initializable {
         //String tempVal = division2_box.getSelectionModel().getSelectedItem();
 
         //Thread.sleep(1000);
+
         String tempVal = country_box.getValue();
 
         int divisionID = 0;
@@ -306,26 +371,34 @@ public class ModCustomerController implements Initializable {
 
         for (Division division : divisionsOL) {
 
-            if (tempVal.equals(division.getDivision_name())) {
+            if (tempVal != null && tempVal.equals(division.getDivision_name())) {
                 tempVal = division.getDivision_name();
                 divisionID = division.getId();
                 tfDivision.setText(String.valueOf(divisionID));
             }
         }
+        if (tempVal == null) {
+            //Alerts.checkFields();
 
-        switch(tempVal){
-            case "U.S": division2_box.setItems(DBQuery.getUsDivisionList());
+        }
+        else{
+        switch(tempVal) {
+            case "U.S":
+                division2_box.setItems(DBQuery.getUsDivisionList());
 
                 break;
-            case "UK": division2_box.setItems(DBQuery.getUKDivisionList());
+            case "UK":
+                division2_box.setItems(DBQuery.getUKDivisionList());
                 break;
-            case "Canada": division2_box.setItems(DBQuery.getCanadaDivisionList());
+            case "Canada":
+                division2_box.setItems(DBQuery.getCanadaDivisionList());
                 break;
 
-            default: division2_box.setItems(DBQuery.getAllDivisionList());
+            default:
+                division2_box.setItems(DBQuery.getAllDivisionList());
 
                 String divisionName = division2_box.getValue();
-
+        }
 
 
 
@@ -394,6 +467,7 @@ public class ModCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showCustomers();
+        //saveButton.setDisable(true);
         tfName.setDisable(true);
         tfAddress.setDisable(true);
         tfPostal.setDisable(true);

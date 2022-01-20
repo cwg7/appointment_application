@@ -1,5 +1,6 @@
 package sample;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sample.AddAppointmentController;
@@ -234,31 +235,115 @@ public class DBQuery {
         return divisionIDList;
     }
 
- /*   public static ObservableList<Division> getDivisionName() {
-        ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
+    public static ObservableList<String> userNames = FXCollections.observableArrayList();
+    public static ObservableList<String> getUserNames() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?";
+        String query = "SELECT User_Name FROM users";
         Statement st;
         ResultSet rs;
-
-        // rs.getInt("Customer_ID"),
-
         try {
             st = conn.createStatement();
             rs = st.executeQuery(query);
-            Division division;
+
             while (rs.next()) {
-                division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
+                userNames.add(rs.getString("User_Name"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return userNames;
+    }
+
+    public static ObservableList<String> allCountries = FXCollections.observableArrayList();
+    public static ObservableList<String> getAllCountries() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Country FROM countries";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                allCountries.add(rs.getString("Country"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return allCountries;
+    }
+
+/*    public static Countries getCountryName(int id) {
+        ObservableList<Countries> newCountryName = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Countries countryName = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+
+            //rs = st.executeQuery(query);
+            //Division division;
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Countries = new Countries(rs.getInt("Division_ID"), rs.getString("Division"),
                         rs.getInt("Country_ID"));
-                newDivisionIDList.add(division);
+                newCountryName.add(countryName);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
-        return newDivisionIDList;
+        return countryName;
+        // was newDivisionName
     }*/
+
+
+ /*   public static Division getCountryName(int id){
+        ObservableList<Division> countryName = FXCollections.observableArrayList();
+
+    }*/
+
+    public static Division getDivisionName(int id) {
+        ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Division division = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+
+            //rs = st.executeQuery(query);
+            //Division division;
+            rs = st.executeQuery();
+            while (rs.next()) {
+                division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
+                        rs.getInt("Country_ID"));
+                newDivisionName.add(division);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return division;
+        // was newDivisionName
+    }
+
+
 
 /*
     public static ObservableList<String> countryListOL = FXCollections.observableArrayList();
@@ -284,6 +369,53 @@ public class DBQuery {
     }
 */
 
+    public static ObservableList<String> countryName = FXCollections.observableArrayList();
+
+/*    public static ObservableList<String> getCountryName(division_id) {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+        try {
+            st = conn.prepareStatement(query);
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                countryName.add(rs.getString("Division_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return countryName;
+    }*/
+    public static int getCountryIdByDivisionId(int id) {
+    try {
+        String query = "select Country_ID from first_level_divisions where Division_ID = ?";
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("Country_ID");
+    } catch (SQLException throwables) {
+        throwables.printStackTrace();
+        return -1;
+    }
+}
+
+    public static String getCountryNameByCountryID(int id) throws SQLException {
+        String query = "select Country from Countries where Country_ID = ?";
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("Country");
+
+    }
+
     public static ObservableList<String> getContactNames() {
         ObservableList<String> contactsNameList = FXCollections.observableArrayList();
 
@@ -304,6 +436,25 @@ public class DBQuery {
         return contactsNameList;
     }
 
+    public static ObservableList<String> getUserNameLogin() {
+        ObservableList<String> userNames = FXCollections.observableArrayList();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT User_Name FROM users";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                userNames.add(rs.getString("User_Name"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return userNames;
+    }
 
 
 

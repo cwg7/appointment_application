@@ -19,7 +19,9 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //User guest = new User(1, "guest", "enter");
+
         launch(args);
+
 
         //System.out.println(DBQuery.getUsDivisionList());
     }

@@ -2,15 +2,17 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="941.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
-      <Button fx:id="addCustomerBtn" layoutX="124.0" layoutY="51.0" mnemonicParsing="false" onAction="#addCustomerButtonClick" text="Customer Data" />
-      <TableView fx:id="apptTable" layoutX="38.0" layoutY="82.0" prefHeight="490.0" prefWidth="873.0">
+      <Button fx:id="addCustomerBtn" layoutX="51.0" layoutY="51.0" mnemonicParsing="false" onAction="#addCustomerButtonClick" text="Customer Data" />
+      <TableView fx:id="apptTable" layoutX="38.0" layoutY="82.0" prefHeight="469.0" prefWidth="872.0">
         <columns>
           <TableColumn fx:id="apptIDCol" prefWidth="75.0" text="Appt ID" />
           <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
@@ -29,7 +31,17 @@
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="addApptButton" layoutX="392.0" layoutY="51.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Add Appointment" />
-      <Button fx:id="modApptButton" layoutX="530.0" layoutY="51.0" mnemonicParsing="false" onAction="#modAppointmentButtonClick" text="Modify Appointment" />
+      <Button fx:id="addApptButton" layoutX="188.0" layoutY="51.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Add Appointment" />
+      <Button fx:id="modApptButton" layoutX="323.0" layoutY="51.0" mnemonicParsing="false" onAction="#modAppointmentButtonClick" text="Modify Appointment" />
+      <Button fx:id="goToPractice" layoutX="712.0" layoutY="21.0" mnemonicParsing="false" onAction="#goPractice" text="Go to Practice" />
+      <Button fx:id="morePractice" layoutX="785.0" layoutY="51.0" mnemonicParsing="false" onAction="#morePractice" text="More Practice" />
+      <RadioButton fx:id="monthRadioButton" layoutX="460.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewApptByMonth" text="View by Month">
+         <toggleGroup>
+            <ToggleGroup fx:id="apptViewToggle" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="weekRadioButton" layoutX="569.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewApptByWeek" text="View by Week" toggleGroup="$apptViewToggle" />
+      <RadioButton fx:id="viewAllRadioButton" layoutX="681.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewAllAppointments" text="View all" toggleGroup="$apptViewToggle" />
+      <Button fx:id="logoutButton" layoutX="25.0" layoutY="558.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
    </children>
 </AnchorPane>

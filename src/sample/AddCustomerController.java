@@ -124,7 +124,9 @@ import static sample.Division.*;
 
     public void verify() {
 
-        if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty()) {
+        if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty() || country_box.getItems().isEmpty()
+        || division2_box.getItems().isEmpty())
+        {
             Alerts.checkFields();
         }
 
@@ -138,12 +140,14 @@ import static sample.Division.*;
         // insertCustomer();
         //verify();
         // if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty()) {
-        if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty()) {
+        if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || country_box.getValue() == null || division2_box.getValue() == null) {
             Alerts.checkFields();
             tfName.clear();
             tfAddress.clear();
             tfPostalCode.clear();
             tfPhone.clear();
+
+
             //tfDivision.clear();
         } else {
             preparedInsert();
@@ -153,6 +157,8 @@ import static sample.Division.*;
             tfPostalCode.clear();
             tfPhone.clear();
             country_box.equals(null);
+
+
             //tfDivision.clear();
         }
 
@@ -189,6 +195,13 @@ import static sample.Division.*;
             for (Division division : divisionsOL)
 
             {
+               /* if (tempVal != null && tempVal.isEmpty()) {
+                    Alerts.checkFields();
+                }*/
+                 //if  (!tempVal.isEmpty())
+                if (tempVal == null) {
+                    Alerts.checkFields();
+                }
                 if (tempVal.equals(division.getDivision_name())) {
                     divisionID = division.getId();
                 }
@@ -200,6 +213,7 @@ import static sample.Division.*;
 
             pstatement.execute();
         } catch (SQLException throwables) {
+            //Alerts.checkFields();
             throwables.printStackTrace();
         }
     }
@@ -279,6 +293,7 @@ import static sample.Division.*;
 
         String tempVal = country_box.getValue();
 
+        if (tempVal != null)
         switch (tempVal) {
             case "U.S":
                 division2_box.setItems(DBQuery.getUsDivisionList());
@@ -339,7 +354,7 @@ import static sample.Division.*;
                 tfDivision.setText(String.valueOf(divisionID));
             }
         }
-
+        //if (tempVal != null)
         switch(tempVal){
             case "U.S": division2_box.setItems(DBQuery.getUsDivisionList());
 

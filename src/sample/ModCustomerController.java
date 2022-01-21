@@ -1,5 +1,7 @@
 package sample;
 
+import com.mysql.cj.protocol.Resultset;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -84,6 +86,60 @@ public class ModCustomerController implements Initializable {
     private TextField tfCountry2;
 
     public ObservableList<String> allCountries = DBQuery.getAllCountries();
+
+    /*public static Division getDivisionName(int id) {
+        ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Division division = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+
+            //rs = st.executeQuery(query);
+            //Division division;
+            rs = st.executeQuery();
+            while (rs.next()) {
+                division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
+                        rs.getInt("Country_ID"));
+                newDivisionName.add(division);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+    return division;
+        // was newDivisionName
+    }
+     */
+        
+
+
+   /* public static ObservableList<Appointment> getAppointmentsForCustomer(int id){
+        ObservableList<Appointment> apptListPerCustomer = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        PreparedStatement st;
+        Resultset rs;
+        Appointment appointments = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+
+            rs = st.executeQuery();
+            while (((ResultSet) rs).next()) {
+                appointments = new Appointment((((ResultSet) rs).getInt("Customer_ID")));
+                apptListPerCustomer.add(appointments);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return appointments;
+    }*/
 
 
     public static ObservableList<Customer> getCustomerList() {

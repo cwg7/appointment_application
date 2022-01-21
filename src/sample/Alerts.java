@@ -76,7 +76,8 @@ public class Alerts {
         alert.initModality(Modality.NONE);
         alert.setTitle("Error");
         alert.setHeaderText("Warning");
-        alert.setContentText("Invalid login credentials. Please enter a valid username and password.");
+        alert.setContentText("Invalid login credentials" + "\n\n" +
+                        "Please enter a valid username and password.");
         alert.showAndWait();
 
 

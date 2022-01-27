@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class DBConnection {
 
     private static final String databaseName = "october_appointments";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/" + databaseName;
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/" + databaseName +"?connectionTimeZone=SERVER";
     private static final String username = "root";
     private static final String password = "mountainspring7";
     static Connection conn;

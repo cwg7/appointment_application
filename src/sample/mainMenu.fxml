@@ -43,5 +43,6 @@
       <RadioButton fx:id="weekRadioButton" layoutX="569.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewApptByWeek" text="View by Week" toggleGroup="$apptViewToggle" />
       <RadioButton fx:id="viewAllRadioButton" layoutX="681.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewAllAppointments" text="View all" toggleGroup="$apptViewToggle" />
       <Button fx:id="logoutButton" layoutX="25.0" layoutY="558.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+      <Button fx:id="reportsButton" layoutX="837.0" layoutY="21.0" mnemonicParsing="false" onAction="#goToReports" text="Reports" />
    </children>
 </AnchorPane>

@@ -23,6 +23,7 @@ public class Main extends Application {
         launch(args);
 
 
+
         //System.out.println(DBQuery.getUsDivisionList());
     }
 }

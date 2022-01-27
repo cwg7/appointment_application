@@ -270,19 +270,20 @@ public class ModCustomerController implements Initializable {
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
         int customerID = selectedCustomer.getId();
 
+        if (DBQuery.getAppointmentsPerCustomer(customerID).isEmpty()) {
 
 
+            if (selectedCustomer == null) {
+                Alerts.delHandler();
 
-
-
-        if (selectedCustomer == null) {
-            Alerts.delHandler();
-
+            } else {
+                preparedDelete();
+                showCustomers();
+                Alerts.deleteSuccessful();
+            }
         }
         else {
-            preparedDelete();
-            showCustomers();
-            Alerts.deleteSuccessful();
+            Alerts.delHandler3();
         }
 
     }

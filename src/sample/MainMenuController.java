@@ -79,6 +79,8 @@ public class MainMenuController implements Initializable {
     private Button morePractice;
     @FXML
     private Button logoutButton;
+    @FXML
+    private Button reportsButton;
 
 
     @FXML
@@ -108,6 +110,7 @@ public class MainMenuController implements Initializable {
         //Month currentMonth = LocalDateTime.now().getMonth();
         //int monthInt = currentMonth.getValue();
         int currentMonth = LocalDateTime.now().getMonthValue();
+        int nextMonth = currentMonth + 1;
 
 
 
@@ -180,9 +183,9 @@ public class MainMenuController implements Initializable {
 
         //int currentWeekNumber2 = now.get(Calendar.WEEK_OF_YEAR);
 
-        System.out.println(currentDate);
-        System.out.println(currentWeekNumber);
-        System.out.println(currentYear);
+        //System.out.println(currentDate);
+        //System.out.println(currentWeekNumber);
+        //System.out.println(currentYear);
 
         //System.out.println(currentWeekNumber2);
     }
@@ -292,6 +295,15 @@ public class MainMenuController implements Initializable {
 
 
 
+    public void goToReports(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("reports.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        // stage.setResizable(true);
+        stage.show();
+
+    }
 
 
 

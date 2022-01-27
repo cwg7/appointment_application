@@ -101,6 +101,29 @@ public class DBQuery {
         }
         return userIDList;
     }
+    public static ObservableList<String> typesList = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getAppointmentTypesList() {
+        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
+        countryList.clear();
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT distinct type FROM appointments";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                typesList.add(rs.getString("Type"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return typesList;
+    }
+
 
     public static ObservableList<String> countryList = FXCollections.observableArrayList();
 
@@ -326,8 +349,7 @@ public class DBQuery {
             st = conn.prepareStatement(query);
             st.setInt(1, id);
 
-            //rs = st.executeQuery(query);
-            //Division division;
+
             rs = st.executeQuery();
             while (rs.next()) {
                 division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
@@ -342,6 +364,34 @@ public class DBQuery {
         return division;
         // was newDivisionName
     }
+
+    public static ObservableList<Appointment> getAppointmentsPerCustomer(int id) {
+        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Appointment appointment = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+           // Appointment appointment;
+            while (rs.next()) {
+                appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
+                        rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
+                appointmentsList.add(appointment);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return appointmentsList;
+    }
+
 
 
 

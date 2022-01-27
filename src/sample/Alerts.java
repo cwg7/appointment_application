@@ -50,6 +50,15 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void delHandler3(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Sorry, you cannot delete a customer who has appointments scheduled. You will need to delete this customer's appointments manually first before you are able to delete this customer.");
+        alert.showAndWait();
+    }
+
     public static void selectHandler(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initModality(Modality.NONE);
@@ -70,6 +79,8 @@ public class Alerts {
 
 
     }
+
+
 
     public static void invalidLoginInfo(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

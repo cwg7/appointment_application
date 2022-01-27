@@ -90,11 +90,17 @@ public class LoginForm implements Initializable {
         //boolean authenticated = true;
     }
 
+    // get all users && matching passwords
+
+
     public boolean authenticate(String username, String password, Boolean isSuccesful) {
         isSuccesful = false;
-        if (username.equalsIgnoreCase("Test") && password.equals("test")) {
+        if (username.equalsIgnoreCase("test") && password.equals("test")) {
             isSuccesful = true;
 
+        }
+        if (username.equalsIgnoreCase("admin") && password.equals("admin")){
+            isSuccesful = true;
         }
         return isSuccesful;
 
@@ -108,10 +114,10 @@ public class LoginForm implements Initializable {
 
 
 
-        System.out.println("Username: " + username);
-        System.out.println("Timestamp:" +timestamp);
+        //System.out.println("Username: " + username);
+        //System.out.println("Timestamp:" +timestamp);
         int hour = timestamp.getHour();
-        System.out.println("Translated: " + formatDateTime);
+        //System.out.println("Translated: " + formatDateTime);
 
 
 
@@ -131,7 +137,7 @@ public class LoginForm implements Initializable {
     */
 
 
-    public ObservableList getLoginActivity() {
+ /*   public ObservableList getLoginActivity() {
         ObservableList <String> loginData = FXCollections.observableArrayList();
         String username = tfUserName.getText();
         String password = tfPassword.getText();
@@ -143,7 +149,7 @@ public class LoginForm implements Initializable {
 
 
         return loginData;
-    }
+    }*/
 
     public String grabTimestamp(LocalDateTime timestamp) {
         ObservableList <LocalDateTime> loginTime = FXCollections.observableArrayList();
@@ -163,8 +169,6 @@ public class LoginForm implements Initializable {
 
         {
             String text = (String) grabLoginData(tfUserName.getText());
-
-            //out.println(getLoginActivity());
             out.print(grabTimestamp(LocalDateTime.now()));
             out.print(" Username:" + grabLoginData(" " + tfUserName.getText()));
 
@@ -175,20 +179,10 @@ public class LoginForm implements Initializable {
             else {
                 out.println(" " + "Login Attempt: Unsuccessful");
             }
-            //out.print(authenticate(tfUserName.getText(), tfPassword.getText(), true))
 
-            out.println("\n");
-            //out.println(grabTimestamp(LocalDateTime.now()));
 
-            //out.println(grabLoginData(tfUserName.getText()));
-
-            //out.println(text);
-
-            //more code
-            //out.println("more text");
-            //more code
         } catch (IOException e) {
-            //exception handling left as an exercise for the reader
+
         }
     }
 

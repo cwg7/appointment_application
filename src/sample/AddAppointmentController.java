@@ -289,9 +289,12 @@ public class AddAppointmentController implements Initializable {
             startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
             pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
 
+            //new variable
+
             endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
             pstatement.setTimestamp(6, Timestamp.valueOf(endDateAndTime));
 
+            //new variable
 
 
             pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));

@@ -1,10 +1,7 @@
 package sample;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import sample.AddAppointmentController;
-import sample.Contacts;
 
 import java.sql.*;
 
@@ -15,8 +12,10 @@ public class DBQuery {
 
     Connection conn = DBConnection.getConnection();
 
-    /** This method sets the Prepared Statement object
-     * @param connection Database Connection
+    /**
+     * This method sets the Prepared Statement object
+     *
+     * @param connection   Database Connection
      * @param sqlStatement SQL Statement string
      * @throws SQLException Catches SQLException and prints stacktrace.
      */
@@ -24,7 +23,9 @@ public class DBQuery {
         statement = connection.prepareStatement(sqlStatement);
     }
 
-    /** This method returns the Prepared Statement object
+    /**
+     * This method returns the Prepared Statement object
+     *
      * @return Prepared Statement
      */
     public static PreparedStatement getPreparedStatement() {
@@ -35,8 +36,9 @@ public class DBQuery {
         return contactsIDList;
     }
 
-   //ObservableList<String> contactsNameList = FXCollections.observableArrayList();
-   public static ObservableList<Integer> contactsIDList = FXCollections.observableArrayList();
+
+    //ObservableList<String> contactsNameList = FXCollections.observableArrayList();
+    public static ObservableList<Integer> contactsIDList = FXCollections.observableArrayList();
 
     public static ObservableList<Integer> getContactsList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
@@ -101,6 +103,7 @@ public class DBQuery {
         }
         return userIDList;
     }
+
     public static ObservableList<String> typesList = FXCollections.observableArrayList();
 
     public static ObservableList<String> getAppointmentTypesList() {
@@ -259,6 +262,7 @@ public class DBQuery {
     }
 
     public static ObservableList<String> userNames = FXCollections.observableArrayList();
+
     public static ObservableList<String> getUserNames() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -278,6 +282,37 @@ public class DBQuery {
         }
         return userNames;
     }
+
+    public static ObservableList<String> totNumCustomers = FXCollections.observableArrayList();
+/*
+
+    public static String getTotNumCustomers() {
+
+
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT count(*) FROM customers";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                rs.getString("Customer_Name");
+            }
+
+
+    } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return String.valueOf(totNumCustomers.size());
+}
+
+*/
+
+
+
+
+
 
     public static ObservableList<String> allCountries = FXCollections.observableArrayList();
     public static ObservableList<String> getAllCountries() {
@@ -300,41 +335,61 @@ public class DBQuery {
         return allCountries;
     }
 
-/*    public static Countries getCountryName(int id) {
-        ObservableList<Countries> newCountryName = FXCollections.observableArrayList();
+   /* public static Appointment getApptsForContact(int contactID) {
+        ObservableList<Appointment> apptsForContact = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+        String query = "SELECT * FROM appointments WHERE Contact_ID = ?";
         PreparedStatement st;
         ResultSet rs;
 
         // rs.getInt("Customer_ID"),
-        Countries countryName = null;
+        Appointment appointments = null;
         try {
             st = conn.prepareStatement(query);
-            st.setInt(1, id);
+            st.setInt(1, contactID);
 
-            //rs = st.executeQuery(query);
-            //Division division;
+
             rs = st.executeQuery();
             while (rs.next()) {
-                Countries = new Countries(rs.getInt("Division_ID"), rs.getString("Division"),
+                appointments = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
                         rs.getInt("Country_ID"));
-                newCountryName.add(countryName);
+                newDivisionName.add(division);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
-        return countryName;
-        // was newDivisionName
-    }*/
+*/
+
+   /*public static Appointment getAppointmentsForContact(String contactName) {
+       ObservableList<Contacts> appts = FXCollections.observableArrayList();
+       Connection conn = DBConnection.getConnection();
+       String query = "select * from appointments from  Contact_ID = ?";
+       PreparedStatement st;
+       ResultSet rs;
+
+       // rs.getInt("Customer_ID"),
+       Appointment appointments = null;
+       try {
+           st = conn.prepareStatement(query);
+           st.setString(1, contactName);
 
 
- /*   public static Division getCountryName(int id){
-        ObservableList<Division> countryName = FXCollections.observableArrayList();
+           rs = st.executeQuery();
+           while (rs.next()) {
+               appointments = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
+                       rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
+               appts.add(appointments);
+           }
 
-    }*/
+       } catch (Exception ex) {
+           ex.printStackTrace();
+
+       }
+       return appts;
+       // was newDivisionName
+   }*/
 
     public static Division getDivisionName(int id) {
         ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
@@ -379,6 +434,33 @@ public class DBQuery {
             st.setInt(1, id);
             rs = st.executeQuery();
            // Appointment appointment;
+            while (rs.next()) {
+                appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
+                        rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
+                appointmentsList.add(appointment);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return appointmentsList;
+    }
+
+    public static ObservableList<Appointment> getAppointmentsPerContact(int id) {
+        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM appointments WHERE Contact_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Appointment appointment = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            // Appointment appointment;
             while (rs.next()) {
                 appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
                         rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));

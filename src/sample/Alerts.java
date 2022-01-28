@@ -41,6 +41,16 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void reportsAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to select a month before clicking the 'show' button");
+        alert.showAndWait();
+
+    }
+
     public static void delHandler2(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initModality(Modality.NONE);

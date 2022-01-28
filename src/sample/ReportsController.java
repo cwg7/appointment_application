@@ -15,9 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -37,6 +34,27 @@ public class ReportsController implements Initializable {
     private Label lblForThe;
     @FXML
     private Label lblType;
+    @FXML
+    private Label lblMonth;
+    @FXML
+    private TextField tfApptType;
+    @FXML
+    private Label lblForMonth;
+    @FXML
+    private TextField tfMonth2;
+    @FXML
+    private Label lblContact;
+    @FXML
+    private TextField tfCustNum;
+    @FXML
+    private Label lblCustomers;
+    @FXML
+    private Label lblReport1;
+    @FXML
+    private Label lblReport2;
+    @FXML
+    private Label lblReport3;
+
 
     @FXML
     private TableView apptTable;
@@ -70,6 +88,11 @@ public class ReportsController implements Initializable {
     private Button showAllAppts;
 
     @FXML
+    private Button contactReportButton;
+    @FXML
+    private Button pressTotNumButton;
+
+    @FXML
     private TextField tfTest;
 
     @FXML
@@ -82,6 +105,9 @@ public class ReportsController implements Initializable {
 
     @FXML
     private ComboBox<String> typeComboBox;
+
+    @FXML
+    private ComboBox<String> contactsComboBox;
 
     @FXML
     private Label lblByMonth;
@@ -144,30 +170,17 @@ public class ReportsController implements Initializable {
     //private Month nextMonth = LocalDateTime
 
 
-/*    public String returnMonth(int monthValue) {
-        nextMonth = LocalDateTime.now().getMonthValue() + 1;
 
-
-        return nextMonth
-    }*/
-
- /*   public void determineMonth() throws IOException {
-        if (monthComboBox.getValue() == "January") {
-            tfTest.setText("Yo its jan");
-        }
-        if (monthComboBox.getValue() == "February") {
-            //apptTable.setItems(viewApptByMonth(););
-            //apptTable.setItems(viewApptByMonth());
-        }
-
-    }*/
-    public void determineMonth(int monthNum) throws IOException {
+ /*   public void determineMonth(int monthNum) throws IOException {
         if (monthComboBox.getValue() == "January") {
             monthNum = 1;
 
         }
-    }
+    }*/
 
+    public void getCustNum(ActionEvent event) throws IOException{
+        tfCustNum.setText(String.valueOf(MainMenuController.getAppointments().size()));
+    }
 
     public ObservableList showAppointments() {
         ObservableList<Appointment> list = MainMenuController.getAppointments();
@@ -185,31 +198,36 @@ public class ReportsController implements Initializable {
         //contactNameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         apptTable.setItems(list);
 
+
+
         return null;
     }
 
     public void pressShow(ActionEvent event) throws IOException {
         //showAppointments();
         //apptTable.setItems(showAppointments());
-        showAppointments();
 
-        //();
-        
-        viewApptByMonth2();
-        tfNumAppts.setText(String.valueOf(apptTable.getItems().size()));
+        if (monthComboBox.getSelectionModel().getSelectedItem() == null) {
+            Alerts.reportsAlert();
 
-      /*  Month january = Month.JANUARY;
-        int monthVal = january.getValue();
-        System.out.println(monthVal);
-*/
-        //viewApptByMonth2();
-        //apptTable.setItems(getMonthAndType());
+        }
+        else {
+            showAppointments();
+
+            //();
+
+            viewApptByMonth2();
+            tfApptType.setText(typeComboBox.getValue());
+            tfMonth2.setText(monthComboBox.getValue());
+            tfNumAppts.setText(String.valueOf(apptTable.getItems().size()));
+        }
 
     }
 
     public void showAllAppts(ActionEvent event) throws IOException {
         apptTable.setItems(MainMenuController.getAppointments());
-        tfNumAppts.clear();
+
+        //tfNumAppts.clear();
     }
     public ObservableList<Appointment> getAppointments() {
 
@@ -290,10 +308,12 @@ public class ReportsController implements Initializable {
 
         //int finalMonthNum = monthNum;
         int finalMonthNum = monthNum;
+        String selectedType = typeComboBox.getValue();
         List<Appointment> apptsInSelectedMonth = MainMenuController.getAppointments()
 
                 .stream()
                 .filter(a -> Objects.equals(a.getStart_time().getMonthValue(), finalMonthNum))
+                .filter(a -> Objects.equals(a.getType(), selectedType))
                 .collect(Collectors.toList());
 
         apptTable.setItems(FXCollections.observableList(apptsInSelectedMonth));
@@ -301,32 +321,76 @@ public class ReportsController implements Initializable {
 
     }
 
-    /*public static ObservableList<Appointment> getMonthAndType() {
-        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT count(*) FROM appointments group by Type";
+    @FXML
+    public void viewApptByContactName() throws IOException {
 
-        Statement st;
-        ResultSet rs;
+        //String selectedContact = contactsComboBox.getValue();
+       // String selectedContact;
+       // selectedContact = contactsComboBox.getValue();
+        //apptTable.setItems(getAppointments());
+        //System.out.println(selectedContact);
+        //System.out.println(contactsComboBox.getSelectionModel().getSelectedIndex());
 
-        // rs.getInt("Customer_ID"),
+        int selectedIndex = contactsComboBox.getSelectionModel().getSelectedIndex();
+        int contact_id;
 
-        try {
-            st = conn.createStatement();
-            rs = st.executeQuery(query);
-            Appointment appointment;
-            while (rs.next()) {
-                appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
-                        rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
-                appointmentsList.add(appointment);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
+        if (selectedIndex == 0){
+            contact_id = 1;
+            apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
         }
-        return appointmentsList;
-    }*/
+        else if (selectedIndex == 1) {
+            contact_id = 2;
+            apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
+        }
+        else if (selectedIndex == 2) {
+            contact_id = 3;
+            apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
+        }
+
+        //String contacts;
+        //contacts = (Contacts) contactsComboBox.getValue();
+        //System.out.println(selectedContact);
+
+        //Contacts selectedContact1;
+        //DBQuery.getContactID(selectedContact);
+
+       //Contacts id = DBQuery.getContactID(selectedContact);Contacts id = selectedContact.getCont
+
+
+
+        //int id = selectedContact.get
+        /*int id;
+
+        if (selectedContact.equalsIgnoreCase("Anika Costa")){
+            id = 1;
+        }
+        if (selectedContact.equalsIgnoreCase("Daniel Garcia")) {
+            id = 2;
+        }
+        if (selectedContact.equalsIgnoreCase("Li Lee")) {
+            id = 3;
+        }
+*/
+        /*List<Appointment> apptsForSelectedContact = MainMenuController.getAppointments()
+
+                .stream()
+                .filter(a -> Objects.equals(a.getContact_name(), selectedContact))
+                .collect(Collectors.toList());
+*/
+
+      //  apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
+
+
+
+    }
+
+    @FXML
+    public void sortByContactName(ActionEvent event) throws IOException {
+        apptTable.setItems(getAppointments());
+        viewApptByContactName();
+        //contactsComboBox.setItems(null);
+    }
+
 
     public void goToMainMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -339,13 +403,15 @@ public class ReportsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //showAppointments();
+        contactsComboBox.setItems(null);
+        showAppointments();
         addMonths();
         monthComboBox.setItems(months);
         typeComboBox.setItems(DBQuery.getAppointmentTypesList());
+        contactsComboBox.setItems(DBQuery.getContactsNameList());
         //determineMonth();
-        System.out.println("Current month: "+ currentMonth);
-        System.out.println(apptTable.getItems().size());
+       // System.out.println("Current month: "+ currentMonth);
+        //System.out.println(apptTable.getItems().size());
        
 
 

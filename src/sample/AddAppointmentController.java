@@ -289,6 +289,7 @@ public class AddAppointmentController implements Initializable {
             startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
             pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
 
+
             //new variable
 
             endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
@@ -375,7 +376,7 @@ public class AddAppointmentController implements Initializable {
 
         //cbContacts.setItems(DBQuery.getContactNames());
 
-        cbStartTime.getItems().add(LocalTime.parse("00:00"));
+        /*cbStartTime.getItems().add(LocalTime.parse("00:00"));
         cbStartTime.getItems().add(LocalTime.parse("00:15"));
         cbStartTime.getItems().add(LocalTime.parse("00:30"));
         cbStartTime.getItems().add(LocalTime.parse("00:45"));
@@ -406,7 +407,7 @@ public class AddAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("07:00"));
         cbStartTime.getItems().add(LocalTime.parse("07:15"));
         cbStartTime.getItems().add(LocalTime.parse("07:30"));
-        cbStartTime.getItems().add(LocalTime.parse("07:45"));
+        cbStartTime.getItems().add(LocalTime.parse("07:45"));*/
         cbStartTime.getItems().add(LocalTime.parse("08:00"));
         cbStartTime.getItems().add(LocalTime.parse("08:15"));
         cbStartTime.getItems().add(LocalTime.parse("08:30"));
@@ -463,7 +464,7 @@ public class AddAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("21:15"));
         cbStartTime.getItems().add(LocalTime.parse("21:30"));
         cbStartTime.getItems().add(LocalTime.parse("21:45"));
-        cbStartTime.getItems().add(LocalTime.parse("22:00"));
+       /* cbStartTime.getItems().add(LocalTime.parse("22:00"));
         cbStartTime.getItems().add(LocalTime.parse("22:15"));
         cbStartTime.getItems().add(LocalTime.parse("22:30"));
         cbStartTime.getItems().add(LocalTime.parse("22:45"));
@@ -471,8 +472,8 @@ public class AddAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("23:15"));
         cbStartTime.getItems().add(LocalTime.parse("23:30"));
         cbStartTime.getItems().add(LocalTime.parse("23:45"));
-
-        cbEndTime.getItems().add(LocalTime.parse("00:00"));
+*/
+        /*cbEndTime.getItems().add(LocalTime.parse("00:00"));
         cbEndTime.getItems().add(LocalTime.parse("00:15"));
         cbEndTime.getItems().add(LocalTime.parse("00:30"));
         cbEndTime.getItems().add(LocalTime.parse("00:45"));
@@ -504,7 +505,7 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("07:15"));
         cbEndTime.getItems().add(LocalTime.parse("07:30"));
         cbEndTime.getItems().add(LocalTime.parse("07:45"));
-        cbEndTime.getItems().add(LocalTime.parse("08:00"));
+        cbEndTime.getItems().add(LocalTime.parse("08:00"));*/
         cbEndTime.getItems().add(LocalTime.parse("08:15"));
         cbEndTime.getItems().add(LocalTime.parse("08:30"));
         cbEndTime.getItems().add(LocalTime.parse("08:45"));
@@ -561,7 +562,7 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("21:30"));
         cbEndTime.getItems().add(LocalTime.parse("21:45"));
         cbEndTime.getItems().add(LocalTime.parse("22:00"));
-        cbEndTime.getItems().add(LocalTime.parse("22:15"));
+        /*cbEndTime.getItems().add(LocalTime.parse("22:15"));
         cbEndTime.getItems().add(LocalTime.parse("22:30"));
         cbEndTime.getItems().add(LocalTime.parse("22:45"));
         cbEndTime.getItems().add(LocalTime.parse("23:00"));
@@ -569,7 +570,7 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("23:30"));
         cbEndTime.getItems().add(LocalTime.parse("23:45"));
 
-
+*/
 
 
 

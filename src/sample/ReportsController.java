@@ -218,8 +218,11 @@ public class ReportsController implements Initializable {
 
             viewApptByMonth2();
             tfApptType.setText(typeComboBox.getValue());
+            tfApptType.setDisable(true);
             tfMonth2.setText(monthComboBox.getValue());
+            tfMonth2.setDisable(true);
             tfNumAppts.setText(String.valueOf(apptTable.getItems().size()));
+            tfNumAppts.setDisable(true);
         }
 
     }

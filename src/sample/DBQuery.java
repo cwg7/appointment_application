@@ -2,6 +2,7 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 
 import java.sql.*;
 
@@ -283,6 +284,33 @@ public class DBQuery {
         return userNames;
     }
 
+    @FXML
+    public static boolean searchUserNames(String username) {
+        if (userNames.contains(username)) {
+            System.out.println("USERNAME EXISTS IN THE DATABASE");
+            //userNameExists();
+            return true;
+
+        }
+        else {
+            System.out.println("USERNAME NOT IN DB");
+            return false;
+        }
+
+    }
+
+    @FXML
+    public static boolean userNameExists(){
+        boolean userNameExists = true;
+        return true;
+
+    }
+
+    @FXML
+    public static void checkPassword(String password) {
+
+    }
+
     public static ObservableList<String> totNumCustomers = FXCollections.observableArrayList();
 /*
 
@@ -536,6 +564,21 @@ public class DBQuery {
         return -1;
     }
 }
+    public static String getUserPassword(String username) {
+        try {
+            String query = "select Password from users where User_Name = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("Password");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+
+    }
 
     public static String getCountryNameByCountryID(int id) throws SQLException {
         String query = "select Country from Countries where Country_ID = ?";

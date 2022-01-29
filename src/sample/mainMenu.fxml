@@ -26,15 +26,15 @@
             <TableColumn fx:id="userIDCol" prefWidth="64.5" text="User ID" />
         </columns>
       </TableView>
-      <Label fx:id="lblMain" layoutX="396.0" layoutY="14.0" text="Scheduled Appointments">
+      <Label fx:id="lblMain" layoutX="370.0" layoutY="8.0" text="Scheduled Appointments">
          <font>
-            <Font name="System Bold Italic" size="13.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="addApptButton" layoutX="188.0" layoutY="51.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Add Appointment" />
-      <Button fx:id="modApptButton" layoutX="323.0" layoutY="51.0" mnemonicParsing="false" onAction="#modAppointmentButtonClick" text="Modify Appointment" />
-      <Button fx:id="goToPractice" layoutX="712.0" layoutY="21.0" mnemonicParsing="false" onAction="#goPractice" text="Go to Practice" />
-      <Button fx:id="morePractice" layoutX="785.0" layoutY="51.0" mnemonicParsing="false" onAction="#morePractice" text="More Practice" />
+      <Button fx:id="addApptButton" layoutX="174.0" layoutY="51.0" mnemonicParsing="false" onAction="#addAppointmentButtonClick" text="Add Appointment" />
+      <Button fx:id="modApptButton" layoutX="314.0" layoutY="51.0" mnemonicParsing="false" onAction="#modAppointmentButtonClick" text="Modify Appointment" />
+      <Button fx:id="goToPractice" layoutX="602.0" layoutY="9.0" mnemonicParsing="false" onAction="#goPractice" text="Go to Practice" />
+      <Button fx:id="morePractice" layoutX="712.0" layoutY="9.0" mnemonicParsing="false" onAction="#morePractice" text="More Practice" />
       <RadioButton fx:id="monthRadioButton" layoutX="460.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewApptByMonth" text="View by Month">
          <toggleGroup>
             <ToggleGroup fx:id="apptViewToggle" />
@@ -42,7 +42,7 @@
       </RadioButton>
       <RadioButton fx:id="weekRadioButton" layoutX="569.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewApptByWeek" text="View by Week" toggleGroup="$apptViewToggle" />
       <RadioButton fx:id="viewAllRadioButton" layoutX="681.0" layoutY="55.0" mnemonicParsing="false" onAction="#viewAllAppointments" text="View all" toggleGroup="$apptViewToggle" />
-      <Button fx:id="logoutButton" layoutX="25.0" layoutY="558.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
-      <Button fx:id="reportsButton" layoutX="837.0" layoutY="21.0" mnemonicParsing="false" onAction="#goToReports" text="Reports" />
+      <Button fx:id="logoutButton" layoutX="14.0" layoutY="558.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+      <Button fx:id="reportsButton" layoutX="801.0" layoutY="51.0" mnemonicParsing="false" onAction="#goToReports" text="Reports" />
    </children>
 </AnchorPane>

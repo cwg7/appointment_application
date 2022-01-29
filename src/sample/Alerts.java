@@ -125,4 +125,32 @@ public class Alerts {
         alert.setContentText("Appointment has been successfully deleted from the database ");
         alert.showAndWait();
     }
+
+    public static void loginSuccessful(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Login Successful");
+        alert.setHeaderText("Login Successful!");
+        alert.setContentText("Login Successful");
+        alert.showAndWait();
+
+    }
+
+    public static void incorectUserName(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Incorrect username");
+        alert.setHeaderText("Incorrect username");
+        alert.setContentText("Username not in the database");
+        alert.showAndWait();
+    }
+
+    public static void incorectPassword(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Incorrect password");
+        alert.setHeaderText("Incorrect password");
+        alert.setContentText("Sorry, incorrect password");
+        alert.showAndWait();
+    }
     }

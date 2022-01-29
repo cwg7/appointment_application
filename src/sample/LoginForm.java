@@ -181,7 +181,7 @@ public class LoginForm implements Initializable {
     // get all users && matching passwords
 
 
-    public boolean loginSuccessful(boolean isSuccessful) {
+   /* public boolean loginSuccessful(boolean isSuccessful) {
         isSuccessful = true;
         return true;
     }
@@ -189,7 +189,7 @@ public class LoginForm implements Initializable {
     public boolean loginFailed() {
         boolean isSuccessful = false;
         return false;
-    }
+    }*/
 
     public boolean authenticate(String username, String password, Boolean isSuccesful) {
         isSuccesful = false;

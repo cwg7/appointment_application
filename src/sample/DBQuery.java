@@ -287,13 +287,13 @@ public class DBQuery {
     @FXML
     public static boolean searchUserNames(String username) {
         if (userNames.contains(username)) {
-            System.out.println("USERNAME EXISTS IN THE DATABASE");
+            //System.out.println("USERNAME EXISTS IN THE DATABASE");
             //userNameExists();
             return true;
 
         }
         else {
-            System.out.println("USERNAME NOT IN DB");
+            //System.out.println("USERNAME NOT IN DB");
             return false;
         }
 

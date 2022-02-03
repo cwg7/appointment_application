@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -56,7 +55,6 @@
       <Label fx:id="lblCustomerID" layoutX="322.0" layoutY="602.0" text="Customer ID" />
       <TextField fx:id="tfCustomerID" layoutX="400.0" layoutY="598.0" />
       <Button fx:id="deleteButton" layoutX="719.0" layoutY="439.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Delete Appointment" />
-      <ScrollBar fx:id="scrollBar" layoutX="879.0" layoutY="14.0" orientation="VERTICAL" prefHeight="674.0" prefWidth="14.0" />
       <DatePicker fx:id="datePicker" layoutX="389.0" layoutY="485.0" />
       <Label fx:id="lblDate" layoutX="342.0" layoutY="489.0" text="Date" />
       <ComboBox fx:id="cbStartTime" layoutX="678.0" layoutY="529.0" prefWidth="150.0" />
@@ -64,5 +62,7 @@
       <Label text="Label" />
       <Label fx:id="lblNewStartTime" layoutX="563.0" layoutY="533.0" text="New Start Time" />
       <Label fx:id="lblNewEndTime" layoutX="565.0" layoutY="575.0" text="New End Time" />
+      <ComboBox fx:id="contactsComboBox" layoutX="81.0" layoutY="676.0" prefWidth="150.0" />
+      <Label fx:id="lblContact" layoutX="23.0" layoutY="679.0" text="Contact" />
    </children>
 </AnchorPane>

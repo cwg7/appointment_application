@@ -48,27 +48,27 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableView apptTable;
     @FXML
-    private TableColumn <Appointment, Integer> apptIDCol;
+    private TableColumn<Appointment, Integer> apptIDCol;
     @FXML
-    private TableColumn <Appointment, String> titleCol;
+    private TableColumn<Appointment, String> titleCol;
     @FXML
-    private TableColumn <Appointment, String> descriptionCol;
+    private TableColumn<Appointment, String> descriptionCol;
     @FXML
-    private TableColumn <Appointment, String> locationCol;
+    private TableColumn<Appointment, String> locationCol;
     @FXML
-    private TableColumn <Appointment, String> typeCol;
+    private TableColumn<Appointment, String> typeCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> startCol;
+    private TableColumn<Appointment, LocalDateTime> startCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> endCol;
+    private TableColumn<Appointment, LocalDateTime> endCol;
     @FXML
-    private TableColumn <Appointment, Integer> customerIDCol;
+    private TableColumn<Appointment, Integer> customerIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> userIDCol;
+    private TableColumn<Appointment, Integer> userIDCol;
     @FXML
-   private TableColumn <Appointment, Integer> contactCol;
+    private TableColumn<Appointment, Integer> contactCol;
     @FXML
-    private TableColumn <Appointment, String> contactNameCol;
+    private TableColumn<Appointment, String> contactNameCol;
     //@FXML
     //private TableColumn <Appointment, String> contactCol;
 
@@ -83,6 +83,11 @@ public class MainMenuController implements Initializable {
     private Button reportsButton;
 
 
+
+   /* @FXML
+    private Button apptsIn15;*/
+
+
     @FXML
     private RadioButton monthRadioButton;
     @FXML
@@ -90,16 +95,46 @@ public class MainMenuController implements Initializable {
     @FXML
     private RadioButton viewAllRadioButton;
     @FXML
+    private RadioButton less15RadioBtn;
+    @FXML
     private ToggleGroup apptViewToggle;
+
 
     @FXML
     private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     @FXML
-    private  ObservableList<Appointment> weeklyAppointments = FXCollections.observableArrayList();
+    private ObservableList<Appointment> weeklyAppointments = FXCollections.observableArrayList();
 
     @FXML
     private ObservableList<Appointment> monthlyAppointments = FXCollections.observableArrayList();
+
+    @FXML
+    private ObservableList<Appointment> apptsToday = FXCollections.observableArrayList();
+
+    @FXML
+    private ObservableList<Appointment> apptsIn15Minutes = FXCollections.observableArrayList();
+
+    public static int upcomingApptID;
+    public static LocalDateTime upcomingApptDate;
+
+    public void viewApptsToday() throws IOException {
+
+        LocalDateTime rightNow = LocalDateTime.now();
+        System.out.println("Time Right now: " + rightNow);
+        int currentDay = rightNow.getDayOfMonth();
+
+        List<Appointment> apptsToday = MainMenuController.getAppointments()
+
+                .stream()
+                .filter(a -> Objects.equals(a.getStart_time().getDayOfMonth(), currentDay))
+                .collect(Collectors.toList());
+
+        apptTable.setItems(FXCollections.observableList(apptsToday));
+
+
+    }
+
 
     public void viewAllAppointments() throws SQLException {
         showAppointments();
@@ -113,9 +148,7 @@ public class MainMenuController implements Initializable {
         int nextMonth = currentMonth + 1;
 
 
-
         //Calendar now = Calendar.getInstance();
-
 
 
         //System.out.println(currentMonth);
@@ -130,32 +163,69 @@ public class MainMenuController implements Initializable {
         apptTable.setItems(FXCollections.observableList(apptsThisMonth));
 
 
-        /*List<Appointment> apptsThisMonth = MainMenuController.getAppointments()
+
+    }
+
+
+   /* public static int upcomingApptID;
+    public static LocalDateTime upcomingApptDate;*/
+
+    public void viewApptsIn15() {
+        LocalDate currentDate = LocalDate.now();
+        Calendar now = Calendar.getInstance();
+
+        List<Appointment> appointments = MainMenuController.getAppointments()
 
                 .stream()
-                .filter(a -> a.getStart_time().getMonth().equals(monthInt))
+                .filter(a -> a.getStart_time().isAfter(LocalDateTime.now()) && a.getStart_time().isBefore(LocalDateTime.now().plusMinutes(15)))
                 .collect(Collectors.toList());
 
-        apptTable.setItems(FXCollections.observableList(apptsThisMonth));*/
+        apptTable.setItems(FXCollections.observableList(appointments));
+        //System.out.println(apptTable.getSelectionModel().getSelectedItems());
+        //int apptID = apptIDCol.getCellData(0);
+
+
+        //trying to figure out how to pull this info and provide it via an alert
+        //
+        //upcomingApptID = apptIDCol.getCellData(0);
+        if (appointments.size() != 0) {
+            upcomingApptID = appointments.get(0).getAppointment_id();
+            upcomingApptDate = appointments.get(0).getStart_time();
+        }
+        else{
+            upcomingApptID = -1;
+            upcomingApptDate = null;
+        }
+
+
+       // upcomingApptDate = appointments.get(0).getStart_time();
 
 
 
+        //System.out.println("Appointment ID: " + upcomingApptID);
+        //LocalDateTime startTime = startCol.getCellData(0);
 
-      /*  List<Appointment> apptsThisMonth = MainMenuController.getAppointments()
-
-                .stream()
-                .filter(a -> a.getStart_time().isAfter(LocalDateTime.now()) && a.getStart_time().isBefore(LocalDateTime.now().plusMonths(1)))
-                .collect(Collectors.toList());
-
-
-
-        apptTable.setItems(FXCollections.observableList(apptsThisMonth));*/
-
-
+        // same with this one
+        //
+        // upcomingApptDate = startCol.getCellData(0);
 
 
     }
 
+    public void getInfo() throws IOException{
+        showApptsIn15();
+
+    }
+
+    // methods below are attempt at retrieving info for alerts relating to upcoming appt
+
+    public static int getUpcomingApptID() {
+        return upcomingApptID;
+    }
+
+    public static LocalDateTime getUpcomingApptDate() {
+        return upcomingApptDate;
+    }
 
 
     public void viewApptByWeek(ActionEvent event) throws IOException {
@@ -165,13 +235,6 @@ public class MainMenuController implements Initializable {
         int currentYear = LocalDate.now().getYear();
         Calendar now = Calendar.getInstance();
 
-        /*List<Customer> customersWithMoreThan100Points = customers
-                .stream()
-                .filter(c -> c.getPoints() > 100)
-                .collect(Collectors.toList());*/
-
-        // list of all appts goes below
-
         List<Appointment> apptsThisWeek = MainMenuController.getAppointments()
 
                 .stream()
@@ -180,36 +243,10 @@ public class MainMenuController implements Initializable {
 
         apptTable.setItems(FXCollections.observableList(apptsThisWeek));
 
-
-        //int currentWeekNumber2 = now.get(Calendar.WEEK_OF_YEAR);
-
-        //System.out.println(currentDate);
-        //System.out.println(currentWeekNumber);
-        //System.out.println(currentYear);
-
-        //System.out.println(currentWeekNumber2);
     }
 
-    /*private ToggleGroup calendarRadio;
-    private boolean isWeekly;
-    private boolean isMonthly;
 
-    */
-
-/*    @FXML private void handleDatePicked (ActionEvent event) throws IOException {
-        if (isWeekly) {
-            viewByWeek(); //View by Week is previously selected
-        }
-        else if (isMonthly) {
-            viewByMonth(); //View by Month is previously selected
-        }
-        else {
-            viewAll(); //View All is previously selected
-        }
-    }*/
-
-
-    public void goPractice(ActionEvent event) throws IOException{
+    public void goPractice(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("practice.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -228,15 +265,12 @@ public class MainMenuController implements Initializable {
     }
 
 
-
     public static ObservableList<Appointment> getAppointments() {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM appointments";
         Statement st;
         ResultSet rs;
-
-        // rs.getInt("Customer_ID"),
 
         try {
             st = conn.createStatement();
@@ -274,11 +308,17 @@ public class MainMenuController implements Initializable {
 
     }
 
-    public void showAppointmentsByMonth(){
+    public void showApptsIn15() {
+        showAppointments();
+        viewApptsIn15();
+    }
+
+
+    public void showAppointmentsByMonth() {
         ObservableList<Appointment> list = getAppointments();
     }
 
-    public void showAppointmentsByWeek(){
+    public void showAppointmentsByWeek() {
         ObservableList<Appointment> list = getAppointments();
     }
 
@@ -288,11 +328,10 @@ public class MainMenuController implements Initializable {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-       // stage.setResizable(true);
+        // stage.setResizable(true);
         stage.show();
         //stage.setMaximized(true);
     }
-
 
 
     public void goToReports(ActionEvent event) throws IOException {
@@ -304,8 +343,6 @@ public class MainMenuController implements Initializable {
         stage.show();
 
     }
-
-
 
 
     @FXML
@@ -327,6 +364,7 @@ public class MainMenuController implements Initializable {
         stage.show();
 
     }
+
     @FXML
     public void logout(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("loginForm.fxml"));
@@ -338,8 +376,30 @@ public class MainMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        //showAppointments();
+        viewApptsIn15();
+
+        while (LoginForm.notLoggedIn)
+        if (apptTable.getItems().isEmpty()) {
+
+            showAppointments();
+            Alerts.noUpcomingAppts();
+            LoginForm.notLoggedIn = false;
+
+        }
+        else{
+            // need to use this below
+            //viewApptsIn15();
+            //
+            //going to try this
+            showApptsIn15();
+            viewApptsIn15();
+            Alerts.upcomingAppt();
+            LoginForm.notLoggedIn = false;
+        }
         showAppointments();
 
-
     }
-}
+    }
+

@@ -396,22 +396,39 @@ public class ReportsController implements Initializable {
 
 
     public void goToMainMenu(ActionEvent event) throws IOException {
+        //contactsComboBox.setItems(null);
+        contactsComboBox.getItems().clear();
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        //contactsComboBox.setItems(null);
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        contactsComboBox.setItems(null);
+        //contactsComboBox.setItems(null);
         showAppointments();
         addMonths();
         monthComboBox.setItems(months);
         typeComboBox.setItems(DBQuery.getAppointmentTypesList());
+
+        contactsComboBox.getItems().clear();
         contactsComboBox.setItems(DBQuery.getContactsNameList());
+
+        //contactsComboBox.setItems(null);
+
+
+
+        /*contactsComboBox.setItems(DBQuery.getContactsNameList());
+        if (contactsComboBox.getItems().size() > (DBQuery.getContactsNameList().size())) {
+            //contactsComboBox.setItems(DBQuery.getContactsNameList());
+            contactsComboBox.setItems(null);
+            contactsComboBox.setItems(DBQuery.getContactsNameList());
+        }*/
+
         //determineMonth();
        // System.out.println("Current month: "+ currentMonth);
         //System.out.println(apptTable.getItems().size());
@@ -420,4 +437,5 @@ public class ReportsController implements Initializable {
 
 
     }
+
 }

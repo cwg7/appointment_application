@@ -1,5 +1,7 @@
 package sample;
 
+import com.mysql.cj.protocol.Resultset;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,6 +39,19 @@ public class DBQuery {
         return contactsIDList;
     }
 
+
+    /*public static ObservableList<String> contactNames = FXCollections.observableArrayList();
+    public static ObservableList<String> getContactNames(){
+        Connection conn = DBConnection.getConnection();
+        String query = "select Contact_Name from contacts where Contact_ID = ?";
+        PreparedStatement st;
+        Resultset rs;
+        try {
+            st = conn.prepareStatement();
+
+        }
+    }
+*/
 
     //ObservableList<String> contactsNameList = FXCollections.observableArrayList();
     public static ObservableList<Integer> contactsIDList = FXCollections.observableArrayList();
@@ -262,6 +277,26 @@ public class DBQuery {
         return divisionIDList;
     }
 
+    public static ObservableList<Integer> allContactIDs = FXCollections.observableArrayList();
+    public static ObservableList<Integer> getAllContactIDs(){
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Contact_ID FROM contacts";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                allContactIDs.add(rs.getInt("Contact_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return allContactIDs;
+
+
+    }
     public static ObservableList<String> userNames = FXCollections.observableArrayList();
 
     public static ObservableList<String> getUserNames() {
@@ -564,6 +599,8 @@ public class DBQuery {
         return -1;
     }
 }
+
+
     public static String getUserPassword(String username) {
         try {
             String query = "select Password from users where User_Name = ?";
@@ -588,6 +625,17 @@ public class DBQuery {
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
         return resultSet.getString("Country");
+
+    }
+
+    public static String getContactNameByContactID(int id) throws SQLException {
+        String query = "select Contact_Name from Contacts where Contact_ID = ?";
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("Contact_Name");
 
     }
 

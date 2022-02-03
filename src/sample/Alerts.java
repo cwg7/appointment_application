@@ -3,6 +3,9 @@ package sample;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Alerts {
 
     public static void checkFields() {
@@ -22,6 +25,7 @@ public class Alerts {
         alert.setContentText("Please be sure to select a customer to modify before pressing the modify button");
         alert.showAndWait();
     }
+
 
     public static void modHandler2(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -90,7 +94,16 @@ public class Alerts {
 
     }
 
+    public static void invalidContactID() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("No such Contact ID. Please enter a valid Contact ID.");
+        alert.showAndWait();
+    }
 
+// need french translation here
 
     public static void invalidLoginInfo(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -103,6 +116,16 @@ public class Alerts {
 
 
     }
+
+    public static void invalidTextFields() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("One or more textfields invalid. Please try again.");
+        alert.showAndWait();
+    }
+
 
 
 
@@ -126,6 +149,8 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    // need french translation here?
+
     public static void loginSuccessful(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.NONE);
@@ -136,6 +161,7 @@ public class Alerts {
 
     }
 
+    // need french translation here
     public static void incorectUserName(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.NONE);
@@ -145,6 +171,8 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    // need french translation here
+
     public static void incorectPassword(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.NONE);
@@ -153,4 +181,36 @@ public class Alerts {
         alert.setContentText("Sorry, incorrect password");
         alert.showAndWait();
     }
+    public static void upcomingAppt(){
+        LocalDateTime startTime = MainMenuController.getUpcomingApptDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = startTime.format(formatter);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Appointment soon!");
+        alert.setHeaderText("Appointment soon");
+        alert.setContentText("There is an appointment scheduled within the next 15 minutes.\n" +
+                "Appointment ID: " + MainMenuController.getUpcomingApptID() + "\n" +
+               // "Appointment time: " + MainMenuController.getUpcomingApptDate());
+                "Start time: " + formatDateTime);
+
+
+                //"\n Appointment start time: " + MainMenuController.getUpcomingApptDate();
+                //"Appointment start time: "+ MainMenuController.getUpcomingApptDate();
+        //MainMenuController.
+        alert.showAndWait();
+    }
+
+    public static void noUpcomingAppts(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("No upcoming appointments");
+        alert.setHeaderText("No upcoming appointments");
+        alert.setContentText("There are no appointments scheduled within the next 15 minutes.");
+        alert.showAndWait();
+
+    }
+
+
     }

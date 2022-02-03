@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginForm implements Initializable {
@@ -45,6 +47,9 @@ public class LoginForm implements Initializable {
     //private String password = "x";
     private String username;
 
+    public static boolean notLoggedIn;
+
+
     //public static ObservableList<String> userNames = FXCollections.observableArrayList();
 
  /*   public ObservableList getUserNames() {
@@ -53,6 +58,8 @@ public class LoginForm implements Initializable {
     }
 */
 
+    String enteredPassword;
+    String correctPassword;
     @FXML
     public void handleUserLogin(ActionEvent event) throws IOException {
         DBQuery.getUserNames();
@@ -62,8 +69,10 @@ public class LoginForm implements Initializable {
 
         if (DBQuery.searchUserNames(tfUserName.getText())) {
             //System.out.println("Okay. Now checking the password. . . . ");
-            String enteredPassword = tfPassword.getText();
-            String correctPassword = DBQuery.getUserPassword(tfUserName.getText());
+            //String enteredPassword = tfPassword.getText();
+            enteredPassword = tfPassword.getText();
+            //String correctPassword = DBQuery.getUserPassword(tfUserName.getText());
+            correctPassword = DBQuery.getUserPassword(tfUserName.getText());
             //System.out.println("correct password: " + correctPassword);
 
             if (enteredPassword.equals(correctPassword)) {
@@ -77,21 +86,30 @@ public class LoginForm implements Initializable {
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+
             } else {
-                //System.out.println("Sorry, incorrect password");
+                System.out.println("Sorry, incorrect password");
                 //loginSuccessful(false);
                 //recordLoginActivity();
                 //recordLoginActivity2();
-                Alerts.incorectPassword();
+
+                //Alerts.incorectPassword();
+                //loginFalse(false);
+
+
+                incorectPassword();
+                clearFields();
+                // incorrectLogin();
             }
 
         } else {
             //System.out.println("Sorry, incorrect username");
             //loginSuccessful(false);
-            Alerts.incorectUserName();
-            //recordLoginActivity2();
 
-            //recordLoginActivity();
+            //Alerts.incorectUserName();
+            incorrectUsername();
+            clearFields();
+
         }
 
         //recordLoginActivity();
@@ -103,57 +121,28 @@ public class LoginForm implements Initializable {
 
 
 
-
-
-
-
-
-  /*  @FXML
-    public void handleLogin(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-
-    }*/
-
-    // Just using this method to make logging in fast during build
-    /*@FXML
-    public void justGo(ActionEvent event) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-    }*/
-
-
-/*
-
-
-    @FXML
-    public static void searchUserNames(String username) {
-        if (userNames.contains(username)) {
-            System.out.println("USERNAME EXISTS IN THE DATABASE");
-
-
-        }
-        else {
-            System.out.println("USERNAME NOT IN DB");
-        }
+    public void clearFields(){
+        tfUserName.clear();
+        tfPassword.clear();
     }
-*/
+
+
+
+
+
+
+
+
+
+
+
 
     @FXML
     public static void checkPassword(String password) {
 
     }
 
-    @FXML
+    /*@FXML
     public void handleLogin(javafx.event.ActionEvent event) throws IOException {
         String username = tfUserName.getText();
         grabLoginData(tfUserName.getText());
@@ -172,24 +161,16 @@ public class LoginForm implements Initializable {
             stage.show();
         } else {
             //System.out.println("Sorry, incorrect login credentials");
-            Alerts.invalidLoginInfo();
+
+            //was using this one before  vvv
+            // Alerts.invalidLoginInfo();
+
+            incorectPassword();
         }
         //recordLoginActivity();
         //boolean authenticated = true;
-    }
-
-    // get all users && matching passwords
-
-
-   /* public boolean loginSuccessful(boolean isSuccessful) {
-        isSuccessful = true;
-        return true;
-    }
-
-    public boolean loginFailed() {
-        boolean isSuccessful = false;
-        return false;
     }*/
+
 
     public boolean authenticate(String username, String password, Boolean isSuccesful) {
         isSuccesful = false;
@@ -262,29 +243,6 @@ public class LoginForm implements Initializable {
 
     }
 
-   /* public void recordLoginActivity() {
-        try(FileWriter fw = new FileWriter("login_activity.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-
-        {
-            String text = (String) grabLoginData(tfUserName.getText());
-            out.print(grabTimestamp(LocalDateTime.now()));
-            out.print(" Username:" + grabLoginData(" " + tfUserName.getText()));
-
-            if (authenticate(tfUserName.getText(), tfPassword.getText(), true)) {
-
-                out.println(" " + "Login Attempt: Successful");
-        }
-            else {
-                out.println(" " + "Login Attempt: Unsuccessful");
-            }
-
-
-        } catch (IOException e) {
-
-        }
-    }*/
 
     public void recordLoginActivity() {
         String username = tfUserName.getText();
@@ -318,13 +276,83 @@ public class LoginForm implements Initializable {
         }
     }
 
+    public boolean loginSuccessful(boolean bool) {
+        bool = true;
+        return true;
+    }
 
+    public boolean loginFalse(boolean bool){
+        bool = false;
+        return false;
+    }
 
+    private static String errorTitle;
+    //private static String errorHeaderMissing;
+    private static String errorHeaderIncorrect;
+    //private static String errorContentMissing;
+    private static String errorContentIncorrect;
 
+    Alert alert1;
+
+    public static void incorectPassword(){
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        alert1.initModality(Modality.NONE);
+        alert1.setTitle("alert1Title");
+        alert1.setTitle(errorTitle);
+        alert1.setHeaderText(errorHeaderIncorrect);
+        alert1.setContentText(errorContentIncorrect);
+
+        //alert1.setTitle(alert1.getTitle());
+
+        //alert1.setHeaderText(alert1.getHeaderText());
+
+       // alert1.setContentText(alert1.getContentText());
+        alert1.showAndWait();
+    }
+
+    private static String errorHeaderIncorrect2;
+    public static String errorContentIncorrect2;
+    Alert alert2;
+    public static void incorrectUsername(){
+        Alert alert2 = new Alert(Alert.AlertType.ERROR);
+        alert2.initModality(Modality.NONE);
+        alert2.setTitle(errorTitle);
+        //alert2.setTitle(alert2.getTitle());
+        alert2.setHeaderText(errorHeaderIncorrect2);
+        alert2.setContentText(errorContentIncorrect2);
+        alert2.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         lblZoneID.setText("Zone ID: " +ZoneId.systemDefault().toString());
+
+        ResourceBundle rb = ResourceBundle.getBundle("sample/languages", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")  || Locale.getDefault().getLanguage().equals("en")){
+            lblZoneID.setText(rb.getString("lblZoneID") + ZoneId.systemDefault().toString());
+            lblUserName.setText(rb.getString("lblUsername"));
+            lblPassword.setText(rb.getString("lblPassword"));
+            tfUserName.setPromptText(rb.getString("username"));
+            tfPassword.setPromptText(rb.getString("password"));
+            loginButton.setText(rb.getString("login"));
+
+            errorTitle = rb.getString("errorTitle");
+            errorHeaderIncorrect = rb.getString("errorHeaderIncorrect");
+            errorContentIncorrect = rb.getString("errorContentIncorrect");
+
+            errorHeaderIncorrect2 = rb.getString("errorHeaderIncorrect2");
+            errorContentIncorrect2 = rb.getString("errorContentIncorrect2");
+        }
+
+        notLoggedIn = true;
+        Locale currentLocale = Locale.getDefault();
+        System.out.println("Current Locale: " + currentLocale);
+        System.out.println(currentLocale.getDisplayLanguage());
+        System.out.println(currentLocale.getDisplayCountry());
+
+
+        // lblZoneID.setText("Zone ID: " +ZoneId.systemDefault().toString());
         //DBQuery.getUserNames();
     }
 }

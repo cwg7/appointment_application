@@ -225,39 +225,10 @@ public class ModCustomerController implements Initializable {
 
             int countryID = DBQuery.getCountryIdByDivisionId(divisionID);
 
-            //tfCountry2.setText(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
 
-            //country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
             country_box.setValue(DBQuery.getCountryNameByCountryID(countryID));
 
-            //tfCountry2.setText("YO");
 
-           /* if (tfCountry2.getText() == "1") {
-                country_box.setValue("U.S");
-            }
-            if (tfCountry2.getText() == "2") {
-                country_box.setValue("UK");
-            }
-                if (tfCountry2.getText() == "3") {
-                    country_box.setValue("Canada");
-                }
-            */
-
-
-
-
-            //country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
-
-            //division2_box.setValue(String.valueOf(divisionID));
-            //division2_box.setValue(String.valueOf(divisionID));
-
-            //country_box.setItems(selectedCustomer.getCountryName());
-            //country_box.setItems(divisionID.get);
-
-            // tfDivision.setInt(Integer.parseInt(tfDivision.getText()));
-            
-
-                    //setText(Integer.parseInt(String.valueOf(selectedCustomer.getDivision_id())));
             modCustomersTable.setDisable(true);
             saveButton.setDisable(false);
             modButton.setDisable(true);

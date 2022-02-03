@@ -374,40 +374,7 @@ public class AddAppointmentController implements Initializable {
         //DBQuery.getContactsNameList();
         contactName_box.setItems(DBQuery.getContactsNameList());
 
-        //cbContacts.setItems(DBQuery.getContactNames());
 
-        /*cbStartTime.getItems().add(LocalTime.parse("00:00"));
-        cbStartTime.getItems().add(LocalTime.parse("00:15"));
-        cbStartTime.getItems().add(LocalTime.parse("00:30"));
-        cbStartTime.getItems().add(LocalTime.parse("00:45"));
-        cbStartTime.getItems().add(LocalTime.parse("01:00"));
-        cbStartTime.getItems().add(LocalTime.parse("01:15"));
-        cbStartTime.getItems().add(LocalTime.parse("01:30"));
-        cbStartTime.getItems().add(LocalTime.parse("01:45"));
-        cbStartTime.getItems().add(LocalTime.parse("02:00"));
-        cbStartTime.getItems().add(LocalTime.parse("02:15"));
-        cbStartTime.getItems().add(LocalTime.parse("02:30"));
-        cbStartTime.getItems().add(LocalTime.parse("02:45"));
-        cbStartTime.getItems().add(LocalTime.parse("03:00"));
-        cbStartTime.getItems().add(LocalTime.parse("03:15"));
-        cbStartTime.getItems().add(LocalTime.parse("03:30"));
-        cbStartTime.getItems().add(LocalTime.parse("03:45"));
-        cbStartTime.getItems().add(LocalTime.parse("04:00"));
-        cbStartTime.getItems().add(LocalTime.parse("04:15"));
-        cbStartTime.getItems().add(LocalTime.parse("04:30"));
-        cbStartTime.getItems().add(LocalTime.parse("04:45"));
-        cbStartTime.getItems().add(LocalTime.parse("05:00"));
-        cbStartTime.getItems().add(LocalTime.parse("05:15"));
-        cbStartTime.getItems().add(LocalTime.parse("05:30"));
-        cbStartTime.getItems().add(LocalTime.parse("05:45"));
-        cbStartTime.getItems().add(LocalTime.parse("06:00"));
-        cbStartTime.getItems().add(LocalTime.parse("06:15"));
-        cbStartTime.getItems().add(LocalTime.parse("06:30"));
-        cbStartTime.getItems().add(LocalTime.parse("06:45"));
-        cbStartTime.getItems().add(LocalTime.parse("07:00"));
-        cbStartTime.getItems().add(LocalTime.parse("07:15"));
-        cbStartTime.getItems().add(LocalTime.parse("07:30"));
-        cbStartTime.getItems().add(LocalTime.parse("07:45"));*/
         cbStartTime.getItems().add(LocalTime.parse("08:00"));
         cbStartTime.getItems().add(LocalTime.parse("08:15"));
         cbStartTime.getItems().add(LocalTime.parse("08:30"));

@@ -83,6 +83,16 @@ public class Alerts {
 
     }
 
+    public static void selectHandler2(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Please be sure to select an appointment before pressing the select button");
+        alert.showAndWait();
+
+    }
+
     public static void invalidFieldHandler(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initModality(Modality.NONE);
@@ -100,6 +110,15 @@ public class Alerts {
         alert.setTitle("Error");
         alert.setHeaderText("Warning");
         alert.setContentText("No such Contact ID. Please enter a valid Contact ID.");
+        alert.showAndWait();
+    }
+
+    public static void invalidUserID() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("No such User ID. Please enter a valid User ID.");
         alert.showAndWait();
     }
 
@@ -179,6 +198,15 @@ public class Alerts {
         alert.setTitle("Incorrect password");
         alert.setHeaderText("Incorrect password");
         alert.setContentText("Sorry, incorrect password");
+        alert.showAndWait();
+    }
+
+    public static void invalidCustomerID(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Invalid Customer ID");
+        alert.setHeaderText("Invalid Customer ID");
+        alert.setContentText("Please enter a valid customer ID");
         alert.showAndWait();
     }
     public static void upcomingAppt(){

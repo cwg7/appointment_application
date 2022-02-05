@@ -147,14 +147,15 @@ public class ModAppointmentController implements Initializable {
     }
 
     //LocalDateTime startTimeObject;
-    public void selectButtonClick(ActionEvent event) {
 
-
-
-        //startTimeObject = startTime;
+    public void selectButtonClick(ActionEvent event) throws SQLException {
 
         saveChangesButton.setDisable(false);
-        if (appointmentsTable.getItems() != null) {
+
+        if (appointmentsTable.getSelectionModel().getSelectedItem() == null){
+            Alerts.selectHandler2();
+        }
+        else if (appointmentsTable.getItems() != null) {
            // ObservableList<Appointment> appointment = appointmentsTable.getSelectionModel().getSelectedItems();
             //tfApptID =
             Appointment selectedAppointment;
@@ -166,6 +167,10 @@ public class ModAppointmentController implements Initializable {
 
             LocalDateTime endTime = selectedAppointment.getEnd_time();
             LocalTime endClock =  endTime.toLocalTime();
+
+            int selectedContactID = selectedAppointment.getContact_id();
+            String selectedContactName = DBQuery.getContactNameByContactID(selectedContactID);
+
 
             //Customer selectedCustomer;
             //selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
@@ -212,15 +217,21 @@ public class ModAppointmentController implements Initializable {
                 cbStartTime.setValue(startClock);
                 cbEndTime.setValue(endClock);
 
+                //tfContactID.setDisable(true);
+                //contactsComboBox.setValue(selectedContactName);
+
                 setComboBoxStart();
                 setComboBoxEnd();
 
+                //selectedContactName = contactName_box.getValue();
 
+
+                //tfContactID.setText(DBQuery.getContactIDByContactName(selectedContactName));
 
             }
 
-
         }
+
     }
 
     public void preparedUpdate() {
@@ -232,6 +243,8 @@ public class ModAppointmentController implements Initializable {
         ObservableList users = FXCollections.observableArrayList();
         users.add(DBQuery.getUserNames());
         int usersCount = users.size();*/
+
+        //String selectedName = contactName_box.getSelectionModel().getSelectedItem();
 
         PreparedStatement pstatement;
         String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
@@ -251,21 +264,41 @@ public class ModAppointmentController implements Initializable {
             LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate,endTime);
 
 
-            //pstatement.setTimestamp(5, valueOf(tfStart.getText()));
+
             pstatement.setTimestamp(5, Timestamp.valueOf(startTimeAndDate));
             pstatement.setTimestamp(6, Timestamp.valueOf(endTimeAndDate));
-           // pstatement.setTimestamp(6, valueOf(tfEnd.getText()));
-
-            pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
 
 
-            //if (usersCount < )
-            pstatement.setInt(8, Integer.parseInt(tfUserID.getText()));
+            int specifiedCustomerID = Integer.parseInt(tfCustomerID.getText());
+            if (DBQuery.getAllCustomerIDs().contains(specifiedCustomerID)) {
+                pstatement.setInt(7, specifiedCustomerID);
+            }
+            else{
+                Alerts.invalidCustomerID();
+                return;
+            }
+
+            int specifiedUserID = Integer.parseInt(tfUserID.getText());
+            ObservableList <Integer> allUsers = DBQuery.getAllUserIDs();
+            boolean isThere = false;
+
+            for (Integer userID: allUsers){
+                if (userID == specifiedUserID){
+                    isThere = true;
+                }
+            }
+
+            if (isThere) {
+                pstatement.setInt(8, Integer.parseInt(tfUserID.getText()));
+
+            }
+            else{
+                Alerts.invalidUserID();
+                return;
 
 
+            }
 
-
-           // if (DBQuery.getAllContactIDs().contains(tfContactID))
 
             if (String.valueOf(DBQuery.getAllContactIDs()).contains(tfContactID.getText())){
                 pstatement.setInt(9, Integer.parseInt(tfContactID.getText()));
@@ -275,8 +308,9 @@ public class ModAppointmentController implements Initializable {
             }
             else{
                 Alerts.invalidContactID();
+                pstatement.cancel();
+                return;
             }
-
             //pstatement.setInt(10, Integer.parseInt(tfApptID.getText()));
 
 
@@ -285,6 +319,8 @@ public class ModAppointmentController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             Alerts.invalidTextFields();
+            //return;
+
             //Alerts.invalidContactID();
         }
 
@@ -325,12 +361,18 @@ public class ModAppointmentController implements Initializable {
 
     @FXML
     public void saveChanges(ActionEvent event) throws IOException {
-        preparedUpdate();
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        try {
+            preparedUpdate();
+            //contactsComboBox.getItems().clear();
+            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(Exception e){
+            Alerts.invalidTextFields();
+        }
 
     }
 
@@ -458,21 +500,25 @@ public class ModAppointmentController implements Initializable {
     }
 
 
+
     @FXML
     public void goToMain(ActionEvent event) throws IOException {
-        contactsComboBox.getItems().clear();
+        //contactsComboBox.getItems().clear();
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         saveChangesButton.setDisable(true);
         MainMenuController.getAppointments();
         showAppointments();
-        contactsComboBox.setItems(DBQuery.getContactsNameList());
+        //contactsComboBox.getItems().clear();
+        //contactsComboBox.setItems(DBQuery.getContactsNameList());
 
         tfApptID.setDisable(true);
         tfTitle.setDisable(true);
@@ -484,6 +530,10 @@ public class ModAppointmentController implements Initializable {
         tfEnd.setDisable(true);
         tfCustomerID.setDisable(true);
         tfUserID.setDisable(true);
+
+
+        //tfContactID.setText(DBQuery.getContactIDByContactName(contactsComboBox.getValue()));
+
 
 
     }

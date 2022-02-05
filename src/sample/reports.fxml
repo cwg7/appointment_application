@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="644.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReportsController">
+   <children>
+      <Label fx:id="lblPlease" layoutX="45.0" layoutY="25.0" text="Please select a month and appointment type to filter appointments by month and type, then click Show" />
+      <TableView fx:id="apptTable" layoutX="5.0" layoutY="296.0" prefHeight="264.0" prefWidth="892.0">
+        <columns>
+          <TableColumn fx:id="apptIDCol" prefWidth="75.0" text="Appt ID" />
+          <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
+            <TableColumn fx:id="descriptionCol" prefWidth="75.0" text="Description" />
+            <TableColumn fx:id="locationCol" prefWidth="75.0" text="Location" />
+            <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="startCol" prefWidth="107.0" text="Start Time" />
+            <TableColumn fx:id="endCol" prefWidth="79.0" text="End Time" />
+            <TableColumn fx:id="customerIDCol" prefWidth="70.5" text="Customer ID" />
+            <TableColumn fx:id="userIDCol" prefWidth="96.5" text="User ID" />
+            <TableColumn fx:id="contactCol" prefWidth="163.0" text="Contact" />
+        </columns>
+      </TableView>
+      <Button fx:id="showButton" layoutX="312.0" layoutY="86.0" mnemonicParsing="false" onAction="#pressShow" text="Show" />
+      <TextField fx:id="tfNumAppts" layoutX="124.0" layoutY="134.0" prefHeight="25.0" prefWidth="62.0" />
+      <Button fx:id="mainMenuButton" layoutX="47.0" layoutY="588.0" mnemonicParsing="false" onAction="#goToMainMenu" text="Main Menu" />
+      <ComboBox fx:id="monthComboBox" layoutX="124.0" layoutY="50.0" prefWidth="150.0" />
+      <Label fx:id="lblThere" layoutX="36.0" layoutY="138.0" text="There are " />
+      <Label fx:id="lblForThe" layoutX="206.0" layoutY="138.0" text="appointments scheduled with the type of " />
+      <Button fx:id="showAllAppts" layoutX="736.0" layoutY="21.0" mnemonicParsing="false" onAction="#showAllAppts" text="Show all appointments" />
+      <ComboBox fx:id="typeComboBox" layoutX="124.0" layoutY="86.0" prefWidth="150.0" />
+      <Label fx:id="lblType" layoutX="14.0" layoutY="90.0" text="Appointment type:" />
+      <Label fx:id="lblMonth" layoutX="45.0" layoutY="54.0" text="Month:" />
+      <TextField fx:id="tfApptType" layoutX="434.0" layoutY="134.0" />
+      <Label fx:id="lblForMonth" layoutX="596.0" layoutY="138.0" prefHeight="17.0" prefWidth="103.0" text="for the month of " />
+      <TextField fx:id="tfMonth2" layoutX="699.0" layoutY="134.0" prefHeight="25.0" prefWidth="115.0" />
+      <ComboBox fx:id="contactsComboBox" layoutX="184.0" layoutY="176.0" prefWidth="150.0" />
+      <Label fx:id="lblContact" layoutX="100.0" layoutY="180.0" text="Contact name" />
+      <Button fx:id="contactReportButton" layoutX="357.0" layoutY="176.0" mnemonicParsing="false" onAction="#sortByContactName" text="View scheduled appointments for selected Contact Name" />
+      <Label fx:id="lblCustomers" layoutX="100.0" layoutY="236.0" text="Total number of scheduled appointments on record: " />
+      <TextField fx:id="tfCustNum" layoutX="476.0" layoutY="232.0" />
+      <Button fx:id="pressTotNumButton" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" onAction="#getCustNum" text="Get #" />
+      <Label fx:id="lblReport2" layoutX="31.0" layoutY="180.0" text="Report 2:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblReport3" layoutX="33.0" layoutY="236.0" prefHeight="17.0" prefWidth="62.0" text="Report 3:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="30.0" layoutY="6.0" prefHeight="17.0" prefWidth="62.0" text="Report 1:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

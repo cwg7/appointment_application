@@ -59,10 +59,7 @@
       <Label fx:id="lblDate" layoutX="342.0" layoutY="489.0" text="Date" />
       <ComboBox fx:id="cbStartTime" layoutX="678.0" layoutY="529.0" prefWidth="150.0" />
       <ComboBox fx:id="cbEndTime" layoutX="678.0" layoutY="571.0" prefWidth="150.0" />
-      <Label text="Label" />
       <Label fx:id="lblNewStartTime" layoutX="563.0" layoutY="533.0" text="New Start Time" />
       <Label fx:id="lblNewEndTime" layoutX="565.0" layoutY="575.0" text="New End Time" />
-      <ComboBox fx:id="contactsComboBox" layoutX="81.0" layoutY="676.0" prefWidth="150.0" />
-      <Label fx:id="lblContact" layoutX="23.0" layoutY="679.0" text="Contact" />
    </children>
 </AnchorPane>

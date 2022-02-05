@@ -40,18 +40,6 @@ public class DBQuery {
     }
 
 
-    /*public static ObservableList<String> contactNames = FXCollections.observableArrayList();
-    public static ObservableList<String> getContactNames(){
-        Connection conn = DBConnection.getConnection();
-        String query = "select Contact_Name from contacts where Contact_ID = ?";
-        PreparedStatement st;
-        Resultset rs;
-        try {
-            st = conn.prepareStatement();
-
-        }
-    }
-*/
 
     //ObservableList<String> contactsNameList = FXCollections.observableArrayList();
     public static ObservableList<Integer> contactsIDList = FXCollections.observableArrayList();
@@ -297,6 +285,48 @@ public class DBQuery {
 
 
     }
+
+    public static ObservableList<Integer> allCustomerIDs = FXCollections.observableArrayList();
+    public static ObservableList<Integer> getAllCustomerIDs(){
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Customer_ID FROM customers";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                allCustomerIDs.add(rs.getInt("Customer_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return allCustomerIDs;
+
+
+    }
+
+    public static ObservableList<Integer> allUserIDs = FXCollections.observableArrayList();
+    public static ObservableList<Integer> getAllUserIDs(){
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT User_ID FROM users";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                allUserIDs.add(rs.getInt("User_ID"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return allUserIDs;
+
+
+    }
     public static ObservableList<String> userNames = FXCollections.observableArrayList();
 
     public static ObservableList<String> getUserNames() {
@@ -398,32 +428,7 @@ public class DBQuery {
         return allCountries;
     }
 
-   /* public static Appointment getApptsForContact(int contactID) {
-        ObservableList<Appointment> apptsForContact = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM appointments WHERE Contact_ID = ?";
-        PreparedStatement st;
-        ResultSet rs;
 
-        // rs.getInt("Customer_ID"),
-        Appointment appointments = null;
-        try {
-            st = conn.prepareStatement(query);
-            st.setInt(1, contactID);
-
-
-            rs = st.executeQuery();
-            while (rs.next()) {
-                appointments = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
-                        rs.getInt("Country_ID"));
-                newDivisionName.add(division);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
-*/
 
    /*public static Appointment getAppointmentsForContact(String contactName) {
        ObservableList<Contacts> appts = FXCollections.observableArrayList();
@@ -638,6 +643,19 @@ public class DBQuery {
         return resultSet.getString("Contact_Name");
 
     }
+
+    public static int getContactIDByContactName(String name) throws SQLException {
+        String query = "select Contact_ID from Contacts where Contact_Name = ?";
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setString(1, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("Contact_ID");
+
+    }
+
+
 
     public static ObservableList<String> getContactNames() {
         ObservableList<String> contactsNameList = FXCollections.observableArrayList();

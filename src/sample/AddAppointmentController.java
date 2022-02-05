@@ -99,6 +99,9 @@ public class AddAppointmentController implements Initializable {
     private Label lblContactName;
 
     @FXML
+    private TextArea taHours;
+
+    @FXML
     private Button practiceTimeButton;
 
     @FXML
@@ -355,6 +358,7 @@ public class AddAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         //tfStart.se
+        taHours.setDisable(true);
         addAppointmentButton.setDisable(true);
         DBQuery.userIDList.clear();
         DBQuery.getContactsList().clear();

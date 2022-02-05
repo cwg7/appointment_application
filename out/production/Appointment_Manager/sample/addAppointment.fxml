@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -49,5 +50,6 @@
       <DatePicker fx:id="datePicker" layoutX="491.0" layoutY="224.0" />
       <ComboBox fx:id="cbStartTime" layoutX="503.0" layoutY="266.0" prefWidth="150.0" />
       <ComboBox fx:id="cbEndTime" layoutX="503.0" layoutY="309.0" prefWidth="150.0" />
+      <TextArea fx:id="taHours" layoutX="665.0" layoutY="224.0" prefHeight="76.0" prefWidth="130.0" text="    Business hours:&#10;&#10;8:00 a.m. - 10:00 p.m.&#10;            (EST.)" />
    </children>
 </AnchorPane>

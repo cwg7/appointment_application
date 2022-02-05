@@ -1,5 +1,5 @@
 
-This application, Appointment Manger, is designed to manage appointments and allows users
+This application, Appointment Manger, is designed to manage appointments and allow users
 to create, edit, and delete appointments; as well as create, edit, and delete customer records.  Users can also view
 reports such as the number of appointments by type and month, and appointment schedules by contact. There is also a
 third report which simply keeps track of the total number of appointments on record.

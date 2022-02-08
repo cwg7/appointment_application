@@ -20,9 +20,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalField;
@@ -174,10 +172,33 @@ public class MainMenuController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         Calendar now = Calendar.getInstance();
 
+        ZoneId zoneID = ZonedDateTime.now().getZone();
+
+        ZonedDateTime loginTime = LocalDateTime.now().atZone(zoneID);
+
+
+        //ZoneId zoneID = ZonedDateTime.now().getZone();
+        ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(zoneID);
+        ZonedDateTime userTime = zonedDateTime;
+        LocalTime currTime = userTime.toLocalTime();
+
+        //now = userTime;
+
         List<Appointment> appointments = MainMenuController.getAppointments()
 
                 .stream()
-                .filter(a -> a.getStart_time().isAfter(LocalDateTime.now()) && a.getStart_time().isBefore(LocalDateTime.now().plusMinutes(15)))
+
+                //originally was this next line below vvvv
+                //.filter(a -> a.getStart_time().isAfter(LocalDateTime.now()) && a.getStart_time().isBefore(LocalDateTime.now().plusMinutes(15)))
+                /// this one here ^^^^^
+
+                ///going to try this one though vvvv
+                .filter(a -> a.getStart_time().isAfter(loginTime.toLocalDateTime()) && a.getStart_time().isBefore(loginTime.toLocalDateTime().plusMinutes(15)))
+                // trying this ^^^^^^^
+
+
+                //.filter(a -> a.getStart_time().isAfter(currTime)) && a.getStart_time().isBefore(ChronoLocalDateTime.from(currTime.plusMinutes(15))))
+                //.filter(a -> a.getStart_time().isAfter(ChronoLocalDateTime.from(userTime))) && a.getStart_time().isBefore(userTime.plusMinutes(15))
                 .collect(Collectors.toList());
 
         apptTable.setItems(FXCollections.observableList(appointments));

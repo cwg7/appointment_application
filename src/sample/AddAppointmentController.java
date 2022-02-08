@@ -18,10 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.EventObject;
 import java.util.ResourceBundle;
 import sample.Contacts;
@@ -124,20 +121,10 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField tfStartDateAndTime;
 
-   /* @FXML
-    private Button testButton;*/
 
     @FXML
     private TextArea taTestArea;
 
-
-
-
-/*
-    LocalTime startTimeObject;
-    LocalTime endTimeObject;
-    LocalDateTime startDateAndTimeObject;
-    LocalDateTime getEndDateAndTimeObject;*/
 
 
 
@@ -272,7 +259,10 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-
+// trying this here...
+    private final LocalTime absoluteStart = LocalTime.of(8, 0);
+    private final LocalTime absoluteEnd = LocalTime.of(22, 0);
+//////
     public void preparedInsert(){
         //verify();
         //getInfo();
@@ -290,12 +280,79 @@ public class AddAppointmentController implements Initializable {
 
             selectedDate = datePicker.getValue();
             startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
-            pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
+            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
 
+
+            //////////
+            ///////////
+            ///////////
+            // experimenting w/ ZonedDateTime here..
+
+            //Use system default zone Id:
+            ZoneId userZoneId = ZoneId.systemDefault();
+
+            //Assign customer selected times to system default ZoneId:
+            ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
+            ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
+
+            //Assign variable for eastern time zone:
+            ZoneId estZoneId = ZoneId.of("US/Eastern");
+
+            //Convert times user picked from system default time to Eastern time:
+            ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
+            ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
+
+            //Convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
+            LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
+            LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
+
+            //Validate times in order/doesn't cross:
+
+
+            if(userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Selected appointment start time is after or equal to end time.");
+                alert.setContentText("Please select different appointment start and/or end time slot.");
+
+                alert.showAndWait();
+                return;
+            }
+
+            //Compare converted Eastern time zone appt times picked by user to set business hours in EST:
+            if (userStartEST.isBefore(absoluteStart) || userEndEST.isAfter(absoluteEnd)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Selected appointment times are outside of business hours.");
+                alert.setContentText("Please select different appointment times. Business hours are between 8:00AM-10:00PM EST.");
+
+                alert.showAndWait();
+                return;
+            }
+
+            // END ZONEDATETIME experimentation...
+            /////////////
+            /////////
+            ////////
+
+
+
+            //pstatement.setTimestamp(5, Timestamp.valueOf(zoneDateTimeStart));
+            // had this below originally vvv Do not Delete!
+            pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
+            System.out.println("user selected start time: " +startDateAndTime);
+            //
 
             //new variable
 
-            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
+            //endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
+
+           /* if (endDateAndTime.isBefore(startDateAndTime)){
+                Alerts.invalidEndTime();
+                return;
+
+            }*/
+
             pstatement.setTimestamp(6, Timestamp.valueOf(endDateAndTime));
 
             //new variable
@@ -379,6 +436,16 @@ public class AddAppointmentController implements Initializable {
         contactName_box.setItems(DBQuery.getContactsNameList());
 
 
+
+
+        cbStartTime.getItems().add(LocalTime.parse("06:00"));
+        cbStartTime.getItems().add(LocalTime.parse("06:15"));
+        cbStartTime.getItems().add(LocalTime.parse("06:30"));
+        cbStartTime.getItems().add(LocalTime.parse("06:45"));
+        cbStartTime.getItems().add(LocalTime.parse("07:00"));
+        cbStartTime.getItems().add(LocalTime.parse("07:15"));
+        cbStartTime.getItems().add(LocalTime.parse("07:30"));
+        cbStartTime.getItems().add(LocalTime.parse("07:45"));
         cbStartTime.getItems().add(LocalTime.parse("08:00"));
         cbStartTime.getItems().add(LocalTime.parse("08:15"));
         cbStartTime.getItems().add(LocalTime.parse("08:30"));
@@ -477,6 +544,14 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("07:30"));
         cbEndTime.getItems().add(LocalTime.parse("07:45"));
         cbEndTime.getItems().add(LocalTime.parse("08:00"));*/
+        cbEndTime.getItems().add(LocalTime.parse("06:15"));
+        cbEndTime.getItems().add(LocalTime.parse("06:30"));
+        cbEndTime.getItems().add(LocalTime.parse("06:45"));
+        cbEndTime.getItems().add(LocalTime.parse("07:00"));
+        cbEndTime.getItems().add(LocalTime.parse("07:15"));
+        cbEndTime.getItems().add(LocalTime.parse("07:30"));
+        cbEndTime.getItems().add(LocalTime.parse("07:45"));
+        cbEndTime.getItems().add(LocalTime.parse("08:00"));
         cbEndTime.getItems().add(LocalTime.parse("08:15"));
         cbEndTime.getItems().add(LocalTime.parse("08:30"));
         cbEndTime.getItems().add(LocalTime.parse("08:45"));

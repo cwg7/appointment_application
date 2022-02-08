@@ -126,6 +126,10 @@ public class ModAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactsComboBox;
 
+    //private LocalDate selectedDate;
+    private LocalDateTime startDateAndTime;
+    private LocalDateTime endDateAndTime;
+
 
     public void showAppointments() {
         ObservableList<Appointment> list = MainMenuController.getAppointments();
@@ -260,6 +264,10 @@ public class ModAppointmentController implements Initializable {
             LocalTime startTime = cbStartTime.getValue();
             LocalTime endTime = cbEndTime.getValue();
 
+            /*selectedDate = datePicker.getValue();
+            startTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
+            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
+
             LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate,startTime);
             LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate,endTime);
 
@@ -287,20 +295,15 @@ public class ModAppointmentController implements Initializable {
                     isThere = true;
                 }
             }
-
             if (isThere) {
                 pstatement.setInt(8, Integer.parseInt(tfUserID.getText()));
-
             }
             else{
                 Alerts.invalidUserID();
                 return;
-
-
             }
 
-
-            if (String.valueOf(DBQuery.getAllContactIDs()).contains(tfContactID.getText())){
+       if (String.valueOf(DBQuery.getAllContactIDs()).contains(tfContactID.getText())){
                 pstatement.setInt(9, Integer.parseInt(tfContactID.getText()));
                 pstatement.setInt(10, Integer.parseInt(tfApptID.getText()));
                 pstatement.execute();

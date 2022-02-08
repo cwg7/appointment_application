@@ -327,13 +327,6 @@ public class ReportsController implements Initializable {
     @FXML
     public void viewApptByContactName() throws IOException {
 
-        //String selectedContact = contactsComboBox.getValue();
-       // String selectedContact;
-       // selectedContact = contactsComboBox.getValue();
-        //apptTable.setItems(getAppointments());
-        //System.out.println(selectedContact);
-        //System.out.println(contactsComboBox.getSelectionModel().getSelectedIndex());
-
         int selectedIndex = contactsComboBox.getSelectionModel().getSelectedIndex();
         int contact_id;
 
@@ -392,6 +385,7 @@ public class ReportsController implements Initializable {
         apptTable.setItems(getAppointments());
         viewApptByContactName();
         //contactsComboBox.setItems(null);
+        contactsComboBox.getItems().clear();
     }
 
 

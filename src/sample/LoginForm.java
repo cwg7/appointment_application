@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -243,6 +244,15 @@ public class LoginForm implements Initializable {
 
     }
 
+    ZoneId zoneID =ZonedDateTime.now().getZone();
+    ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(zoneID);
+    public ZonedDateTime userTime = zonedDateTime;
+
+/*
+    public static <ZonedDateTime getZonedDateTime(){
+        return userTime;
+    }
+*/
 
     public void recordLoginActivity() {
         String username = tfUserName.getText();

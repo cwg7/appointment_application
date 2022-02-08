@@ -92,6 +92,15 @@ public class Alerts {
         alert.showAndWait();
 
     }
+    public static void invalidEndTime(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Warning");
+        alert.setContentText("Invalid time selection. End time for the appointment must be after scheduled start time.");
+        alert.showAndWait();
+
+    }
 
     public static void invalidFieldHandler(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

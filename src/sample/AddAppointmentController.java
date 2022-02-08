@@ -137,7 +137,9 @@ public class AddAppointmentController implements Initializable {
     }
 
    
-
+/**
+ * THIS IS A JAVADOC COMMENT
+ */
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -291,18 +293,18 @@ public class AddAppointmentController implements Initializable {
             //Use system default zone Id:
             ZoneId userZoneId = ZoneId.systemDefault();
 
-            //Assign customer selected times to system default ZoneId:
+            //assign customer selected times to system default ZoneId:
             ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
             ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
 
-            //Assign variable for eastern time zone:
+            //assign variable for eastern time zone:
             ZoneId estZoneId = ZoneId.of("US/Eastern");
 
-            //Convert times user picked from system default time to Eastern time:
+            //convert times user picked from system default time to Eastern time:
             ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
             ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
 
-            //Convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
+            //convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
             LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
             LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
 
@@ -319,7 +321,7 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
-            //Compare converted Eastern time zone appt times picked by user to set business hours in EST:
+            //compare converted Eastern time zone appt times picked by user to set business hours in EST:
             if (userStartEST.isBefore(absoluteStart) || userEndEST.isAfter(absoluteEnd)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");

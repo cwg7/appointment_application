@@ -165,9 +165,13 @@ public class ModAppointmentController implements Initializable {
             Appointment selectedAppointment;
             selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
 
-            LocalDateTime startTime = selectedAppointment.getStart_time();
-            LocalDate selectedDate = startTime.toLocalDate();
-            LocalTime startClock = startTime.toLocalTime();
+            LocalDateTime startDateAndTime = selectedAppointment.getStart_time();
+            LocalDate selectedDate = startDateAndTime.toLocalDate();
+
+            LocalTime startClock = startDateAndTime.toLocalTime();
+
+            /*startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
+            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
 
             LocalDateTime endTime = selectedAppointment.getEnd_time();
             LocalTime endClock =  endTime.toLocalTime();

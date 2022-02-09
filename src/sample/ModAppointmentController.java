@@ -18,9 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ResourceBundle;
 import sample.Appointment;
 
@@ -242,6 +240,9 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    private final LocalTime absoluteStart = LocalTime.of(8, 0);
+    private final LocalTime absoluteEnd = LocalTime.of(22, 0);
+
     public void preparedUpdate() {
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
        /*
@@ -274,6 +275,89 @@ public class ModAppointmentController implements Initializable {
 
             LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate,startTime);
             LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate,endTime);
+
+
+
+            /// playing around with this stuff here.............
+
+            selectedDate = datePicker.getValue();
+            startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
+            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
+
+
+            //////////
+            ///////////
+            ///////////
+            // experimenting w/ ZonedDateTime here..
+
+            //Use system default zone Id:
+            ZoneId userZoneId = ZoneId.systemDefault();
+
+            //assign customer selected times to system default ZoneId:
+            ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
+            ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
+
+            //assign variable for eastern time zone:
+            ZoneId estZoneId = ZoneId.of("US/Eastern");
+
+            //convert times user picked from system default time to Eastern time:
+            ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
+            ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
+
+            //convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
+            LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
+            LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
+
+
+            if(userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Selected appointment start time is after or equal to end time.");
+                alert.setContentText("Please select different appointment start and/or end time slot.");
+
+                alert.showAndWait();
+                return;
+            }
+
+            //compare converted Eastern time zone appt times picked by user to set business hours in EST:
+            if (userStartEST.isBefore(absoluteStart) || userEndEST.isAfter(absoluteEnd)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Selected appointment times are outside of business hours.");
+                alert.setContentText("Please select different appointment times. Business hours are between 8:00AM-10:00PM EST.");
+
+                alert.showAndWait();
+                return;
+            }
+
+
+
+            if (tfApptID.getText() == tfApptID.getText()) {
+                if (matchCustomerAppt() == true) {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Scheduling Error.");
+                    alert.setHeaderText("The desired timeslots for the modified appointment will overlap with another existing appointment for this customer.");
+                    alert.setContentText("Please select another appointment time.");
+                    alert.showAndWait();
+                    return;
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            ////////////
 
 
 
@@ -383,8 +467,68 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    public boolean matchCustomerAppt() {
+        ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
+        boolean match = false;
+        for (int i = 0; i < apptMatches.size(); i++) {
+            Appointment appt = apptMatches.get(i);
+            LocalDateTime startAppt = appt.getStart_time();
+            LocalDateTime endAppt = appt.getEnd_time();
+
+            if (startDateAndTime.isAfter(startAppt.minusMinutes(1)) && startDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+                match = true;
+                break;
+
+            } else if (endDateAndTime.isAfter(startAppt.minusMinutes(1)) && endDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+                match = true;
+                break;
+
+            } else if (startDateAndTime.isBefore(startAppt.plusMinutes(1)) && endDateAndTime.isAfter(endAppt.minusMinutes(1))) {
+                match = true;
+                break;
+
+            } else {
+                match = false;
+                continue;
+            }
+        }
+        return match;
+    }
+
     public void setComboBoxStart(){
 
+        cbStartTime.getItems().add(LocalTime.parse("00:00"));
+        cbStartTime.getItems().add(LocalTime.parse("00:15"));
+        cbStartTime.getItems().add(LocalTime.parse("00:30"));
+        cbStartTime.getItems().add(LocalTime.parse("00:45"));
+        cbStartTime.getItems().add(LocalTime.parse("01:00"));
+        cbStartTime.getItems().add(LocalTime.parse("01:15"));
+        cbStartTime.getItems().add(LocalTime.parse("01:30"));
+        cbStartTime.getItems().add(LocalTime.parse("01:45"));
+        cbStartTime.getItems().add(LocalTime.parse("02:00"));
+        cbStartTime.getItems().add(LocalTime.parse("02:15"));
+        cbStartTime.getItems().add(LocalTime.parse("02:30"));
+        cbStartTime.getItems().add(LocalTime.parse("02:45"));
+        cbStartTime.getItems().add(LocalTime.parse("03:00"));
+        cbStartTime.getItems().add(LocalTime.parse("03:15"));
+        cbStartTime.getItems().add(LocalTime.parse("03:30"));
+        cbStartTime.getItems().add(LocalTime.parse("03:45"));
+        cbStartTime.getItems().add(LocalTime.parse("04:00"));
+        cbStartTime.getItems().add(LocalTime.parse("04:15"));
+        cbStartTime.getItems().add(LocalTime.parse("04:30"));
+        cbStartTime.getItems().add(LocalTime.parse("04:45"));
+        cbStartTime.getItems().add(LocalTime.parse("05:00"));
+        cbStartTime.getItems().add(LocalTime.parse("05:15"));
+        cbStartTime.getItems().add(LocalTime.parse("05:30"));
+        cbStartTime.getItems().add(LocalTime.parse("05:45"));
+        cbStartTime.getItems().add(LocalTime.parse("06:00"));
+        cbStartTime.getItems().add(LocalTime.parse("06:15"));
+        cbStartTime.getItems().add(LocalTime.parse("06:30"));
+        cbStartTime.getItems().add(LocalTime.parse("06:45"));
+        cbStartTime.getItems().add(LocalTime.parse("07:00"));
+        cbStartTime.getItems().add(LocalTime.parse("07:15"));
+        cbStartTime.getItems().add(LocalTime.parse("07:30"));
+        cbStartTime.getItems().add(LocalTime.parse("07:45"));
         cbStartTime.getItems().add(LocalTime.parse("08:00"));
         cbStartTime.getItems().add(LocalTime.parse("08:15"));
         cbStartTime.getItems().add(LocalTime.parse("08:30"));
@@ -441,11 +585,52 @@ public class ModAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("21:15"));
         cbStartTime.getItems().add(LocalTime.parse("21:30"));
         cbStartTime.getItems().add(LocalTime.parse("21:45"));
+        cbStartTime.getItems().add(LocalTime.parse("22:00"));
+        cbStartTime.getItems().add(LocalTime.parse("22:15"));
+        cbStartTime.getItems().add(LocalTime.parse("22:30"));
+        cbStartTime.getItems().add(LocalTime.parse("22:45"));
+        cbStartTime.getItems().add(LocalTime.parse("23:00"));
+        cbStartTime.getItems().add(LocalTime.parse("23:15"));
+        cbStartTime.getItems().add(LocalTime.parse("23:30"));
+        cbStartTime.getItems().add(LocalTime.parse("23:45"));
 
     }
 
     public void setComboBoxEnd(){
 
+        cbEndTime.getItems().add(LocalTime.parse("00:00"));
+        cbEndTime.getItems().add(LocalTime.parse("00:15"));
+        cbEndTime.getItems().add(LocalTime.parse("00:30"));
+        cbEndTime.getItems().add(LocalTime.parse("00:45"));
+        cbEndTime.getItems().add(LocalTime.parse("01:00"));
+        cbEndTime.getItems().add(LocalTime.parse("01:15"));
+        cbEndTime.getItems().add(LocalTime.parse("01:30"));
+        cbEndTime.getItems().add(LocalTime.parse("01:45"));
+        cbEndTime.getItems().add(LocalTime.parse("02:00"));
+        cbEndTime.getItems().add(LocalTime.parse("02:15"));
+        cbEndTime.getItems().add(LocalTime.parse("02:30"));
+        cbEndTime.getItems().add(LocalTime.parse("02:45"));
+        cbEndTime.getItems().add(LocalTime.parse("03:00"));
+        cbEndTime.getItems().add(LocalTime.parse("03:15"));
+        cbEndTime.getItems().add(LocalTime.parse("03:30"));
+        cbEndTime.getItems().add(LocalTime.parse("03:45"));
+        cbEndTime.getItems().add(LocalTime.parse("04:00"));
+        cbEndTime.getItems().add(LocalTime.parse("04:15"));
+        cbEndTime.getItems().add(LocalTime.parse("04:30"));
+        cbEndTime.getItems().add(LocalTime.parse("04:45"));
+        cbEndTime.getItems().add(LocalTime.parse("05:00"));
+        cbEndTime.getItems().add(LocalTime.parse("05:15"));
+        cbEndTime.getItems().add(LocalTime.parse("05:30"));
+        cbEndTime.getItems().add(LocalTime.parse("05:45"));
+        cbEndTime.getItems().add(LocalTime.parse("06:00"));
+        cbEndTime.getItems().add(LocalTime.parse("06:15"));
+        cbEndTime.getItems().add(LocalTime.parse("06:30"));
+        cbEndTime.getItems().add(LocalTime.parse("06:45"));
+        cbEndTime.getItems().add(LocalTime.parse("07:00"));
+        cbEndTime.getItems().add(LocalTime.parse("07:15"));
+        cbEndTime.getItems().add(LocalTime.parse("07:30"));
+        cbEndTime.getItems().add(LocalTime.parse("07:45"));
+        cbEndTime.getItems().add(LocalTime.parse("08:00"));
         cbEndTime.getItems().add(LocalTime.parse("08:15"));
         cbEndTime.getItems().add(LocalTime.parse("08:30"));
         cbEndTime.getItems().add(LocalTime.parse("08:45"));
@@ -502,6 +687,13 @@ public class ModAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("21:30"));
         cbEndTime.getItems().add(LocalTime.parse("21:45"));
         cbEndTime.getItems().add(LocalTime.parse("22:00"));
+        cbEndTime.getItems().add(LocalTime.parse("22:15"));
+        cbEndTime.getItems().add(LocalTime.parse("22:30"));
+        cbEndTime.getItems().add(LocalTime.parse("22:45"));
+        cbEndTime.getItems().add(LocalTime.parse("23:00"));
+        cbEndTime.getItems().add(LocalTime.parse("23:15"));
+        cbEndTime.getItems().add(LocalTime.parse("23:30"));
+        cbEndTime.getItems().add(LocalTime.parse("23:45"));
 
 
     }

@@ -488,7 +488,7 @@ public class DBQuery {
         // was newDivisionName
     }
 
-    public static ObservableList<Appointment> getAppointmentsPerCustomer(int id) {
+    public static ObservableList<Appointment> getAppointmentsPerCustomer(int customer_id) {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM appointments WHERE Customer_ID = ?";
@@ -499,7 +499,7 @@ public class DBQuery {
         Appointment appointment = null;
         try {
             st = conn.prepareStatement(query);
-            st.setInt(1, id);
+            st.setInt(1, customer_id);
             rs = st.executeQuery();
            // Appointment appointment;
             while (rs.next()) {
@@ -541,6 +541,34 @@ public class DBQuery {
         }
         return appointmentsList;
     }
+
+    /*public static ObservableList<Appointment> getAppointmentsPerCustomer(int id) {
+        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM appointments WHERE Contact_ID = ?";
+        PreparedStatement st;
+        ResultSet rs;
+
+        // rs.getInt("Customer_ID"),
+        Appointment appointment = null;
+        try {
+            st = conn.prepareStatement(query);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            // Appointment appointment;
+            while (rs.next()) {
+                appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
+                        rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
+                appointmentsList.add(appointment);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return appointmentsList;
+    }*/
+
 
 
 

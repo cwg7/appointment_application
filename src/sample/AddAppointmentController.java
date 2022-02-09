@@ -126,9 +126,6 @@ public class AddAppointmentController implements Initializable {
     private TextArea taTestArea;
 
 
-
-
-
     private Stage stage;
     private Scene scene;
 
@@ -136,10 +133,10 @@ public class AddAppointmentController implements Initializable {
     public AddAppointmentController() throws SQLException {
     }
 
-   
-/**
- * THIS IS A JAVADOC COMMENT
- */
+
+    /**
+     * THIS IS A JAVADOC COMMENT
+     */
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -220,12 +217,12 @@ public class AddAppointmentController implements Initializable {
         stage.show();
 
     }
+
     @FXML
     public void selectCustomerButtonClick(ActionEvent event) throws IOException {
-        if (customerTable.getSelectionModel().getSelectedItem() == null){
+        if (customerTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectHandler();
-        }
-        else {
+        } else {
             addAppointmentButton.setDisable(false);
             Customer selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
             int selectedCustomerID = selectedCustomer.getId();
@@ -238,17 +235,14 @@ public class AddAppointmentController implements Initializable {
     }
 
 
-
-
-    public void validateFields(){
+    public void validateFields() {
         if (tfTitle.getText() == null || tfDescription.getText() == null || tfLocation.getText() == null
                 || tfType.getText() == null || datePicker.getValue() == null || cbStartTime.getValue() == null
                 || cbEndTime.getValue() == null || userID_box.getValue() == null || contactName_box.getValue() == null) {
-  //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
-  //
+            //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
+            //
             Alerts.invalidFieldHandler();
-        }
-        else{
+        } else {
             tfTitle.clear();
             tfDescription.clear();
             tfLocation.clear();
@@ -261,11 +255,12 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-// trying this here...
+    // trying this here...
     private final LocalTime absoluteStart = LocalTime.of(8, 0);
     private final LocalTime absoluteEnd = LocalTime.of(22, 0);
-//////
-    public void preparedInsert(){
+
+    //////
+    public void preparedInsert() {
         //verify();
         //getInfo();
 
@@ -281,8 +276,8 @@ public class AddAppointmentController implements Initializable {
             pstatement.setString(4, tfType.getText());
 
             selectedDate = datePicker.getValue();
-            startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
-            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
+            startDateAndTime = LocalDateTime.of(selectedDate, cbStartTime.getValue());
+            endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
 
 
             //////////
@@ -311,7 +306,7 @@ public class AddAppointmentController implements Initializable {
             //Validate times in order/doesn't cross:
 
 
-            if(userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
+            if (userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setHeaderText("Selected appointment start time is after or equal to end time.");
@@ -331,6 +326,30 @@ public class AddAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
+            ///experimenting w/ appt overlap here..
+          /*  int customer_id = Integer.parseInt(tfCustomerID.getText());
+            ObservableList selectedCustomerAppts = FXCollections.observableArrayList();
+            selectedCustomerAppts.add(DBQuery.getAppointmentsPerCustomer(customer_id));
+            int apptCount = selectedCustomerAppts.size();
+
+            if (selectedCustomerAppts != null) {
+                System.out.println("There are " + apptCount + " appointments ALREADY scheduled for this customer.");
+            }*/
+
+
+            //Check if there is a previously scheduled appointment for customer that will overlap with new appt:
+            if (matchCustomerAppt() == true) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Scheduling Error.");
+                alert.setHeaderText("The desired timeslots will overlap with another existing appointment for this customer.");
+                alert.setContentText("Please select another appointment time.");
+
+                alert.showAndWait();
+
+                return;
+            }
+                ///////////////////////
 
             // END ZONEDATETIME experimentation...
             /////////////
@@ -338,11 +357,10 @@ public class AddAppointmentController implements Initializable {
             ////////
 
 
-
             //pstatement.setTimestamp(5, Timestamp.valueOf(zoneDateTimeStart));
             // had this below originally vvv Do not Delete!
             pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
-            System.out.println("user selected start time: " +startDateAndTime);
+            System.out.println("user selected start time: " + startDateAndTime);
             //
 
             //new variable
@@ -368,9 +386,7 @@ public class AddAppointmentController implements Initializable {
             ObservableList<Contacts> contactsOL = AddAppointmentController.getContactsList();
             String tempContactName = contactName_box.getSelectionModel().getSelectedItem();
             int contactID = 0;
-            for (Contacts contact : contactsOL)
-
-            {
+            for (Contacts contact : contactsOL) {
                 if (tempContactName.equals(contact.getContact_name())) {
                     contactID = contact.getContact_id();
                 }
@@ -409,6 +425,37 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    /** This method tests if the new appointment to be scheduled overlaps with an existing appointment on record.
+     * @return Returns match that contains a boolean value. True if there is an overlapping appointment.
+     * False if there are no matches.*/
+    public boolean matchCustomerAppt() {
+        ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
+        boolean match = false;
+        for (int i = 0; i < apptMatches.size(); i++) {
+            Appointment appt = apptMatches.get(i);
+            LocalDateTime startAppt = appt.getStart_time();
+            LocalDateTime endAppt = appt.getEnd_time();
+
+            if (startDateAndTime.isAfter(startAppt.minusMinutes(1)) && startDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+                match = true;
+                break;
+
+            } else if (endDateAndTime.isAfter(startAppt.minusMinutes(1)) && endDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+                match = true;
+                break;
+
+            } else if (startDateAndTime.isBefore(startAppt.plusMinutes(1)) && endDateAndTime.isAfter(endAppt.minusMinutes(1))) {
+                match = true;
+                break;
+
+            } else {
+                match = false;
+                continue;
+            }
+        }
+        return match;
+    }
+
 
 
 
@@ -439,7 +486,30 @@ public class AddAppointmentController implements Initializable {
 
 
 
-
+        cbStartTime.getItems().add(LocalTime.parse("00:00"));
+        cbStartTime.getItems().add(LocalTime.parse("00:15"));
+        cbStartTime.getItems().add(LocalTime.parse("00:30"));
+        cbStartTime.getItems().add(LocalTime.parse("00:45"));
+        cbStartTime.getItems().add(LocalTime.parse("01:00"));
+        cbStartTime.getItems().add(LocalTime.parse("01:15"));
+        cbStartTime.getItems().add(LocalTime.parse("01:30"));
+        cbStartTime.getItems().add(LocalTime.parse("01:45"));
+        cbStartTime.getItems().add(LocalTime.parse("02:00"));
+        cbStartTime.getItems().add(LocalTime.parse("02:15"));
+        cbStartTime.getItems().add(LocalTime.parse("02:30"));
+        cbStartTime.getItems().add(LocalTime.parse("02:45"));
+        cbStartTime.getItems().add(LocalTime.parse("03:00"));
+        cbStartTime.getItems().add(LocalTime.parse("03:15"));
+        cbStartTime.getItems().add(LocalTime.parse("03:30"));
+        cbStartTime.getItems().add(LocalTime.parse("03:45"));
+        cbStartTime.getItems().add(LocalTime.parse("04:00"));
+        cbStartTime.getItems().add(LocalTime.parse("04:15"));
+        cbStartTime.getItems().add(LocalTime.parse("04:30"));
+        cbStartTime.getItems().add(LocalTime.parse("04:45"));
+        cbStartTime.getItems().add(LocalTime.parse("05:00"));
+        cbStartTime.getItems().add(LocalTime.parse("05:15"));
+        cbStartTime.getItems().add(LocalTime.parse("05:30"));
+        cbStartTime.getItems().add(LocalTime.parse("05:45"));
         cbStartTime.getItems().add(LocalTime.parse("06:00"));
         cbStartTime.getItems().add(LocalTime.parse("06:15"));
         cbStartTime.getItems().add(LocalTime.parse("06:30"));
@@ -504,7 +574,7 @@ public class AddAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("21:15"));
         cbStartTime.getItems().add(LocalTime.parse("21:30"));
         cbStartTime.getItems().add(LocalTime.parse("21:45"));
-       /* cbStartTime.getItems().add(LocalTime.parse("22:00"));
+        cbStartTime.getItems().add(LocalTime.parse("22:00"));
         cbStartTime.getItems().add(LocalTime.parse("22:15"));
         cbStartTime.getItems().add(LocalTime.parse("22:30"));
         cbStartTime.getItems().add(LocalTime.parse("22:45"));
@@ -512,8 +582,8 @@ public class AddAppointmentController implements Initializable {
         cbStartTime.getItems().add(LocalTime.parse("23:15"));
         cbStartTime.getItems().add(LocalTime.parse("23:30"));
         cbStartTime.getItems().add(LocalTime.parse("23:45"));
-*/
-        /*cbEndTime.getItems().add(LocalTime.parse("00:00"));
+
+        cbEndTime.getItems().add(LocalTime.parse("00:00"));
         cbEndTime.getItems().add(LocalTime.parse("00:15"));
         cbEndTime.getItems().add(LocalTime.parse("00:30"));
         cbEndTime.getItems().add(LocalTime.parse("00:45"));
@@ -538,14 +608,6 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("05:30"));
         cbEndTime.getItems().add(LocalTime.parse("05:45"));
         cbEndTime.getItems().add(LocalTime.parse("06:00"));
-        cbEndTime.getItems().add(LocalTime.parse("06:15"));
-        cbEndTime.getItems().add(LocalTime.parse("06:30"));
-        cbEndTime.getItems().add(LocalTime.parse("06:45"));
-        cbEndTime.getItems().add(LocalTime.parse("07:00"));
-        cbEndTime.getItems().add(LocalTime.parse("07:15"));
-        cbEndTime.getItems().add(LocalTime.parse("07:30"));
-        cbEndTime.getItems().add(LocalTime.parse("07:45"));
-        cbEndTime.getItems().add(LocalTime.parse("08:00"));*/
         cbEndTime.getItems().add(LocalTime.parse("06:15"));
         cbEndTime.getItems().add(LocalTime.parse("06:30"));
         cbEndTime.getItems().add(LocalTime.parse("06:45"));
@@ -610,7 +672,7 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("21:30"));
         cbEndTime.getItems().add(LocalTime.parse("21:45"));
         cbEndTime.getItems().add(LocalTime.parse("22:00"));
-        /*cbEndTime.getItems().add(LocalTime.parse("22:15"));
+        cbEndTime.getItems().add(LocalTime.parse("22:15"));
         cbEndTime.getItems().add(LocalTime.parse("22:30"));
         cbEndTime.getItems().add(LocalTime.parse("22:45"));
         cbEndTime.getItems().add(LocalTime.parse("23:00"));
@@ -618,7 +680,7 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("23:30"));
         cbEndTime.getItems().add(LocalTime.parse("23:45"));
 
-*/
+
 
 
 

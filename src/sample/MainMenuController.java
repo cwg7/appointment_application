@@ -71,10 +71,7 @@ public class MainMenuController implements Initializable {
     //private TableColumn <Appointment, String> contactCol;
 
     //hidden comment
-    @FXML
-    private Button goToPractice;
-    @FXML
-    private Button morePractice;
+
     @FXML
     private Button logoutButton;
     @FXML
@@ -263,25 +260,6 @@ public class MainMenuController implements Initializable {
                 .collect(Collectors.toList());
 
         apptTable.setItems(FXCollections.observableList(apptsThisWeek));
-
-    }
-
-
-    public void goPractice(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("practice.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-    }
-
-    public void morePractice(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("morePractice.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
 
     }
 

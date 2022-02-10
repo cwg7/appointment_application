@@ -45,7 +45,6 @@
       <ComboBox fx:id="userID_box" layoutX="503.0" layoutY="347.0" prefWidth="150.0" />
       <ComboBox fx:id="contactName_box" layoutX="503.0" layoutY="388.0" prefWidth="150.0" />
       <Label fx:id="lblContactName" layoutX="399.0" layoutY="392.0" text="Contact Name" />
-      <Button fx:id="practiceTimeButton" layoutX="665.0" layoutY="560.0" mnemonicParsing="false" onAction="#goToTimePage" text="Go to Time Stuff" />
       <Label fx:id="lblDate" layoutX="424.0" layoutY="228.0" text="Date" />
       <DatePicker fx:id="datePicker" layoutX="491.0" layoutY="224.0" />
       <ComboBox fx:id="cbStartTime" layoutX="503.0" layoutY="266.0" prefWidth="150.0" />

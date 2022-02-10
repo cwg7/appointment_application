@@ -385,7 +385,7 @@ public class ReportsController implements Initializable {
         apptTable.setItems(getAppointments());
         viewApptByContactName();
         //contactsComboBox.setItems(null);
-        contactsComboBox.getItems().clear();
+        //dcontactsComboBox.getItems().clear();
     }
 
 

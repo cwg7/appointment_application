@@ -154,9 +154,14 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void appointmentOverlaps(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Scheduling Error.");
+        alert.setHeaderText("The desired timeslots will overlap with another existing appointment for this customer.");
+        alert.setContentText("Please select another appointment time.");
+        alert.showAndWait();
 
-
-
+    }
     public static void deleteSuccessful(){
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

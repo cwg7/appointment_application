@@ -1,7 +1,5 @@
 package sample;
 
-import com.mysql.cj.xdevapi.Table;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,9 +17,6 @@ import java.net.URL;
 import java.sql.*;
 import java.time.*;
 import java.util.ResourceBundle;
-import sample.Appointment;
-
-import javax.swing.*;
 
 import static java.sql.Timestamp.valueOf;
 
@@ -333,7 +327,7 @@ public class ModAppointmentController implements Initializable {
 
 
             if (tfApptID.getText() == tfApptID.getText()) {
-                if (matchCustomerAppt() == true) {
+                if (checkApptOverlap() == true) {
 
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Scheduling Error.");
@@ -467,7 +461,7 @@ public class ModAppointmentController implements Initializable {
 
     }
 
-    public boolean matchCustomerAppt() {
+    public boolean checkApptOverlap() {
         ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
         boolean match = false;
         for (int i = 0; i < apptMatches.size(); i++) {

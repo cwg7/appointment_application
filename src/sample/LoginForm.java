@@ -61,6 +61,7 @@ public class LoginForm implements Initializable {
 
     String enteredPassword;
     String correctPassword;
+
     @FXML
     public void handleUserLogin(ActionEvent event) throws IOException {
         DBQuery.getUserNames();
@@ -120,22 +121,10 @@ public class LoginForm implements Initializable {
     }
 
 
-
-
-    public void clearFields(){
+    public void clearFields() {
         tfUserName.clear();
         tfPassword.clear();
     }
-
-
-
-
-
-
-
-
-
-
 
 
     @FXML
@@ -244,7 +233,7 @@ public class LoginForm implements Initializable {
 
     }
 
-    ZoneId zoneID =ZonedDateTime.now().getZone();
+    ZoneId zoneID = ZonedDateTime.now().getZone();
     ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(zoneID);
     public ZonedDateTime userTime = zonedDateTime;
 
@@ -256,27 +245,22 @@ public class LoginForm implements Initializable {
 
     public void recordLoginActivity() {
         String username = tfUserName.getText();
-        try(FileWriter fw = new FileWriter("login_activity.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-
-
-        {
+        try (FileWriter fw = new FileWriter("login_activity.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             String text = (String) grabLoginData(tfUserName.getText());
             out.print(grabTimestamp(LocalDateTime.now()));
             out.print(" Username:" + grabLoginData(" " + tfUserName.getText()));
 
 
-            if (DBQuery.getUserNames().contains(username)){
+            if (DBQuery.getUserNames().contains(username)) {
 
                 if (DBQuery.getUserPassword(username).equals(tfPassword.getText())) {
                     out.println(" " + "Login Attempt: Successful");
-                }
-                else{
+                } else {
                     out.println(" " + "Login Attempt: Unsuccessful");
                 }
-            }
-            else {
+            } else {
                 out.println(" " + "Login Attempt: Unsuccessful");
             }
 
@@ -291,7 +275,7 @@ public class LoginForm implements Initializable {
         return true;
     }
 
-    public boolean loginFalse(boolean bool){
+    public boolean loginFalse(boolean bool) {
         bool = false;
         return false;
     }
@@ -304,7 +288,7 @@ public class LoginForm implements Initializable {
 
     Alert alert1;
 
-    public static void incorectPassword(){
+    public static void incorectPassword() {
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
         alert1.initModality(Modality.NONE);
         alert1.setTitle("alert1Title");
@@ -316,14 +300,15 @@ public class LoginForm implements Initializable {
 
         //alert1.setHeaderText(alert1.getHeaderText());
 
-       // alert1.setContentText(alert1.getContentText());
+        // alert1.setContentText(alert1.getContentText());
         alert1.showAndWait();
     }
 
     private static String errorHeaderIncorrect2;
     public static String errorContentIncorrect2;
     Alert alert2;
-    public static void incorrectUsername(){
+
+    public static void incorrectUsername() {
         Alert alert2 = new Alert(Alert.AlertType.ERROR);
         alert2.initModality(Modality.NONE);
         alert2.setTitle(errorTitle);
@@ -336,10 +321,10 @@ public class LoginForm implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        lblZoneID.setText("Zone ID: " +ZoneId.systemDefault().toString());
+        lblZoneID.setText("Zone ID: " + ZoneId.systemDefault().toString());
 
         ResourceBundle rb = ResourceBundle.getBundle("sample/languages", Locale.getDefault());
-        if (Locale.getDefault().getLanguage().equals("fr")  || Locale.getDefault().getLanguage().equals("en")){
+        if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
             lblZoneID.setText(rb.getString("lblZoneID") + ZoneId.systemDefault().toString());
             lblUserName.setText(rb.getString("lblUsername"));
             lblPassword.setText(rb.getString("lblPassword"));

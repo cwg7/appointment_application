@@ -1,7 +1,6 @@
 package sample;
 
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,12 +18,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.*;
-import java.util.EventObject;
 import java.util.ResourceBundle;
-import sample.Contacts;
 
 import static java.sql.Timestamp.valueOf;
 
+
+/**
+ * This class allows the user to schedule new appointments. Users can select an existing customer from the database
+ * to make appointments for. Data for new appointments is collected via textfields and comboboxes.
+ */
 public class AddAppointmentController implements Initializable {
 
     @FXML
@@ -130,12 +132,8 @@ public class AddAppointmentController implements Initializable {
     private Scene scene;
 
 
-    public AddAppointmentController() throws SQLException {
-    }
-
-
     /**
-     * THIS IS A JAVADOC COMMENT
+     * @return Returns array list of customer data (id, name, address, postal code, phone, division id)
      */
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -158,11 +156,13 @@ public class AddAppointmentController implements Initializable {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
         return customerList;
     }
 
+    /**
+     * This method displays customer data in the tableview
+     */
     public void showCustomers() {
         ObservableList<Customer> list = getCustomerList();
         customerIDCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
@@ -172,14 +172,16 @@ public class AddAppointmentController implements Initializable {
 
     }
 
+    /**
+     *
+     * @return Returns an array of contact data (contact id, contact name, contact email)
+     */
     public static ObservableList<Contacts> getContactsList() {
         ObservableList<Contacts> newContactsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM contacts";
         Statement st;
         ResultSet rs;
-
-        // rs.getInt("Customer_ID"),
 
         try {
             st = conn.createStatement();
@@ -190,24 +192,28 @@ public class AddAppointmentController implements Initializable {
                         rs.getString("Email"));
                 newContactsList.add(contact);
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
         return newContactsList;
     }
 
+    /**
+     * This method displays contact info on a small tableview on the top right of the screen
+     */
     public void showContacts() {
         ObservableList<Contacts> list = getContactsList();
         contactIDCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("contact_id"));
         contactNameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("contact_name"));
         contactsTable.setItems(list);
-
-
     }
 
 
+    /**
+     * This method allows the user to leave the current screen and go back to the main menu.
+     * @param event (mouse click on Go Back button)
+     * @throws IOException
+     */
     @FXML
     public void backToMainButtonClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -215,9 +221,14 @@ public class AddAppointmentController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
+    /**
+     * This method allows the user to select an existing customer to make an appointment for. Upon clicking, customer
+     * name and id are retrieved, so as to allow the user to make appointments for the selected customer.
+     * @param event (mouse click on select customer button)
+     * @throws IOException
+     */
     @FXML
     public void selectCustomerButtonClick(ActionEvent event) throws IOException {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
@@ -234,7 +245,10 @@ public class AddAppointmentController implements Initializable {
 
     }
 
-
+    /**
+     * This method checks to make sure the user has filled out all textfields, and also checks to see if comboboxes
+     * were selected correctly as well.
+     */
     public void validateFields() {
         if (tfTitle.getText() == null || tfDescription.getText() == null || tfLocation.getText() == null
                 || tfType.getText() == null || datePicker.getValue() == null || cbStartTime.getValue() == null
@@ -255,14 +269,14 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-    // trying this here...
-    private final LocalTime absoluteStart = LocalTime.of(8, 0);
-    private final LocalTime absoluteEnd = LocalTime.of(22, 0);
 
-    //////
+    private final LocalTime est8Am = LocalTime.of(8, 0);
+    private final LocalTime est10Pm = LocalTime.of(22, 0);
+
+    /**
+     * This method creates a new appointment and adds it to the database via a prepared statement.
+     */
     public void preparedInsert() {
-        //verify();
-        //getInfo();
 
         PreparedStatement pstatement;
         String sql = "INSERT into appointments(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?)";
@@ -317,7 +331,7 @@ public class AddAppointmentController implements Initializable {
             }
 
             //compare converted Eastern time zone appt times picked by user to set business hours in EST:
-            if (userStartEST.isBefore(absoluteStart) || userEndEST.isAfter(absoluteEnd)) {
+            if (userStartEST.isBefore(est8Am) || userEndEST.isAfter(est10Pm)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setHeaderText("Selected appointment times are outside of business hours.");
@@ -326,62 +340,26 @@ public class AddAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            ///experimenting w/ appt overlap here..
-          /*  int customer_id = Integer.parseInt(tfCustomerID.getText());
-            ObservableList selectedCustomerAppts = FXCollections.observableArrayList();
-            selectedCustomerAppts.add(DBQuery.getAppointmentsPerCustomer(customer_id));
-            int apptCount = selectedCustomerAppts.size();
-
-            if (selectedCustomerAppts != null) {
-                System.out.println("There are " + apptCount + " appointments ALREADY scheduled for this customer.");
-            }*/
 
 
             //Check if there is a previously scheduled appointment for customer that will overlap with new appt:
-            if (matchCustomerAppt() == true) {
-
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Scheduling Error.");
-                alert.setHeaderText("The desired timeslots will overlap with another existing appointment for this customer.");
-                alert.setContentText("Please select another appointment time.");
-
-                alert.showAndWait();
-
+            if (checkApptOverlap() == true) {
+                Alerts.appointmentOverlaps();
                 return;
             }
-                ///////////////////////
 
-            // END ZONEDATETIME experimentation...
-            /////////////
-            /////////
-            ////////
 
 
             //pstatement.setTimestamp(5, Timestamp.valueOf(zoneDateTimeStart));
             // had this below originally vvv Do not Delete!
             pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
             System.out.println("user selected start time: " + startDateAndTime);
-            //
-
-            //new variable
-
-            //endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
-
-           /* if (endDateAndTime.isBefore(startDateAndTime)){
-                Alerts.invalidEndTime();
-                return;
-
-            }*/
 
             pstatement.setTimestamp(6, Timestamp.valueOf(endDateAndTime));
-
-            //new variable
-
 
             pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
 
             pstatement.setInt(8, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
-
 
             ObservableList<Contacts> contactsOL = AddAppointmentController.getContactsList();
             String tempContactName = contactName_box.getSelectionModel().getSelectedItem();
@@ -390,24 +368,22 @@ public class AddAppointmentController implements Initializable {
                 if (tempContactName.equals(contact.getContact_name())) {
                     contactID = contact.getContact_id();
                 }
-
-
             }
             pstatement.setInt(9, Integer.parseInt(String.valueOf(contactID)));
-
-
             pstatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        //LocalDateTime timeInfo = tfStart.get
+
     }
 
 
+    /**
+     * This method allows the user to save new appointment information, so long as the data the user provided is valid
+     * @param event (mouse click Save Button)
+     * @throws IOException
+     */
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
-        //getInfo();
-        //validateFields();
-        //^validation check is not working
         preparedInsert();
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -425,10 +401,13 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
-    /** This method tests if the new appointment to be scheduled overlaps with an existing appointment on record.
+    /**
+     * This method tests if the new appointment to be scheduled overlaps with an existing appointment on record.
+     *
      * @return Returns match that contains a boolean value. True if there is an overlapping appointment.
-     * False if there are no matches.*/
-    public boolean matchCustomerAppt() {
+     * False if there are no matches.
+     */
+    public boolean checkApptOverlap() {
         ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
         boolean match = false;
         for (int i = 0; i < apptMatches.size(); i++) {
@@ -457,9 +436,12 @@ public class AddAppointmentController implements Initializable {
     }
 
 
-
-
-
+    /**
+     * This method initializes the add appointment screen. It populates both the customer and contact tables.
+     * And sets the localdatetime options for the user to select appointment times in comboboxes.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -483,7 +465,6 @@ public class AddAppointmentController implements Initializable {
         userID_box.setItems(DBQuery.getUserIDList());
         //DBQuery.getContactsNameList();
         contactName_box.setItems(DBQuery.getContactsNameList());
-
 
 
         cbStartTime.getItems().add(LocalTime.parse("00:00"));
@@ -681,33 +662,6 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("23:45"));
 
 
-
-
-
-       /* cbEndTime.getItems().add(LocalTime.parse("00:00"));
-        cbEndTime.getItems().add(LocalTime.parse("01:00"));
-        cbEndTime.getItems().add(LocalTime.parse("02:00"));
-        cbEndTime.getItems().add(LocalTime.parse("03:00"));
-        cbEndTime.getItems().add(LocalTime.parse("04:00"));
-        cbEndTime.getItems().add(LocalTime.parse("05:00"));
-        cbEndTime.getItems().add(LocalTime.parse("06:00"));
-        cbEndTime.getItems().add(LocalTime.parse("07:00"));
-        cbEndTime.getItems().add(LocalTime.parse("08:00"));
-        cbEndTime.getItems().add(LocalTime.parse("09:00"));
-        cbEndTime.getItems().add(LocalTime.parse("10:00"));
-        cbEndTime.getItems().add(LocalTime.parse("11:00"));
-        cbEndTime.getItems().add(LocalTime.parse("12:00"));
-        cbEndTime.getItems().add(LocalTime.parse("13:00"));
-        cbEndTime.getItems().add(LocalTime.parse("14:00"));
-        cbEndTime.getItems().add(LocalTime.parse("15:00"));
-        cbEndTime.getItems().add(LocalTime.parse("16:00"));
-        cbEndTime.getItems().add(LocalTime.parse("17:00"));
-        cbEndTime.getItems().add(LocalTime.parse("18:00"));
-        cbEndTime.getItems().add(LocalTime.parse("19:00"));
-        cbEndTime.getItems().add(LocalTime.parse("20:00"));
-        cbEndTime.getItems().add(LocalTime.parse("21:00"));
-        cbEndTime.getItems().add(LocalTime.parse("22:00"));
-        cbEndTime.getItems().add(LocalTime.parse("23:00"));*/
 
     }
 

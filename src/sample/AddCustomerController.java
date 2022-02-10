@@ -26,7 +26,11 @@ import static sample.Division.*;
 
 
 //public class AddCustomerController<appointmentsPerCustomerOL> implements Initializable {
-    public class AddCustomerController implements Initializable {
+
+/**
+ * This class allows users to add new customers to the database.
+ */
+public class AddCustomerController implements Initializable {
 
     @FXML
     private TableView customersTable;
@@ -73,23 +77,20 @@ import static sample.Division.*;
     @FXML
     ComboBox<String> division2_box;
 
-
-    //@FXML
-    //private Button addButton;
-
-    //Connection conn;
     @FXML
     private Button addCustomerButton;
     private Stage stage;
     private Scene scene;
 
+    /**
+     * @return Returns array of customer data (id, name, address, postal code, phone, division id)
+     */
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM customers";
         Statement st;
         ResultSet rs;
-
 
         try {
             st = conn.createStatement();
@@ -108,7 +109,9 @@ import static sample.Division.*;
         return customerList;
     }
 
-
+    /**
+     * This method populates customer data on the tableview
+     */
     public void showCustomers() {
         ObservableList<Customer> list = getCustomerList();
         idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
@@ -118,10 +121,11 @@ import static sample.Division.*;
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));
         customersTable.setItems(list);
-
-
     }
 
+    /**
+     * This method checks textfields and combobox selections to make sure the user entered data correctly
+     */
     public void verify() {
 
         if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty() || country_box.getItems().isEmpty()
@@ -129,11 +133,16 @@ import static sample.Division.*;
         {
             Alerts.checkFields();
         }
-
-
     }
 
 
+    /**
+     * This method allows users to add new customers to the database provided they fill out textfields correctly and
+     * make proper combobox selections
+     * @param event (mouse button click on add customer)
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     public void addCustomer(ActionEvent event) throws IOException, SQLException {
         //addCustomer();
@@ -147,8 +156,6 @@ import static sample.Division.*;
             tfPostalCode.clear();
             tfPhone.clear();
 
-
-            //tfDivision.clear();
         } else {
             preparedInsert();
             showCustomers();
@@ -158,15 +165,16 @@ import static sample.Division.*;
             tfPhone.clear();
             country_box.equals(null);
 
-
-            //tfDivision.clear();
         }
-
-
     }
 
 
-
+    /**
+     * This method directs the user to menu where they can modify customer data.
+     * @param event (mouse click on modify customer button)
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     public void modCustomerButton(ActionEvent event) throws IOException, SQLException {
         Parent root = FXMLLoader.load(getClass().getResource("modCustomer.fxml"));
@@ -176,6 +184,9 @@ import static sample.Division.*;
         stage.show();
     }
 
+    /**
+     * This method adds new customer information to the database and effectively creates a new customer.
+     */
     @FXML
     public void preparedInsert() {
         //verify();
@@ -195,10 +206,6 @@ import static sample.Division.*;
             for (Division division : divisionsOL)
 
             {
-               /* if (tempVal != null && tempVal.isEmpty()) {
-                    Alerts.checkFields();
-                }*/
-                 //if  (!tempVal.isEmpty())
                 if (tempVal == null) {
                     Alerts.checkFields();
                 }
@@ -206,11 +213,8 @@ import static sample.Division.*;
                     divisionID = division.getId();
                 }
 
-
             }
             pstatement.setInt(5, Integer.parseInt(String.valueOf(divisionID)));
-
-
             pstatement.execute();
         } catch (SQLException throwables) {
             //Alerts.checkFields();
@@ -218,6 +222,10 @@ import static sample.Division.*;
         }
     }
 
+    /**
+     *
+     * @return Returns an array of division data (division id, division (name), country id)
+     */
     public static ObservableList<Division> getDivisionIDList() {
         ObservableList<Division> newDivisionIDList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -225,7 +233,6 @@ import static sample.Division.*;
         Statement st;
         ResultSet rs;
 
-        // rs.getInt("Customer_ID"),
 
         try {
             st = conn.createStatement();
@@ -236,20 +243,15 @@ import static sample.Division.*;
                         rs.getInt("Country_ID"));
                 newDivisionIDList.add(division);
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
         return newDivisionIDList;
     }
 
 
 
-
-
-
-    public void preparedUpdate() {
+    /*public void preparedUpdate() {
         PreparedStatement pstatement = null;
         String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID WHERE id = ?";
         try {
@@ -264,8 +266,8 @@ import static sample.Division.*;
             throwables.printStackTrace();
         }
     }
-
-    private void executeQuery(String query) {
+*/
+   /* private void executeQuery(String query) {
         Connection conn = getConnection();
         Statement st;
         try {
@@ -275,17 +277,26 @@ import static sample.Division.*;
         } catch (Exception e) {
 
         }
-    }
+    }*/
 
+    /**
+     * This method redirects the user back to the main menu
+     * @param event (mouse click on back to main menu button)
+     * @throws IOException
+     */
     public void backToMain(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-
     }
+
+    /**
+     * This method sets corresponding division data based on country selection
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onCountrySelect(ActionEvent event) throws IOException {
         division2_box.setDisable(false);
@@ -297,7 +308,6 @@ import static sample.Division.*;
         switch (tempVal) {
             case "U.S":
                 division2_box.setItems(DBQuery.getUsDivisionList());
-
                 break;
             case "UK":
                 division2_box.setItems(DBQuery.getUKDivisionList());
@@ -309,42 +319,20 @@ import static sample.Division.*;
             default:
                 division2_box.setItems(DBQuery.getAllDivisionList());
 
-                //String divisionName = division2_box.getValue();
-
-
-
-
- /*           if (country_box.getValue().equals("U.S")) {
-                // division2_box.setItems(null);
-                division2_box.setItems(DBQuery.getUsDivisionList());
-
-            }
-
-            else if (country_box.getValue().equals("UK")) {
-                division2_box.setItems(DBQuery.getUKDivisionList());
-               //break;
-            } else if (country_box.getValue().equals("Canada")) {
-                division2_box.setItems(DBQuery.getCanadaDivisionList());
-
-            }*/
-
-
-                //}
-
         }
     }
 
+    /**
+     * This method sets country data based on division selection (the inverse of the method above)
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDivisionSelect(ActionEvent event) throws IOException {
 
         ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
-        //String tempVal = division2_box.getSelectionModel().getSelectedItem();
-
-        //Thread.sleep(1000);
         String tempVal = country_box.getValue();
-
         int divisionID = 0;
-
 
         for (Division division : divisionsOL) {
 
@@ -354,7 +342,7 @@ import static sample.Division.*;
                 tfDivision.setText(String.valueOf(divisionID));
             }
         }
-        //if (tempVal != null)
+
         switch(tempVal){
             case "U.S": division2_box.setItems(DBQuery.getUsDivisionList());
 
@@ -365,35 +353,7 @@ import static sample.Division.*;
             break;
 
             default: division2_box.setItems(DBQuery.getAllDivisionList());
-
             String divisionName = division2_box.getValue();
-
-
-
-
-
-
-
-
-
-
-
-
-            /*tempVal = division.getDivision_name();
-            divisionID = division.getId();
-            tfDivision.setText(String.valueOf(divisionID));*/
-
-
-
-                //tfDivision.setText(String.valueOf(divisionID));
-
-           /* if (division2_box.getValue() != null) {
-                //divisionID = division.getId();
-                tfDivision.setText(String.valueOf(divisionID));
-            }*/
-
-
-
         }
 
 
@@ -402,36 +362,38 @@ import static sample.Division.*;
 
 
     }
+
+    /**
+     *
+     * @return Returns selected country based on combo box selection
+     */
     @FXML
     public String getCountry(){
         String selectedCountry = country_box.getValue();
         return selectedCountry;
     }
+
+    /**
+     * @return returns division based on division combobox selection
+     */
     @FXML
     public String getDivision(){
         String selectedDivision = division2_box.getValue();
         return selectedDivision;
     }
 
+    /**
+     * This method initializes the Add Customer menu. It sets the comboboxes (country & division) based on
+     * a specified DB query.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showCustomers();
-
-
-        //DBQuery.getCountryList();
         country_box.setItems(DBQuery.getCountryList());
         division2_box.setItems(DBQuery.getAllDivisionList());
         division2_box.setDisable(true);
-
-        //tfDivision.setDisable(true);
-        //division2_box.setItems(null);
-
     }
 }
 
-
-
-    /*public void addCustomer(ActionEvent event) {
-
-}
-*/

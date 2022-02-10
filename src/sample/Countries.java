@@ -5,6 +5,11 @@ public class Countries {
     private int country_id;
     private String country_name;
 
+    /**
+     *
+     * @param country_id
+     * @param country_name
+     */
     public Countries(int country_id, String country_name) {
         this.country_id = country_id;
         this.country_name = country_name;

@@ -26,11 +26,7 @@ public class Main extends Application {
         //Locale locale1 = new Locale("fr");
         //Locale.setDefault(locale1);
 
-
         launch(args);
 
-
-
-        //System.out.println(DBQuery.getUsDivisionList());
     }
 }

@@ -209,7 +209,6 @@ public class ReportsController implements Initializable {
 
         if (monthComboBox.getSelectionModel().getSelectedItem() == null) {
             Alerts.reportsAlert();
-
         }
         else {
             showAppointments();
@@ -218,11 +217,11 @@ public class ReportsController implements Initializable {
 
             viewApptByMonth2();
             tfApptType.setText(typeComboBox.getValue());
-            tfApptType.setDisable(true);
+            tfApptType.setEditable(false);
             tfMonth2.setText(monthComboBox.getValue());
-            tfMonth2.setDisable(true);
+            tfMonth2.setEditable(false);
             tfNumAppts.setText(String.valueOf(apptTable.getItems().size()));
-            tfNumAppts.setDisable(true);
+            tfNumAppts.setEditable(false);
         }
 
     }
@@ -238,6 +237,10 @@ public class ReportsController implements Initializable {
      return null;
     }
 
+    /**
+     * The Lambda filters ... by month
+     * @throws IOException
+     */
     @FXML
     public void viewApptByMonth() throws IOException {
         //apptTable.setItems(null);

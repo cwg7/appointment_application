@@ -28,6 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * This is the LoginForm class
+ */
 public class LoginForm implements Initializable {
 
     @FXML
@@ -45,23 +48,20 @@ public class LoginForm implements Initializable {
     private Stage stage;
     private Scene scene;
 
-    //private String password = "x";
     private String username;
 
     public static boolean notLoggedIn;
 
 
-    //public static ObservableList<String> userNames = FXCollections.observableArrayList();
-
- /*   public ObservableList getUserNames() {
-        userNames.add(DBQuery.getUserNameLogin().toString());
-        return userNames;
-    }
-*/
-
     String enteredPassword;
     String correctPassword;
 
+    /**
+     * This method looks up usernames from the database and checks them against a user-input username via textfield.
+     * It then checks the password of the given username (if valid) to see if it matches as per db data.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void handleUserLogin(ActionEvent event) throws IOException {
         DBQuery.getUserNames();
@@ -120,77 +120,26 @@ public class LoginForm implements Initializable {
 
     }
 
-
+    /**
+     * This method clears textfields
+     */
     public void clearFields() {
         tfUserName.clear();
         tfPassword.clear();
     }
 
 
-    @FXML
-    public static void checkPassword(String password) {
-
-    }
-
-    /*@FXML
-    public void handleLogin(javafx.event.ActionEvent event) throws IOException {
-        String username = tfUserName.getText();
-        grabLoginData(tfUserName.getText());
-        DBQuery.getUserNames();
-        DBQuery.searchUserNames(username);
-
-        //recordLoginActivity();
 
 
-        if (authenticate(tfUserName.getText(), tfPassword.getText(), true)) {
-
-            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } else {
-            //System.out.println("Sorry, incorrect login credentials");
-
-            //was using this one before  vvv
-            // Alerts.invalidLoginInfo();
-
-            incorectPassword();
-        }
-        //recordLoginActivity();
-        //boolean authenticated = true;
-    }*/
 
 
-    public boolean authenticate(String username, String password, Boolean isSuccesful) {
-        isSuccesful = false;
-        if (username.equalsIgnoreCase("test") && password.equals("test")) {
-            isSuccesful = true;
-
-        }
-        if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
-            isSuccesful = true;
-        }
-        return isSuccesful;
-
-    }
-
-    /*public boolean authenticate2(String username, String password, Boolean isSuccessful) {
-        isSuccessful = false;
-        username = tfUserName.getText();
-        password = tfPassword.getText();
-        if (DBQuery.getUserNames().contains(username)) {
-            if (password.equals(DBQuery.getUserPassword(password))) {
-                isSuccessful = true;
-            }
-
-        }}*/
-/*    public boolean authenticated() {
-        boolean isSuccessful = true;
-        return true;
-    }*/
 
 
+    /**
+     * This method captures login data, attempted username via username textfield
+     * @param username
+     * @return returns username
+     */
     public static Object grabLoginData(String username) {
         LocalDateTime timestamp = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -201,27 +150,12 @@ public class LoginForm implements Initializable {
         return username;
     }
 
-    // NOT THIS
-    /*
-    public List loginActivity = FXCollections.observableArrayList();
-    //loginActivity.add
-    */
 
-
- /*   public ObservableList getLoginActivity() {
-        ObservableList <String> loginData = FXCollections.observableArrayList();
-        String username = tfUserName.getText();
-        String password = tfPassword.getText();
-
-
-
-
-
-
-
-        return loginData;
-    }*/
-
+    /**
+     * This method grabs a timestamp of an attempted login time
+     * @param timestamp
+     * @return returns formatted date time
+     */
     public String grabTimestamp(LocalDateTime timestamp) {
         ObservableList<LocalDateTime> loginTime = FXCollections.observableArrayList();
         LocalDateTime time = LocalDateTime.now();
@@ -243,6 +177,9 @@ public class LoginForm implements Initializable {
     }
 */
 
+    /**
+     * This method records login activity (attempts) and logs them to login_activity.txt
+     */
     public void recordLoginActivity() {
         String username = tfUserName.getText();
         try (FileWriter fw = new FileWriter("login_activity.txt", true);
@@ -270,16 +207,6 @@ public class LoginForm implements Initializable {
         }
     }
 
-    public boolean loginSuccessful(boolean bool) {
-        bool = true;
-        return true;
-    }
-
-    public boolean loginFalse(boolean bool) {
-        bool = false;
-        return false;
-    }
-
     private static String errorTitle;
     //private static String errorHeaderMissing;
     private static String errorHeaderIncorrect;
@@ -288,6 +215,9 @@ public class LoginForm implements Initializable {
 
     Alert alert1;
 
+    /**
+     * This method triggers an alert if password is incorrect
+     */
     public static void incorectPassword() {
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
         alert1.initModality(Modality.NONE);
@@ -308,6 +238,9 @@ public class LoginForm implements Initializable {
     public static String errorContentIncorrect2;
     Alert alert2;
 
+    /**
+     * This method triggers an alert if username is incorrect
+     */
     public static void incorrectUsername() {
         Alert alert2 = new Alert(Alert.AlertType.ERROR);
         alert2.initModality(Modality.NONE);
@@ -318,6 +251,12 @@ public class LoginForm implements Initializable {
         alert2.showAndWait();
     }
 
+    /**
+     * Initializes the loginForm screen. Prompts user for username and password and translates languages based on
+     * language settings of user's machine
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

@@ -10,6 +10,9 @@ import java.sql.*;
 
 import static java.sql.Timestamp.valueOf;
 
+/**
+ * This is the DBQuery class
+ */
 public class DBQuery {
     private static PreparedStatement statement;
 
@@ -35,15 +38,23 @@ public class DBQuery {
         return statement;
     }
 
+    /**
+     * This method returns list of contact IDs
+     *
+     * @return returns contactIDList
+     */
     public static ObservableList<Integer> getContactsIDList() {
         return contactsIDList;
     }
 
 
-
-    //ObservableList<String> contactsNameList = FXCollections.observableArrayList();
     public static ObservableList<Integer> contactsIDList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of contact Ids
+     *
+     * @return returns contactIDList
+     */
     public static ObservableList<Integer> getContactsList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -66,6 +77,11 @@ public class DBQuery {
 
     public static ObservableList<String> contactsNameList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of contact names
+     *
+     * @return returns contactNameList
+     */
     public static ObservableList<String> getContactsNameList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -88,6 +104,11 @@ public class DBQuery {
 
     public static ObservableList<Integer> userIDList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of user ids
+     *
+     * @return returns userIDList
+     */
     public static ObservableList<Integer> getUserIDList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -110,6 +131,11 @@ public class DBQuery {
 
     public static ObservableList<String> typesList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of distinct appointment types
+     *
+     * @return returns distinct appointment types from appointments in the database
+     */
     public static ObservableList<String> getAppointmentTypesList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
         countryList.clear();
@@ -134,6 +160,11 @@ public class DBQuery {
 
     public static ObservableList<String> countryList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of country names
+     *
+     * @return returns list of country names
+     */
     public static ObservableList<String> getCountryList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
         countryList.clear();
@@ -157,6 +188,11 @@ public class DBQuery {
 
     public static ObservableList<String> usDivisionList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of division names where country id = 1
+     *
+     * @return returns division name where country id = 1
+     */
     public static ObservableList<String> getUsDivisionList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -179,6 +215,11 @@ public class DBQuery {
 
     public static ObservableList<String> uKDivisionList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of uk divisions from the database where country id = 2
+     *
+     * @return returns ukDivisionList where country id = 2
+     */
     public static ObservableList<String> getUKDivisionList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -201,6 +242,11 @@ public class DBQuery {
 
     public static ObservableList<String> canadaDivisionList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of canada divisions where country id = 3
+     *
+     * @return returns canadadivisionList where country id = 3
+     */
     public static ObservableList<String> getCanadaDivisionList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -223,6 +269,11 @@ public class DBQuery {
 
     public static ObservableList<String> allDivisionList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of all divisions
+     *
+     * @return returns a list of all divsions from the databaes
+     */
     public static ObservableList<String> getAllDivisionList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -245,6 +296,11 @@ public class DBQuery {
 
     public static ObservableList<Integer> divisionIDList = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of division ids from first_level_divisions
+     *
+     * @return returns list of division ids
+     */
     public static ObservableList<Integer> getDivisionIDList() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -266,7 +322,13 @@ public class DBQuery {
     }
 
     public static ObservableList<Integer> allContactIDs = FXCollections.observableArrayList();
-    public static ObservableList<Integer> getAllContactIDs(){
+
+    /**
+     * This method returns a list of all contact Ids from the database
+     *
+     * @return returns a list of all contact ids from contacts
+     */
+    public static ObservableList<Integer> getAllContactIDs() {
         Connection conn = DBConnection.getConnection();
         String query = "SELECT Contact_ID FROM contacts";
         Statement st;
@@ -287,7 +349,13 @@ public class DBQuery {
     }
 
     public static ObservableList<Integer> allCustomerIDs = FXCollections.observableArrayList();
-    public static ObservableList<Integer> getAllCustomerIDs(){
+
+    /**
+     * This method returns a list of all customer Ids from the database
+     *
+     * @return returns list of all customer Ids from customers
+     */
+    public static ObservableList<Integer> getAllCustomerIDs() {
         Connection conn = DBConnection.getConnection();
         String query = "SELECT Customer_ID FROM customers";
         Statement st;
@@ -307,8 +375,15 @@ public class DBQuery {
 
     }
 
+
     public static ObservableList<Integer> allUserIDs = FXCollections.observableArrayList();
-    public static ObservableList<Integer> getAllUserIDs(){
+
+    /**
+     * returns a list of all user ids from the database
+     *
+     * @return returns all user ids from users
+     */
+    public static ObservableList<Integer> getAllUserIDs() {
         Connection conn = DBConnection.getConnection();
         String query = "SELECT User_ID FROM users";
         Statement st;
@@ -327,8 +402,14 @@ public class DBQuery {
 
 
     }
+
     public static ObservableList<String> userNames = FXCollections.observableArrayList();
 
+    /**
+     * This method returns a list of all user names on record
+     *
+     * @return returns all user names from users
+     */
     public static ObservableList<String> getUserNames() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -349,6 +430,12 @@ public class DBQuery {
         return userNames;
     }
 
+    /**
+     * This method searches to see if user input (for username) matches existing usernames on the database
+     *
+     * @param username
+     * @return returns true or false based on search results. True if found.
+     */
     @FXML
     public static boolean searchUserNames(String username) {
         if (userNames.contains(username)) {
@@ -356,27 +443,15 @@ public class DBQuery {
             //userNameExists();
             return true;
 
-        }
-        else {
+        } else {
             //System.out.println("USERNAME NOT IN DB");
             return false;
         }
 
     }
 
-    @FXML
-    public static boolean userNameExists(){
-        boolean userNameExists = true;
-        return true;
 
-    }
-
-    @FXML
-    public static void checkPassword(String password) {
-
-    }
-
-    public static ObservableList<String> totNumCustomers = FXCollections.observableArrayList();
+    // public static ObservableList<String> totNumCustomers = FXCollections.observableArrayList();
 /*
 
     public static String getTotNumCustomers() {
@@ -403,11 +478,13 @@ public class DBQuery {
 */
 
 
-
-
-
-
     public static ObservableList<String> allCountries = FXCollections.observableArrayList();
+
+    /**
+     * This method returns a list of all countries in the database
+     *
+     * @return returns list of country names from countries
+     */
     public static ObservableList<String> getAllCountries() {
         //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
@@ -459,6 +536,12 @@ public class DBQuery {
        // was newDivisionName
    }*/
 
+    /**
+     * This method returns division name based on division id
+     *
+     * @param id division id
+     * @return returns division name based on division id (user input)
+     */
     public static Division getDivisionName(int id) {
         ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -488,6 +571,12 @@ public class DBQuery {
         // was newDivisionName
     }
 
+    /**
+     * This method returns a list of appointments for a specific customer
+     *
+     * @param customer_id customer id
+     * @return returns a list of appointments based on customer id
+     */
     public static ObservableList<Appointment> getAppointmentsPerCustomer(int customer_id) {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -501,7 +590,7 @@ public class DBQuery {
             st = conn.prepareStatement(query);
             st.setInt(1, customer_id);
             rs = st.executeQuery();
-           // Appointment appointment;
+            // Appointment appointment;
             while (rs.next()) {
                 appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
                         rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
@@ -515,6 +604,12 @@ public class DBQuery {
         return appointmentsList;
     }
 
+    /**
+     * This method returns a list of appointments for a specific contact
+     *
+     * @param id contact id
+     * @return returns a list of appointments for specified contact id (user selected)
+     */
     public static ObservableList<Appointment> getAppointmentsPerContact(int id) {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -542,98 +637,38 @@ public class DBQuery {
         return appointmentsList;
     }
 
-    /*public static ObservableList<Appointment> getAppointmentsPerCustomer(int id) {
-        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM appointments WHERE Contact_ID = ?";
-        PreparedStatement st;
-        ResultSet rs;
-
-        // rs.getInt("Customer_ID"),
-        Appointment appointment = null;
-        try {
-            st = conn.prepareStatement(query);
-            st.setInt(1, id);
-            rs = st.executeQuery();
-            // Appointment appointment;
-            while (rs.next()) {
-                appointment = new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
-                        rs.getString("Description"), rs.getString("Location"), rs.getString("Type"), rs.getTimestamp("Start").toLocalDateTime(), rs.getTimestamp("End").toLocalDateTime(), rs.getInt("Customer_ID"), rs.getInt("User_ID"), rs.getInt("Contact_ID"));
-                appointmentsList.add(appointment);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
-        return appointmentsList;
-    }*/
-
-
-
-
-
-/*
-    public static ObservableList<String> countryListOL = FXCollections.observableArrayList();
-
-    public static ObservableList<String> getCountryListOL() {
-        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
-
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT Division FROM first_level_divisions";
-        Statement st;
-        ResultSet rs;
-        try {
-            st = conn.createStatement();
-            rs = st.executeQuery(query);
-
-            while (rs.next()) {
-                countryListOL.add(rs.getString("Division_ID"));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return countryListOL;
-    }
-*/
 
     public static ObservableList<String> countryName = FXCollections.observableArrayList();
 
-/*    public static ObservableList<String> getCountryName(division_id) {
-        //ObservableList<Integer> contactsNameList = FXCollections.observableArrayList();
 
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
-        PreparedStatement st;
-        ResultSet rs;
-        try {
-            st = conn.prepareStatement(query);
-            rs = st.executeQuery(query);
-
-            while (rs.next()) {
-                countryName.add(rs.getString("Division_ID"));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return countryName;
-    }*/
+    /**
+     * This method returns country id based on selected division id
+     *
+     * @param id
+     * @return returns country id given a specified division id
+     */
     public static int getCountryIdByDivisionId(int id) {
-    try {
-        String query = "select Country_ID from first_level_divisions where Division_ID = ?";
-        Connection conn = DBConnection.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt("Country_ID");
-    } catch (SQLException throwables) {
-        throwables.printStackTrace();
-        return -1;
+        try {
+            String query = "select Country_ID from first_level_divisions where Division_ID = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("Country_ID");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return -1;
+        }
     }
-}
 
 
+    /**
+     * This method looks up password based on username
+     *
+     * @param username
+     * @return returns password for specified username
+     */
     public static String getUserPassword(String username) {
         try {
             String query = "select Password from users where User_Name = ?";
@@ -650,6 +685,13 @@ public class DBQuery {
 
     }
 
+    /**
+     * This method returns country name given a specified country id
+     *
+     * @param id
+     * @return returns country name based on country id
+     * @throws SQLException
+     */
     public static String getCountryNameByCountryID(int id) throws SQLException {
         String query = "select Country from Countries where Country_ID = ?";
         Connection conn = DBConnection.getConnection();
@@ -661,6 +703,13 @@ public class DBQuery {
 
     }
 
+    /**
+     * This method returns contact name given specified contact id
+     *
+     * @param id
+     * @return returns contact name
+     * @throws SQLException
+     */
     public static String getContactNameByContactID(int id) throws SQLException {
         String query = "select Contact_Name from Contacts where Contact_ID = ?";
         Connection conn = DBConnection.getConnection();
@@ -672,6 +721,13 @@ public class DBQuery {
 
     }
 
+    /**
+     * This method gets contact id given specfied contact name
+     *
+     * @param name
+     * @return returns contact ID
+     * @throws SQLException
+     */
     public static int getContactIDByContactName(String name) throws SQLException {
         String query = "select Contact_ID from Contacts where Contact_Name = ?";
         Connection conn = DBConnection.getConnection();
@@ -684,7 +740,11 @@ public class DBQuery {
     }
 
 
-
+    /**
+     * This method returns all contact names from contacts in the database
+     *
+     * @return returns contact names
+     */
     public static ObservableList<String> getContactNames() {
         ObservableList<String> contactsNameList = FXCollections.observableArrayList();
 
@@ -704,33 +764,6 @@ public class DBQuery {
         }
         return contactsNameList;
     }
-
-    public static ObservableList<String> getUserNameLogin() {
-        ObservableList<String> userNames = FXCollections.observableArrayList();
-
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT User_Name FROM users";
-        Statement st;
-        ResultSet rs;
-        try {
-            st = conn.createStatement();
-            rs = st.executeQuery(query);
-
-            while (rs.next()) {
-                userNames.add(rs.getString("User_Name"));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return userNames;
-    }
-
-
-
-
-
-
-
 
 
 }

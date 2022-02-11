@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
+/**
+ * This is the DB connection class
+ */
 public class DBConnection {
 
     private static final String databaseName = "october_appointments";
@@ -14,6 +17,10 @@ public class DBConnection {
     static Connection conn;
 
 
+    /**
+     *
+     * @return returns connection to db
+     */
     public static Connection getConnection() {
         Connection conn;
         try {

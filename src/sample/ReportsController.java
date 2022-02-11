@@ -213,6 +213,8 @@ public class ReportsController implements Initializable {
         else {
             showAppointments();
 
+
+
             //();
 
             viewApptByMonth2();
@@ -222,7 +224,9 @@ public class ReportsController implements Initializable {
             tfMonth2.setEditable(false);
             tfNumAppts.setText(String.valueOf(apptTable.getItems().size()));
             tfNumAppts.setEditable(false);
+
         }
+
 
     }
 

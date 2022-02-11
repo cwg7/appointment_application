@@ -251,33 +251,7 @@ public class AddCustomerController implements Initializable {
 
 
 
-    /*public void preparedUpdate() {
-        PreparedStatement pstatement = null;
-        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID WHERE id = ?";
-        try {
-            pstatement.setString(1, tfName.getText());
-            pstatement.setString(2, tfAddress.getText());
-            pstatement.setString(3, tfPostalCode.getText());
-            pstatement.setString(4, tfPhone.getText());
-            pstatement.setInt(5, Integer.parseInt(tfDivision.getText()));
-            pstatement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-*/
-   /* private void executeQuery(String query) {
-        Connection conn = getConnection();
-        Statement st;
-        try {
-            st = conn.createStatement();
-            st.executeUpdate(query);
-
-        } catch (Exception e) {
-
-        }
-    }*/
 
     /**
      * This method redirects the user back to the main menu

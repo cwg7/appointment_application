@@ -415,7 +415,7 @@ public class AddAppointmentController implements Initializable {
             LocalDateTime startAppt = appt.getStart_time();
             LocalDateTime endAppt = appt.getEnd_time();
 
-            if (startDateAndTime.isAfter(startAppt.minusMinutes(1)) && startDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+            if (startDateAndTime.isAfter(startAppt.minusMinutes(0)) && startDateAndTime.isBefore(endAppt.plusMinutes(0))) {
                 match = true;
                 break;
 

@@ -249,14 +249,18 @@ public class AddAppointmentController implements Initializable {
      * This method checks to make sure the user has filled out all textfields, and also checks to see if comboboxes
      * were selected correctly as well.
      */
-    public void validateFields() {
+    //public void validateFields() {
+    public boolean validateFields (boolean isValid){
         if (tfTitle.getText() == null || tfDescription.getText() == null || tfLocation.getText() == null
                 || tfType.getText() == null || datePicker.getValue() == null || cbStartTime.getValue() == null
                 || cbEndTime.getValue() == null || userID_box.getValue() == null || contactName_box.getValue() == null) {
             //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
             //
             Alerts.invalidFieldHandler();
+            //return;
+            isValid = false;
         } else {
+            isValid = true;
             tfTitle.clear();
             tfDescription.clear();
             tfLocation.clear();
@@ -267,6 +271,7 @@ public class AddAppointmentController implements Initializable {
             userID_box.setValue(null);
             contactName_box.setValue(null);
         }
+        return isValid;
     }
 
 
@@ -294,30 +299,24 @@ public class AddAppointmentController implements Initializable {
             endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
 
 
-            //////////
-            ///////////
-            ///////////
-            // experimenting w/ ZonedDateTime here..
 
-            //Use system default zone Id:
             ZoneId userZoneId = ZoneId.systemDefault();
 
-            //assign customer selected times to system default ZoneId:
+
             ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
             ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
 
-            //assign variable for eastern time zone:
+
             ZoneId estZoneId = ZoneId.of("US/Eastern");
 
-            //convert times user picked from system default time to Eastern time:
+
             ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
             ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
 
-            //convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
             LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
             LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
 
-            //Validate times in order/doesn't cross:
+
 
 
             if (userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
@@ -349,9 +348,6 @@ public class AddAppointmentController implements Initializable {
             }
 
 
-
-            //pstatement.setTimestamp(5, Timestamp.valueOf(zoneDateTimeStart));
-            // had this below originally vvv Do not Delete!
             pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
             System.out.println("user selected start time: " + startDateAndTime);
 
@@ -384,22 +380,16 @@ public class AddAppointmentController implements Initializable {
      * @throws IOException
      */
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
-        preparedInsert();
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (validateFields(true)) {
+            preparedInsert();
+            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
-    public void goToTimePage(ActionEvent event) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getResource("time.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
     /**
      * This method tests if the new appointment to be scheduled overlaps with an existing appointment on record.
@@ -460,10 +450,10 @@ public class AddAppointmentController implements Initializable {
 
 
         DBQuery.getContactsList();
-//        contact_box.setItems(DBQuery.getContactsIDList());
+
 
         userID_box.setItems(DBQuery.getUserIDList());
-        //DBQuery.getContactsNameList();
+
         contactName_box.setItems(DBQuery.getContactsNameList());
 
 

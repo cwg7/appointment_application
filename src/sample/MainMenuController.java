@@ -28,6 +28,10 @@ import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+/**
+ * This is the MainMenuController class
+ */
 public class MainMenuController implements Initializable {
 
     private Stage stage;
@@ -67,10 +71,6 @@ public class MainMenuController implements Initializable {
     private TableColumn<Appointment, Integer> contactCol;
     @FXML
     private TableColumn<Appointment, String> contactNameCol;
-    //@FXML
-    //private TableColumn <Appointment, String> contactCol;
-
-    //hidden comment
 
     @FXML
     private Button logoutButton;
@@ -78,9 +78,6 @@ public class MainMenuController implements Initializable {
     private Button reportsButton;
 
 
-
-   /* @FXML
-    private Button apptsIn15;*/
 
 
     @FXML
@@ -113,6 +110,10 @@ public class MainMenuController implements Initializable {
     public static int upcomingApptID;
     public static LocalDateTime upcomingApptDate;
 
+
+    /** This method filters appointment by current date.
+     * This Lambda Expression filters out and lists appointments for current day
+     * @return Returns a list of appointments for selected day.*/
     public void viewApptsToday() throws IOException {
 
         LocalDateTime rightNow = LocalDateTime.now();
@@ -131,9 +132,18 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * This method calls the showAppointments() method which displays a list of all appointments on record
+     * @throws SQLException
+     */
     public void viewAllAppointments() throws SQLException {
         showAppointments();
     }
+
+
+    /** This method filters appointment by current month
+     * This Lambda Expression filters out and lists appointments for current month
+     * @return Returns a list of appointments for current monnth.*/
 
     public void viewApptByMonth(ActionEvent event) throws IOException {
         //apptTable.setItems(null);
@@ -162,9 +172,10 @@ public class MainMenuController implements Initializable {
     }
 
 
-   /* public static int upcomingApptID;
-    public static LocalDateTime upcomingApptDate;*/
-
+    /** This method filters appointment that start within the next 15 minutes of login time.
+     * This Lambda Expression filters out and only lists appointments which are to occur within the next 15 minutes
+     * @return Returns a list of appointments within the next 15 minutes
+     * */
     public void viewApptsIn15() {
         LocalDate currentDate = LocalDate.now();
         Calendar now = Calendar.getInstance();
@@ -230,21 +241,30 @@ public class MainMenuController implements Initializable {
 
     }
 
-    public void getInfo() throws IOException{
-        showApptsIn15();
-
-    }
 
     // methods below are attempt at retrieving info for alerts relating to upcoming appt
 
+    /**
+     * This method returns upcoming appointment ID
+     * @return returns the id of the appointment which starts within the next 15 minutes
+     */
     public static int getUpcomingApptID() {
         return upcomingApptID;
     }
 
+    /**
+     * This method returns the date of the upcoming appointment
+     * @return returns date of upcoming appointment
+     */
     public static LocalDateTime getUpcomingApptDate() {
         return upcomingApptDate;
     }
 
+
+    /** This method filters appointment by current week.
+     * This Lambda Expression filters out and lists appointments for current week
+     * @return Returns a list of appointments for current week
+     * */
 
     public void viewApptByWeek(ActionEvent event) throws IOException {
         TemporalField currentWeekBasedYear = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
@@ -264,6 +284,10 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * This method returns list of all appointments
+     * @return returns all appointments
+     */
     public static ObservableList<Appointment> getAppointments() {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -288,6 +312,9 @@ public class MainMenuController implements Initializable {
         return appointmentsList;
     }
 
+    /**
+     * This method displays all appointments on the tableview
+     */
     public void showAppointments() {
         ObservableList<Appointment> list = getAppointments();
         apptIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointment_id"));
@@ -307,6 +334,9 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * This method displays all appointments within the next 15 minutes on the tableview
+     */
     public void showApptsIn15() {
         showAppointments();
         viewApptsIn15();
@@ -317,10 +347,18 @@ public class MainMenuController implements Initializable {
         ObservableList<Appointment> list = getAppointments();
     }
 
+    /**
+     * This method displays all appointments within the current week
+     */
     public void showAppointmentsByWeek() {
         ObservableList<Appointment> list = getAppointments();
     }
 
+    /**
+     * This method directs the user to the modify appointment menu
+     * @param event mouse click on mod appt button
+     * @throws IOException
+     */
     public void modAppointmentButtonClick(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("modAppointment.fxml"));
@@ -333,6 +371,11 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * This method directs the user to the reports menu
+     * @param event moust click on reports button
+     * @throws IOException
+     */
     public void goToReports(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("reports.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -344,6 +387,11 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * This method directs the user to the Add Customer menu
+     * @param event mouse click on add customer button
+     * @throws IOException
+     */
     @FXML
     public void addCustomerButtonClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("AddCustomer.fxml"));
@@ -354,6 +402,11 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * This method directs the user to the add appointment menu
+     * @param event mouse click on add appointment button
+     * @throws IOException
+     */
     @FXML
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("addAppointment.fxml"));
@@ -364,6 +417,11 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * This button logs the user out and directs them to the login menu
+     * @param event mouse click on logout button
+     * @throws IOException
+     */
     @FXML
     public void logout(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("loginForm.fxml"));
@@ -373,6 +431,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Initializes the MainMenuController, displays all appointments
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

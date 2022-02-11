@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.util.Locale;
 
+/**
+ * This is the Appointment Manager application
+ */
 public class Main extends Application {
 
     @Override

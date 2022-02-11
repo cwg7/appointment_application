@@ -249,27 +249,18 @@ public class AddAppointmentController implements Initializable {
      * This method checks to make sure the user has filled out all textfields, and also checks to see if comboboxes
      * were selected correctly as well.
      */
-    //public void validateFields() {
-    public boolean validateFields (boolean isValid){
+    public boolean validateFields2(boolean isValid) {
         if (tfTitle.getText() == null || tfDescription.getText() == null || tfLocation.getText() == null
                 || tfType.getText() == null || datePicker.getValue() == null || cbStartTime.getValue() == null
                 || cbEndTime.getValue() == null || userID_box.getValue() == null || contactName_box.getValue() == null) {
             //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
             //
-            Alerts.invalidFieldHandler();
-            //return;
             isValid = false;
+            Alerts.invalidFieldHandler();
+
         } else {
             isValid = true;
-            tfTitle.clear();
-            tfDescription.clear();
-            tfLocation.clear();
-            tfType.clear();
-            datePicker.setValue(null);
-            cbStartTime.setValue(null);
-            cbEndTime.setValue(null);
-            userID_box.setValue(null);
-            contactName_box.setValue(null);
+
         }
         return isValid;
     }
@@ -283,94 +274,96 @@ public class AddAppointmentController implements Initializable {
      */
     public void preparedInsert() {
 
-        PreparedStatement pstatement;
-        String sql = "INSERT into appointments(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?)";
-        try {
+        if (validateFields2(true)){
+            PreparedStatement pstatement;
+            String sql = "INSERT into appointments(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?)";
+            try {
 
-            pstatement = DBConnection.getConnection().prepareStatement(sql);
-            //pstatement.setInt(1, Integer.parseInt(tfCustomerID.getText()));
-            pstatement.setString(1, tfTitle.getText());
-            pstatement.setString(2, tfDescription.getText());
-            pstatement.setString(3, tfLocation.getText());
-            pstatement.setString(4, tfType.getText());
+                pstatement = DBConnection.getConnection().prepareStatement(sql);
+                //pstatement.setInt(1, Integer.parseInt(tfCustomerID.getText()));
+                pstatement.setString(1, tfTitle.getText());
+                pstatement.setString(2, tfDescription.getText());
+                pstatement.setString(3, tfLocation.getText());
+                pstatement.setString(4, tfType.getText());
 
-            selectedDate = datePicker.getValue();
-            startDateAndTime = LocalDateTime.of(selectedDate, cbStartTime.getValue());
-            endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
-
-
-
-            ZoneId userZoneId = ZoneId.systemDefault();
+                selectedDate = datePicker.getValue();
+                startDateAndTime = LocalDateTime.of(selectedDate, cbStartTime.getValue());
+                endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
 
 
-            ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
-            ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
+                ZoneId userZoneId = ZoneId.systemDefault();
 
 
-            ZoneId estZoneId = ZoneId.of("US/Eastern");
+                ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
+                ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
 
 
-            ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
-            ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
-
-            LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
-            LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
+                ZoneId estZoneId = ZoneId.of("US/Eastern");
 
 
+                ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
+                ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
+
+                LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
+                LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
 
 
-            if (userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setHeaderText("Selected appointment start time is after or equal to end time.");
-                alert.setContentText("Please select different appointment start and/or end time slot.");
+                if (userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Selected appointment start time is after or equal to end time.");
+                    alert.setContentText("Please select different appointment start and/or end time slot.");
 
-                alert.showAndWait();
-                return;
-            }
-
-            //compare converted Eastern time zone appt times picked by user to set business hours in EST:
-            if (userStartEST.isBefore(est8Am) || userEndEST.isAfter(est10Pm)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setHeaderText("Selected appointment times are outside of business hours.");
-                alert.setContentText("Please select different appointment times. Business hours are between 8:00AM-10:00PM EST.");
-
-                alert.showAndWait();
-                return;
-            }
-
-
-            //Check if there is a previously scheduled appointment for customer that will overlap with new appt:
-            if (checkApptOverlap() == true) {
-                Alerts.appointmentOverlaps();
-                return;
-            }
-
-
-            pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
-            System.out.println("user selected start time: " + startDateAndTime);
-
-            pstatement.setTimestamp(6, Timestamp.valueOf(endDateAndTime));
-
-            pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
-
-            pstatement.setInt(8, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
-
-            ObservableList<Contacts> contactsOL = AddAppointmentController.getContactsList();
-            String tempContactName = contactName_box.getSelectionModel().getSelectedItem();
-            int contactID = 0;
-            for (Contacts contact : contactsOL) {
-                if (tempContactName.equals(contact.getContact_name())) {
-                    contactID = contact.getContact_id();
+                    alert.showAndWait();
+                    return;
                 }
-            }
-            pstatement.setInt(9, Integer.parseInt(String.valueOf(contactID)));
-            pstatement.execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
+                //compare converted Eastern time zone appt times picked by user to set business hours in EST:
+                if (userStartEST.isBefore(est8Am) || userEndEST.isAfter(est10Pm)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Selected appointment times are outside of business hours.");
+                    alert.setContentText("Please select different appointment times. Business hours are between 8:00AM-10:00PM EST.");
+
+                    alert.showAndWait();
+                    return;
+                }
+
+
+                //Check if there is a previously scheduled appointment for customer that will overlap with new appt:
+                if (checkApptOverlap() == true) {
+                    Alerts.appointmentOverlaps();
+                    return;
+                }
+
+
+                pstatement.setTimestamp(5, Timestamp.valueOf(startDateAndTime));
+                System.out.println("user selected start time: " + startDateAndTime);
+
+                pstatement.setTimestamp(6, Timestamp.valueOf(endDateAndTime));
+
+                pstatement.setInt(7, Integer.parseInt(tfCustomerID.getText()));
+
+                pstatement.setInt(8, Integer.parseInt(String.valueOf(userID_box.getSelectionModel().getSelectedItem())));
+
+                ObservableList<Contacts> contactsOL = AddAppointmentController.getContactsList();
+                String tempContactName = contactName_box.getSelectionModel().getSelectedItem();
+                int contactID = 0;
+                for (Contacts contact : contactsOL) {
+                    if (tempContactName.equals(contact.getContact_name())) {
+                        contactID = contact.getContact_id();
+                    }
+                }
+                pstatement.setInt(9, Integer.parseInt(String.valueOf(contactID)));
+                pstatement.execute();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+    }
+    else{
+        return;
+        }
     }
 
 
@@ -380,15 +373,16 @@ public class AddAppointmentController implements Initializable {
      * @throws IOException
      */
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
-        if (validateFields(true)) {
+        //if (validateFields(true)) {
+        //validateFields2();
             preparedInsert();
             Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            // }
         }
-    }
 
 
     /**

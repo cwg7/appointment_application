@@ -26,6 +26,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+/**
+ * This is the ModCustomerController class
+ */
 public class ModCustomerController implements Initializable {
 
     @FXML
@@ -87,61 +90,10 @@ public class ModCustomerController implements Initializable {
 
     public ObservableList<String> allCountries = DBQuery.getAllCountries();
 
-    /*public static Division getDivisionName(int id) {
-        ObservableList<Division> newDivisionName = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
-        PreparedStatement st;
-        ResultSet rs;
-
-        // rs.getInt("Customer_ID"),
-        Division division = null;
-        try {
-            st = conn.prepareStatement(query);
-            st.setInt(1, id);
-
-            //rs = st.executeQuery(query);
-            //Division division;
-            rs = st.executeQuery();
-            while (rs.next()) {
-                division = new Division(rs.getInt("Division_ID"), rs.getString("Division"),
-                        rs.getInt("Country_ID"));
-                newDivisionName.add(division);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-    return division;
-        // was newDivisionName
-    }
+    /**
+     * This method returns a list of all customer data
+     * @return returns all customer data from customers
      */
-        
-
-
-   /* public static ObservableList<Appointment> getAppointmentsForCustomer(int id){
-        ObservableList<Appointment> apptListPerCustomer = FXCollections.observableArrayList();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM appointments WHERE Customer_ID = ?";
-        PreparedStatement st;
-        Resultset rs;
-        Appointment appointments = null;
-        try {
-            st = conn.prepareStatement(query);
-            st.setInt(1, id);
-
-            rs = st.executeQuery();
-            while (((ResultSet) rs).next()) {
-                appointments = new Appointment((((ResultSet) rs).getInt("Customer_ID")));
-                apptListPerCustomer.add(appointments);
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return appointments;
-    }*/
-
-
     public static ObservableList<Customer> getCustomerList() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         Connection conn = DBConnection.getConnection();
@@ -165,6 +117,13 @@ public class ModCustomerController implements Initializable {
         return customerList;
     }
 
+    /**
+     * This method captures the user-selected customer via the tableview and throws an exception if no such
+     * selection is made
+     * @param event mouse click on select customer
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     public void handleModClick(ActionEvent event) throws IOException, SQLException {
         //String countrySelection = country_box.getValue().toString();
@@ -185,16 +144,6 @@ public class ModCustomerController implements Initializable {
 
 
 
-            //String countryName = selectedCustomer.getCountryName();
-
-
-
-
-
-
-        // = (Customer) modCustomersTable.getSelectionModel().getSelectedItems();
-
-
             tfName.setDisable(false);
             tfName.setText(selectedCustomer.getName());
             tfAddress.setDisable(false);
@@ -208,17 +157,6 @@ public class ModCustomerController implements Initializable {
             //tfCountry2.setText(countryName);
 
             country_box.setDisable(false);
-            //country_box.setValue(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
-           // tfCountry2.setText(String.valueOf(DBQuery.getCountryIdByDivisionId(divisionID)));
-
-           // country_box.setValue(DBQuery.getCountryNameByCountryID(divisionID));
-            
-
-            //country_box.setItems(DBQuery.getDivisionName(divisionID));
-
-            //country_box.setItems(countryName);
-            //country_box.setValue(countryName);
-            //country_box.setValue(DBQuery.getDivisionName());
 
             division2_box.setDisable(false);
             division2_box.setValue(DBQuery.getDivisionName(divisionID).getDivision_name());
@@ -236,6 +174,11 @@ public class ModCustomerController implements Initializable {
 
     }
 
+    /**
+     * This method deletes a user-selected customer from the database
+     * @param event mouse click on delete customer button
+     * @throws IOException
+     */
     @FXML
     public void handleDelete(ActionEvent event) throws IOException {
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
@@ -258,6 +201,10 @@ public class ModCustomerController implements Initializable {
         }
 
     }
+
+    /**
+     * This method handles the delete customer function via a prepared statement
+     */
     public void preparedDelete() {
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
         int selectedCustomerID = selectedCustomer.getId();
@@ -274,7 +221,12 @@ public class ModCustomerController implements Initializable {
     }
 
 
-        @FXML
+    /**
+     * This method saves the modified customer data and passes it to the prepared update statement
+     * @param event mouse click on save button
+     * @throws IOException
+     */
+    @FXML
     public void saveButtonClick(ActionEvent event) throws IOException {
 
         preparedUpdate();
@@ -296,7 +248,9 @@ public class ModCustomerController implements Initializable {
     }
 
 
-
+    /**
+     * This method updates modified customer data via a prepared statement
+     */
     public void preparedUpdate() {
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
         int selectedCustomerID = selectedCustomer.getId();
@@ -337,6 +291,11 @@ public class ModCustomerController implements Initializable {
 
     }
 
+    /**
+     * This method sets the division combo box in accordance with country selection
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onCountrySelect(ActionEvent event) throws IOException {
         division2_box.setDisable(false);
@@ -362,28 +321,14 @@ public class ModCustomerController implements Initializable {
                 division2_box.setItems(DBQuery.getAllDivisionList());
 
 
-
-
-      /*  if (country_box.getValue().equals("U.S")) {
-            // division2_box.setItems(null);
-            division2_box.setItems(DBQuery.getUsDivisionList());
-
-        }
-
-        else if (country_box.getValue().equals("UK")) {
-            division2_box.setItems(DBQuery.getUKDivisionList());
-            //break;
-        } else if (country_box.getValue().equals("Canada")) {
-            division2_box.setItems(DBQuery.getCanadaDivisionList());
-
-        }
-*/
-
-                //}
-
         }
     }
 
+    /**
+     * This method gets a division list based on division selection via DBquery
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDivisionSelect(ActionEvent event) throws IOException {
 
@@ -439,31 +384,10 @@ public class ModCustomerController implements Initializable {
 
     }
 
- /*   public void preparedCountrySelect() {
-        Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
-        //int selectedA = selectedCustomer.getAppointment_id();
-        int divisionID = selectedCustomer.getDivision_id();
 
-        PreparedStatement pstatement;
-        String sql = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?";
-        try {
-            // assert pstatement != null;
-            pstatement = DBConnection.getConnection().prepareStatement(sql);
-           // pstatement.setString(1, tfTitle.getText());
-            pstatement.setString(1, country_box.setItems(sql));
-
-
-
-
-            pstatement.execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
-    }
-*/
-
+    /**
+     * This method displays all customers in the customer tableview
+     */
     public void showCustomers() {
         ObservableList<Customer> list = getCustomerList();
         idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
@@ -473,9 +397,13 @@ public class ModCustomerController implements Initializable {
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));
         modCustomersTable.setItems(list);
-
-
     }
+
+    /**
+     * This method redirects the user to the Main menu
+     * @param event back to main menu button
+     * @throws IOException
+     */
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -487,11 +415,11 @@ public class ModCustomerController implements Initializable {
     }
 
 
-
-
-
-
-
+    /**
+     * Initializes the ModCustomerController screen
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showCustomers();
@@ -505,17 +433,6 @@ public class ModCustomerController implements Initializable {
         division2_box.setDisable(true);
         country_box.setItems(DBQuery.getCountryList());
         division2_box.setItems(DBQuery.getAllDivisionList());
-        
 
-
-
-
-       /* idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));*/
-       /* nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));*/
-       /* addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));*/
-       /* postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));*/
-       /* phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));*/
-       /* divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));*/
-       /* modCustomersTable.setItems(AddCustomerController.getCustomerList());*/
     }
 }

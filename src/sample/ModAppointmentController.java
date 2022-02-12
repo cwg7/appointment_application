@@ -20,6 +20,10 @@ import java.util.ResourceBundle;
 
 import static java.sql.Timestamp.valueOf;
 
+/**
+ * This is the ModAppointmentController class
+ */
+
 public class ModAppointmentController implements Initializable {
 
     @FXML
@@ -123,6 +127,9 @@ public class ModAppointmentController implements Initializable {
     private LocalDateTime endDateAndTime;
 
 
+    /**
+     * This method displays all appointments to the tableview
+     */
     public void showAppointments() {
         ObservableList<Appointment> list = MainMenuController.getAppointments();
         apptIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointment_id"));
@@ -144,6 +151,12 @@ public class ModAppointmentController implements Initializable {
 
     //LocalDateTime startTimeObject;
 
+    /**
+     * This method captures the data of the user-selected appointment via the tableview to later pass to the
+     * prepared update statement
+     * @param event mouse click on select appointment
+     * @throws SQLException
+     */
     public void selectButtonClick(ActionEvent event) throws SQLException {
 
         saveChangesButton.setDisable(false);
@@ -237,6 +250,9 @@ public class ModAppointmentController implements Initializable {
     private final LocalTime absoluteStart = LocalTime.of(8, 0);
     private final LocalTime absoluteEnd = LocalTime.of(22, 0);
 
+    /**
+     * This method saves the updated appointment information to the database via a prepared statement
+     */
     public void preparedUpdate() {
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
        /*
@@ -338,23 +354,6 @@ public class ModAppointmentController implements Initializable {
                 }
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            ////////////
-
-
-
             pstatement.setTimestamp(5, Timestamp.valueOf(startTimeAndDate));
             pstatement.setTimestamp(6, Timestamp.valueOf(endTimeAndDate));
 
@@ -412,6 +411,9 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    /**
+     * This method deletes a user-selected appointment from the database via a prepared statement
+     */
     public void preparedDelete() {
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
         int selectedAppointmentID = selectedAppointment.getAppointment_id();
@@ -426,6 +428,13 @@ public class ModAppointmentController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method deletes an appointment so long as the user has actually selected an appointment to delete
+     * before pressing the delete appointment button
+     * @param event mouse click on delete appointment
+     * @throws IOException
+     */
     @FXML
     public void deleteAppointment(ActionEvent event) throws IOException {
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
@@ -442,8 +451,11 @@ public class ModAppointmentController implements Initializable {
     }
 
 
-
-
+    /**
+     * This method saves the user-updated appointment info and passes it to the prepared update statement
+     * @param event mouse click on save changes
+     * @throws IOException
+     */
     @FXML
     public void saveChanges(ActionEvent event) throws IOException {
         try {
@@ -461,6 +473,11 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    /**
+     * This method checks desired appointment times with existing appointments on record to prevent appointments
+     * from overlapping
+     * @return returns whether or not appointments overlap via boolean
+     */
     public boolean checkApptOverlap() {
         ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
         boolean match = false;
@@ -489,6 +506,9 @@ public class ModAppointmentController implements Initializable {
         return match;
     }
 
+    /**
+     * This method sets combobox selections for users to select appointment start times
+     */
     public void setComboBoxStart(){
 
         cbStartTime.getItems().add(LocalTime.parse("00:00"));
@@ -590,6 +610,9 @@ public class ModAppointmentController implements Initializable {
 
     }
 
+    /**
+     * This method sets combobox options for users to select appointment end times
+     */
     public void setComboBoxEnd(){
 
         cbEndTime.getItems().add(LocalTime.parse("00:00"));
@@ -693,7 +716,11 @@ public class ModAppointmentController implements Initializable {
     }
 
 
-
+    /**
+     * This method redirects the user to the main menu
+     * @param event mouse click on go to main menu button
+     * @throws IOException
+     */
     @FXML
     public void goToMain(ActionEvent event) throws IOException {
         //contactsComboBox.getItems().clear();
@@ -705,6 +732,11 @@ public class ModAppointmentController implements Initializable {
     }
 
 
+    /**
+     * Initializes the ModAppointmentController screen
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         saveChangesButton.setDisable(true);
@@ -723,10 +755,6 @@ public class ModAppointmentController implements Initializable {
         tfEnd.setDisable(true);
         tfCustomerID.setDisable(true);
         tfUserID.setDisable(true);
-
-
-        //tfContactID.setText(DBQuery.getContactIDByContactName(contactsComboBox.getValue()));
-
 
 
     }

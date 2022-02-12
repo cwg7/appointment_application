@@ -43,8 +43,8 @@
       <Label fx:id="lblContact" layoutX="100.0" layoutY="180.0" text="Contact name" />
       <Button fx:id="contactReportButton" layoutX="357.0" layoutY="176.0" mnemonicParsing="false" onAction="#sortByContactName" text="View scheduled appointments for selected Contact Name" />
       <Label fx:id="lblCustomers" layoutX="100.0" layoutY="236.0" text="Total number of scheduled appointments on record: " />
-      <TextField fx:id="tfCustNum" layoutX="476.0" layoutY="232.0" prefHeight="25.0" prefWidth="39.0" />
-      <Button fx:id="pressTotNumButton" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" onAction="#getCustNum" text="Get #" />
+      <TextField fx:id="tfApptNum" layoutX="476.0" layoutY="232.0" prefHeight="25.0" prefWidth="39.0" />
+      <Button fx:id="pressTotNumButton" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" onAction="#getApptNum" text="Get #" />
       <Label fx:id="lblReport2" layoutX="31.0" layoutY="180.0" text="Report 2:">
          <font>
             <Font name="System Bold" size="12.0" />

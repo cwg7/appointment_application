@@ -92,6 +92,7 @@ public class ModCustomerController implements Initializable {
 
     /**
      * This method returns a list of all customer data
+     *
      * @return returns all customer data from customers
      */
     public static ObservableList<Customer> getCustomerList() {
@@ -120,6 +121,7 @@ public class ModCustomerController implements Initializable {
     /**
      * This method captures the user-selected customer via the tableview and throws an exception if no such
      * selection is made
+     *
      * @param event mouse click on select customer
      * @throws IOException
      * @throws SQLException
@@ -132,16 +134,14 @@ public class ModCustomerController implements Initializable {
         selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
         //selectedCustomer.get
 
-        if (selectedCustomer == null){
+        if (selectedCustomer == null) {
             Alerts.modHandler();
-        }
-        else {
-        int selectedCustomerID = selectedCustomer.getId();
-        int divisionID = selectedCustomer.getDivision_id();
+        } else {
+            int selectedCustomerID = selectedCustomer.getId();
+            int divisionID = selectedCustomer.getDivision_id();
 
             //String countryName = selectedCustomer.getCountryName();
-        Countries countryName;
-
+            Countries countryName;
 
 
             tfName.setDisable(false);
@@ -176,6 +176,7 @@ public class ModCustomerController implements Initializable {
 
     /**
      * This method deletes a user-selected customer from the database
+     *
      * @param event mouse click on delete customer button
      * @throws IOException
      */
@@ -195,8 +196,7 @@ public class ModCustomerController implements Initializable {
                 showCustomers();
                 Alerts.deleteSuccessful();
             }
-        }
-        else {
+        } else {
             Alerts.delHandler3();
         }
 
@@ -213,7 +213,7 @@ public class ModCustomerController implements Initializable {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
         try {
             pstatement = DBConnection.getConnection().prepareStatement(sql);
-            pstatement.setInt(1,selectedCustomerID);
+            pstatement.setInt(1, selectedCustomerID);
             pstatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -223,6 +223,7 @@ public class ModCustomerController implements Initializable {
 
     /**
      * This method saves the modified customer data and passes it to the prepared update statement
+     *
      * @param event mouse click on save button
      * @throws IOException
      */
@@ -269,9 +270,7 @@ public class ModCustomerController implements Initializable {
             ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
             String tempVal = division2_box.getSelectionModel().getSelectedItem();
             int divisionID = 0;
-            for (Division division : divisionsOL)
-
-            {
+            for (Division division : divisionsOL) {
                 if (tempVal.equals(division.getDivision_name())) {
                     divisionID = division.getId();
                 }
@@ -280,7 +279,6 @@ public class ModCustomerController implements Initializable {
             }
             pstatement.setInt(5, Integer.parseInt(String.valueOf(divisionID)));
             pstatement.setInt(6, selectedCustomer.getId());
-
 
 
             pstatement.execute();
@@ -293,6 +291,7 @@ public class ModCustomerController implements Initializable {
 
     /**
      * This method sets the division combo box in accordance with country selection
+     *
      * @param event
      * @throws IOException
      */
@@ -305,27 +304,28 @@ public class ModCustomerController implements Initializable {
 
         if (tempVal != null)
 
-        switch (tempVal) {
-            case "U.S":
-                division2_box.setItems(DBQuery.getUsDivisionList());
+            switch (tempVal) {
+                case "U.S":
+                    division2_box.setItems(DBQuery.getUsDivisionList());
 
-                break;
-            case "UK":
-                division2_box.setItems(DBQuery.getUKDivisionList());
-                break;
-            case "Canada":
-                division2_box.setItems(DBQuery.getCanadaDivisionList());
-                break;
+                    break;
+                case "UK":
+                    division2_box.setItems(DBQuery.getUKDivisionList());
+                    break;
+                case "Canada":
+                    division2_box.setItems(DBQuery.getCanadaDivisionList());
+                    break;
 
-            default:
-                division2_box.setItems(DBQuery.getAllDivisionList());
+                default:
+                    division2_box.setItems(DBQuery.getAllDivisionList());
 
 
-        }
+            }
     }
 
     /**
      * This method gets a division list based on division selection via DBquery
+     *
      * @param event
      * @throws IOException
      */
@@ -353,33 +353,27 @@ public class ModCustomerController implements Initializable {
         if (tempVal == null) {
             //Alerts.checkFields();
 
-        }
-        else{
-        switch(tempVal) {
-            case "U.S":
-                division2_box.setItems(DBQuery.getUsDivisionList());
+        } else {
+            switch (tempVal) {
+                case "U.S":
+                    division2_box.setItems(DBQuery.getUsDivisionList());
 
-                break;
-            case "UK":
-                division2_box.setItems(DBQuery.getUKDivisionList());
-                break;
-            case "Canada":
-                division2_box.setItems(DBQuery.getCanadaDivisionList());
-                break;
+                    break;
+                case "UK":
+                    division2_box.setItems(DBQuery.getUKDivisionList());
+                    break;
+                case "Canada":
+                    division2_box.setItems(DBQuery.getCanadaDivisionList());
+                    break;
 
-            default:
-                division2_box.setItems(DBQuery.getAllDivisionList());
+                default:
+                    division2_box.setItems(DBQuery.getAllDivisionList());
 
-                String divisionName = division2_box.getValue();
-        }
-
+                    String divisionName = division2_box.getValue();
+            }
 
 
         }
-
-
-
-
 
 
     }
@@ -401,6 +395,7 @@ public class ModCustomerController implements Initializable {
 
     /**
      * This method redirects the user to the Main menu
+     *
      * @param event back to main menu button
      * @throws IOException
      */
@@ -411,12 +406,13 @@ public class ModCustomerController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    
+
     }
 
 
     /**
      * Initializes the ModCustomerController screen
+     *
      * @param url
      * @param rb
      */

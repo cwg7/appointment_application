@@ -22,6 +22,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * This is the ReportsController class
+ */
 public class ReportsController implements Initializable {
 
     @FXML
@@ -47,6 +50,8 @@ public class ReportsController implements Initializable {
     @FXML
     private TextField tfCustNum;
     @FXML
+    private TextField tfApptNum;
+    @FXML
     private Label lblCustomers;
     @FXML
     private Label lblReport1;
@@ -61,25 +66,25 @@ public class ReportsController implements Initializable {
     @FXML
     private TableColumn<Appointment, Integer> apptIDCol;
     @FXML
-    private TableColumn <Appointment, String> titleCol;
+    private TableColumn<Appointment, String> titleCol;
     @FXML
-    private TableColumn <Appointment, String> descriptionCol;
+    private TableColumn<Appointment, String> descriptionCol;
     @FXML
-    private TableColumn <Appointment, String> locationCol;
+    private TableColumn<Appointment, String> locationCol;
     @FXML
-    private TableColumn <Appointment, String> typeCol;
+    private TableColumn<Appointment, String> typeCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> startCol;
+    private TableColumn<Appointment, LocalDateTime> startCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> endCol;
+    private TableColumn<Appointment, LocalDateTime> endCol;
     @FXML
-    private TableColumn <Appointment, Integer> customerIDCol;
+    private TableColumn<Appointment, Integer> customerIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> userIDCol;
+    private TableColumn<Appointment, Integer> userIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> contactCol;
+    private TableColumn<Appointment, Integer> contactCol;
     @FXML
-    private TableColumn <Appointment, String> contactNameCol;
+    private TableColumn<Appointment, String> contactNameCol;
 
     @FXML
     private Button showButton;
@@ -149,6 +154,9 @@ public class ReportsController implements Initializable {
     Month december = Month.DECEMBER;
     int decemberMonthNum = december.getValue();
 
+    /**
+     * This method populates month selections in the combobox
+     */
     public void addMonths() {
         months.add(0, "January");
         months.add(1, "February");
@@ -165,7 +173,6 @@ public class ReportsController implements Initializable {
     }
 
 
-
     private Month currentMonth = LocalDateTime.now().getMonth();
     //private Month nextMonth = LocalDateTime
 
@@ -178,10 +185,21 @@ public class ReportsController implements Initializable {
         }
     }*/
 
-    public void getCustNum(ActionEvent event) throws IOException{
-        tfCustNum.setText(String.valueOf(MainMenuController.getAppointments().size()));
+    /**
+     * This method displays the current total of appointments on record (report #3)
+     *
+     * @param event moust click on get #
+     * @throws IOException
+     */
+    public void getApptNum(ActionEvent event) throws IOException {
+        tfApptNum.setText(String.valueOf(MainMenuController.getAppointments().size()));
     }
 
+    /**
+     * This method displays all appointments in the tableview
+     *
+     * @return
+     */
     public ObservableList showAppointments() {
         ObservableList<Appointment> list = MainMenuController.getAppointments();
         apptIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointment_id"));
@@ -198,21 +216,23 @@ public class ReportsController implements Initializable {
         //contactNameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         apptTable.setItems(list);
 
-
-
         return null;
     }
 
+    /**
+     * This method captures the selected month and appointment type to then pass to the lambda below
+     *
+     * @param event press show button
+     * @throws IOException
+     */
     public void pressShow(ActionEvent event) throws IOException {
         //showAppointments();
         //apptTable.setItems(showAppointments());
 
         if (monthComboBox.getSelectionModel().getSelectedItem() == null) {
             Alerts.reportsAlert();
-        }
-        else {
+        } else {
             showAppointments();
-
 
 
             //();
@@ -230,30 +250,31 @@ public class ReportsController implements Initializable {
 
     }
 
+    /**
+     * this method calls the getAppointments method which displays all appointments in the database
+     *
+     * @param event
+     * @throws IOException
+     */
     public void showAllAppts(ActionEvent event) throws IOException {
         apptTable.setItems(MainMenuController.getAppointments());
 
         //tfNumAppts.clear();
     }
+
     public ObservableList<Appointment> getAppointments() {
-
-
-     return null;
+        return null;
     }
 
-    /**
-     * The Lambda filters ... by month
-     * @throws IOException
-     */
-    @FXML
+
+
+   /* @FXML
     public void viewApptByMonth() throws IOException {
         //apptTable.setItems(null);
         //Month currentMonth = LocalDateTime.now().getMonth();
         //int monthInt = currentMonth.getValue();
         int currentMonth = LocalDateTime.now().getMonthValue();
         int nextMonth = currentMonth + 1;
-
-
 
         List<Appointment> apptsInFeb = MainMenuController.getAppointments()
 
@@ -263,9 +284,14 @@ public class ReportsController implements Initializable {
 
         apptTable.setItems(FXCollections.observableList(apptsInFeb));
 
+    }*/
 
-    }
 
+    /**
+     * The Lambda filters all appointments by month based on combobox selection
+     *
+     * @throws IOException
+     */
     @FXML
     public void viewApptByMonth2() throws IOException {
         //apptTable.setItems(null);
@@ -315,8 +341,6 @@ public class ReportsController implements Initializable {
         }
 
 
-
-        //int finalMonthNum = monthNum;
         int finalMonthNum = monthNum;
         String selectedType = typeComboBox.getValue();
         List<Appointment> apptsInSelectedMonth = MainMenuController.getAppointments()
@@ -331,62 +355,37 @@ public class ReportsController implements Initializable {
 
     }
 
+    /**
+     * This method allows the user to view all appointments scheduled per contact via combobox selection
+     *
+     * @throws IOException
+     */
     @FXML
     public void viewApptByContactName() throws IOException {
 
         int selectedIndex = contactsComboBox.getSelectionModel().getSelectedIndex();
         int contact_id;
 
-        if (selectedIndex == 0){
+        if (selectedIndex == 0) {
             contact_id = 1;
             apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
-        }
-        else if (selectedIndex == 1) {
+        } else if (selectedIndex == 1) {
             contact_id = 2;
             apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
-        }
-        else if (selectedIndex == 2) {
+        } else if (selectedIndex == 2) {
             contact_id = 3;
             apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
         }
 
-        //String contacts;
-        //contacts = (Contacts) contactsComboBox.getValue();
-        //System.out.println(selectedContact);
-
-        //Contacts selectedContact1;
-        //DBQuery.getContactID(selectedContact);
-
-       //Contacts id = DBQuery.getContactID(selectedContact);Contacts id = selectedContact.getCont
-
-
-
-        //int id = selectedContact.get
-        /*int id;
-
-        if (selectedContact.equalsIgnoreCase("Anika Costa")){
-            id = 1;
-        }
-        if (selectedContact.equalsIgnoreCase("Daniel Garcia")) {
-            id = 2;
-        }
-        if (selectedContact.equalsIgnoreCase("Li Lee")) {
-            id = 3;
-        }
-*/
-        /*List<Appointment> apptsForSelectedContact = MainMenuController.getAppointments()
-
-                .stream()
-                .filter(a -> Objects.equals(a.getContact_name(), selectedContact))
-                .collect(Collectors.toList());
-*/
-
-      //  apptTable.setItems(FXCollections.observableList(DBQuery.getAppointmentsPerContact(contact_id)));
-
-
 
     }
 
+    /**
+     * This method sorts appointments by contact name
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void sortByContactName(ActionEvent event) throws IOException {
         apptTable.setItems(getAppointments());
@@ -395,7 +394,12 @@ public class ReportsController implements Initializable {
         //dcontactsComboBox.getItems().clear();
     }
 
-
+    /**
+     * This method redirects the user to the main menu
+     *
+     * @param event go back to main menu button
+     * @throws IOException
+     */
     public void goToMainMenu(ActionEvent event) throws IOException {
         //contactsComboBox.setItems(null);
         contactsComboBox.getItems().clear();
@@ -408,6 +412,12 @@ public class ReportsController implements Initializable {
     }
 
 
+    /**
+     * Initializes the ReportsController screen
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //contactsComboBox.setItems(null);
@@ -418,23 +428,6 @@ public class ReportsController implements Initializable {
 
         contactsComboBox.getItems().clear();
         contactsComboBox.setItems(DBQuery.getContactsNameList());
-
-        //contactsComboBox.setItems(null);
-
-
-
-        /*contactsComboBox.setItems(DBQuery.getContactsNameList());
-        if (contactsComboBox.getItems().size() > (DBQuery.getContactsNameList().size())) {
-            //contactsComboBox.setItems(DBQuery.getContactsNameList());
-            contactsComboBox.setItems(null);
-            contactsComboBox.setItems(DBQuery.getContactsNameList());
-        }*/
-
-        //determineMonth();
-       // System.out.println("Current month: "+ currentMonth);
-        //System.out.println(apptTable.getItems().size());
-       
-
 
 
     }

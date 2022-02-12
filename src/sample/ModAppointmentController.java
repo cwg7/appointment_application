@@ -30,30 +30,30 @@ public class ModAppointmentController implements Initializable {
     private ScrollBar scrollBar;
 
     @FXML
-    private TableView <Appointment> appointmentsTable;
+    private TableView<Appointment> appointmentsTable;
 
     @FXML
-    private TableColumn <Appointment, Integer> apptIDCol;
+    private TableColumn<Appointment, Integer> apptIDCol;
     @FXML
-    private TableColumn <Appointment, String> titleCol;
+    private TableColumn<Appointment, String> titleCol;
     @FXML
-    private TableColumn <Appointment, String> descriptionCol;
+    private TableColumn<Appointment, String> descriptionCol;
     @FXML
-    private TableColumn <Appointment, String> locationCol;
+    private TableColumn<Appointment, String> locationCol;
     @FXML
-    private TableColumn <Appointment, String> typeCol;
+    private TableColumn<Appointment, String> typeCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> startCol;
+    private TableColumn<Appointment, LocalDateTime> startCol;
     @FXML
-    private TableColumn <Appointment, LocalDateTime> endCol;
+    private TableColumn<Appointment, LocalDateTime> endCol;
     @FXML
-    private TableColumn <Appointment, Integer> customerIDCol;
+    private TableColumn<Appointment, Integer> customerIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> userIDCol;
+    private TableColumn<Appointment, Integer> userIDCol;
     @FXML
-    private TableColumn <Appointment, Integer> contactCol;
+    private TableColumn<Appointment, Integer> contactCol;
     @FXML
-    private TableColumn <Appointment, String> contactNameCol;
+    private TableColumn<Appointment, String> contactNameCol;
     @FXML
     private Label lblWelcome;
     @FXML
@@ -154,6 +154,7 @@ public class ModAppointmentController implements Initializable {
     /**
      * This method captures the data of the user-selected appointment via the tableview to later pass to the
      * prepared update statement
+     *
      * @param event mouse click on select appointment
      * @throws SQLException
      */
@@ -161,11 +162,10 @@ public class ModAppointmentController implements Initializable {
 
         saveChangesButton.setDisable(false);
 
-        if (appointmentsTable.getSelectionModel().getSelectedItem() == null){
+        if (appointmentsTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectHandler2();
-        }
-        else if (appointmentsTable.getItems() != null) {
-           // ObservableList<Appointment> appointment = appointmentsTable.getSelectionModel().getSelectedItems();
+        } else if (appointmentsTable.getItems() != null) {
+            // ObservableList<Appointment> appointment = appointmentsTable.getSelectionModel().getSelectedItems();
             //tfApptID =
             Appointment selectedAppointment;
             selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
@@ -179,7 +179,7 @@ public class ModAppointmentController implements Initializable {
             endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
 
             LocalDateTime endTime = selectedAppointment.getEnd_time();
-            LocalTime endClock =  endTime.toLocalTime();
+            LocalTime endClock = endTime.toLocalTime();
 
             int selectedContactID = selectedAppointment.getContact_id();
             String selectedContactName = DBQuery.getContactNameByContactID(selectedContactID);
@@ -188,10 +188,9 @@ public class ModAppointmentController implements Initializable {
             //Customer selectedCustomer;
             //selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
 
-            if (selectedAppointment == null){
+            if (selectedAppointment == null) {
                 Alerts.modHandler2();
-            }
-            else {
+            } else {
                 int appointmentID = selectedAppointment.getAppointment_id();
                 //int divisionID = selectedCustomer.getDivision_id();
 
@@ -199,9 +198,9 @@ public class ModAppointmentController implements Initializable {
 
 
                 //tfApptID.setDisable(false);
-               // tfApptID.setText(selectedAppointment.getAppointment_id());
-               // tfApptID.setText(Integer.parseInt(selectedAppointment.getAppointment_id()));
-               // tfApptID.setText(selectedAppointment.getAppointment_id());
+                // tfApptID.setText(selectedAppointment.getAppointment_id());
+                // tfApptID.setText(Integer.parseInt(selectedAppointment.getAppointment_id()));
+                // tfApptID.setText(selectedAppointment.getAppointment_id());
                 tfTitle.setDisable(false);
                 tfDescription.setDisable(false);
                 tfLocation.setDisable(false);
@@ -222,9 +221,9 @@ public class ModAppointmentController implements Initializable {
                 tfCustomerID.setText(String.valueOf(selectedAppointment.getCustomer_id()));
                 tfUserID.setText(String.valueOf(selectedAppointment.getUser_id()));
 
-                
+
                 //int contactID = tfContactID.get
-               // contactsComboBox.setItems(DBQuery.getContactNameByContactID(contactID));
+                // contactsComboBox.setItems(DBQuery.getContactNameByContactID(contactID));
 
                 datePicker.setValue(selectedDate);
                 cbStartTime.setValue(startClock);
@@ -283,16 +282,15 @@ public class ModAppointmentController implements Initializable {
             startTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
             endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
 
-            LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate,startTime);
-            LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate,endTime);
-
+            LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate, startTime);
+            LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate, endTime);
 
 
             /// playing around with this stuff here.............
 
             selectedDate = datePicker.getValue();
-            startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
-            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());
+            startDateAndTime = LocalDateTime.of(selectedDate, cbStartTime.getValue());
+            endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
 
 
             //////////
@@ -319,7 +317,7 @@ public class ModAppointmentController implements Initializable {
             LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
 
 
-            if(userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
+            if (userStartEST.isAfter(userEndEST) || userStartEST.equals(userEndEST)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setHeaderText("Selected appointment start time is after or equal to end time.");
@@ -341,7 +339,6 @@ public class ModAppointmentController implements Initializable {
             }
 
 
-
             if (tfApptID.getText() == tfApptID.getText()) {
                 if (checkApptOverlap() == true) {
 
@@ -361,36 +358,33 @@ public class ModAppointmentController implements Initializable {
             int specifiedCustomerID = Integer.parseInt(tfCustomerID.getText());
             if (DBQuery.getAllCustomerIDs().contains(specifiedCustomerID)) {
                 pstatement.setInt(7, specifiedCustomerID);
-            }
-            else{
+            } else {
                 Alerts.invalidCustomerID();
                 return;
             }
 
             int specifiedUserID = Integer.parseInt(tfUserID.getText());
-            ObservableList <Integer> allUsers = DBQuery.getAllUserIDs();
+            ObservableList<Integer> allUsers = DBQuery.getAllUserIDs();
             boolean isThere = false;
 
-            for (Integer userID: allUsers){
-                if (userID == specifiedUserID){
+            for (Integer userID : allUsers) {
+                if (userID == specifiedUserID) {
                     isThere = true;
                 }
             }
             if (isThere) {
                 pstatement.setInt(8, Integer.parseInt(tfUserID.getText()));
-            }
-            else{
+            } else {
                 Alerts.invalidUserID();
                 return;
             }
 
-       if (String.valueOf(DBQuery.getAllContactIDs()).contains(tfContactID.getText())){
+            if (String.valueOf(DBQuery.getAllContactIDs()).contains(tfContactID.getText())) {
                 pstatement.setInt(9, Integer.parseInt(tfContactID.getText()));
                 pstatement.setInt(10, Integer.parseInt(tfApptID.getText()));
                 pstatement.execute();
 
-            }
-            else{
+            } else {
                 Alerts.invalidContactID();
                 pstatement.cancel();
                 return;
@@ -398,8 +392,7 @@ public class ModAppointmentController implements Initializable {
             //pstatement.setInt(10, Integer.parseInt(tfApptID.getText()));
 
 
-
-           // pstatement.execute();
+            // pstatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             Alerts.invalidTextFields();
@@ -422,7 +415,7 @@ public class ModAppointmentController implements Initializable {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
         try {
             pstatement = DBConnection.getConnection().prepareStatement(sql);
-            pstatement.setInt(1,selectedAppointmentID);
+            pstatement.setInt(1, selectedAppointmentID);
             pstatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -432,6 +425,7 @@ public class ModAppointmentController implements Initializable {
     /**
      * This method deletes an appointment so long as the user has actually selected an appointment to delete
      * before pressing the delete appointment button
+     *
      * @param event mouse click on delete appointment
      * @throws IOException
      */
@@ -443,8 +437,7 @@ public class ModAppointmentController implements Initializable {
             showAppointments();
             Alerts.deleteSuccessful2();
             //appointmentsTable.refresh();
-        }
-        else {
+        } else {
             Alerts.delHandler2();
         }
 
@@ -453,6 +446,7 @@ public class ModAppointmentController implements Initializable {
 
     /**
      * This method saves the user-updated appointment info and passes it to the prepared update statement
+     *
      * @param event mouse click on save changes
      * @throws IOException
      */
@@ -466,8 +460,7 @@ public class ModAppointmentController implements Initializable {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Alerts.invalidTextFields();
         }
 
@@ -476,6 +469,7 @@ public class ModAppointmentController implements Initializable {
     /**
      * This method checks desired appointment times with existing appointments on record to prevent appointments
      * from overlapping
+     *
      * @return returns whether or not appointments overlap via boolean
      */
     public boolean checkApptOverlap() {
@@ -509,7 +503,7 @@ public class ModAppointmentController implements Initializable {
     /**
      * This method sets combobox selections for users to select appointment start times
      */
-    public void setComboBoxStart(){
+    public void setComboBoxStart() {
 
         cbStartTime.getItems().add(LocalTime.parse("00:00"));
         cbStartTime.getItems().add(LocalTime.parse("00:15"));
@@ -613,7 +607,7 @@ public class ModAppointmentController implements Initializable {
     /**
      * This method sets combobox options for users to select appointment end times
      */
-    public void setComboBoxEnd(){
+    public void setComboBoxEnd() {
 
         cbEndTime.getItems().add(LocalTime.parse("00:00"));
         cbEndTime.getItems().add(LocalTime.parse("00:15"));
@@ -718,6 +712,7 @@ public class ModAppointmentController implements Initializable {
 
     /**
      * This method redirects the user to the main menu
+     *
      * @param event mouse click on go to main menu button
      * @throws IOException
      */
@@ -734,6 +729,7 @@ public class ModAppointmentController implements Initializable {
 
     /**
      * Initializes the ModAppointmentController screen
+     *
      * @param url
      * @param rb
      */
@@ -758,8 +754,6 @@ public class ModAppointmentController implements Initializable {
 
 
     }
-
-
 
 
 }

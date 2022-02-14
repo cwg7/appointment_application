@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 
 import static sample.DBConnection.getConnection;
 import static sample.Division.*;
+import static sample.Countries.*;
 
 
 //public class AddCustomerController<appointmentsPerCustomerOL> implements Initializable {
@@ -46,6 +47,8 @@ public class AddCustomerController implements Initializable {
     private TableColumn<Customer, String> phoneCol;
     @FXML
     private TableColumn<Customer, Integer> divisionCol;
+    @FXML
+    private TableColumn<Countries, String> countryCol;
     @FXML
     private Label lblName;
     @FXML
@@ -120,6 +123,9 @@ public class AddCustomerController implements Initializable {
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));
+        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>(DBQuery.get;
+        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>("Country"));
+        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>("Country_Name"));
         customersTable.setItems(list);
     }
 

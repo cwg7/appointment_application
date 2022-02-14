@@ -1,3 +1,7 @@
+Author: Chase Gilreath
+Contact information: cgilre1@wgu.edu
+Application version: 2.0
+Date 2/14/2022
 
 This application, Appointment Manager, is designed to manage appointments and allow users
 to create, edit, and delete appointments; as well as create, edit, and delete customer records.  Users can also view
@@ -27,5 +31,4 @@ Report 3: returns total number of appointments on file
 
 This program was developed with IntelliJ/IDEA 20.1.1 using Java jdk-11.0.11
 The JavaFX version used is openJFX 11.0.2
-
 Using MySQL JDBC Connector 8.0.26

@@ -662,6 +662,22 @@ public class DBQuery {
         }
     }
 
+    /*public static String getCountryNameByDivisionId(int id) {
+        try {
+            String query = "select Country from first_level_divisions where Division_ID = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("Country");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return -1;
+        }
+    }*/
+
+
 
     /**
      * This method looks up password based on username

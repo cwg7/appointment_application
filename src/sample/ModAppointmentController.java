@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -338,17 +339,9 @@ public class ModAppointmentController implements Initializable {
                 return;
             }
 
-
-            if (tfApptID.getText() == tfApptID.getText()) {
-                if (checkApptOverlap() == true) {
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Scheduling Error.");
-                    alert.setHeaderText("The desired timeslots for the modified appointment will overlap with another existing appointment for this customer.");
-                    alert.setContentText("Please select another appointment time.");
-                    alert.showAndWait();
-                    return;
-                }
+            if (checkApptOverlap() == true) {
+                Alerts.appointmentOverlaps();
+                return;
             }
 
             pstatement.setTimestamp(5, Timestamp.valueOf(startTimeAndDate));
@@ -431,17 +424,32 @@ public class ModAppointmentController implements Initializable {
      */
     @FXML
     public void deleteAppointment(ActionEvent event) throws IOException {
+
+        if (appointmentsTable.getSelectionModel().getSelectedItem() == null) {
+            Alerts.selectHandler2();
+            return;
+        }
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
+        int apptID = selectedAppointment.getAppointment_id();
+        String apptType = selectedAppointment.getType();
+
         if (selectedAppointment != null) {
             preparedDelete();
             showAppointments();
-            Alerts.deleteSuccessful2();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.NONE);
+            alert.setTitle("Deletion Successful");
+            alert.setHeaderText("Deletion Successful!");
+            alert.setContentText("Appointment ID: " + apptID + "\n" + "Appointment type: " + apptType + "\n" + "This appointment has been successfully deleted from the database ");
+            alert.showAndWait();
+            //Alerts.deleteSuccessful2();
             //appointmentsTable.refresh();
-        } else {
+        } else
             Alerts.delHandler2();
         }
 
-    }
+
 
 
     /**
@@ -480,7 +488,7 @@ public class ModAppointmentController implements Initializable {
             LocalDateTime startAppt = appt.getStart_time();
             LocalDateTime endAppt = appt.getEnd_time();
 
-            if (startDateAndTime.isAfter(startAppt.minusMinutes(1)) && startDateAndTime.isBefore(endAppt.plusMinutes(1))) {
+            if (startDateAndTime.isAfter(startAppt.minusMinutes(0)) && startDateAndTime.isBefore(endAppt.plusMinutes(0))) {
                 match = true;
                 break;
 

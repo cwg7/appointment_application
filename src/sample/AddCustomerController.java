@@ -26,8 +26,6 @@ import static sample.Division.*;
 import static sample.Countries.*;
 
 
-//public class AddCustomerController<appointmentsPerCustomerOL> implements Initializable {
-
 /**
  * This class allows users to add new customers to the database.
  */
@@ -48,7 +46,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TableColumn<Customer, Integer> divisionCol;
     @FXML
-    private TableColumn<Countries, String> countryCol;
+    private TableColumn<Customer, String> countryCol;
     @FXML
     private Label lblName;
     @FXML
@@ -112,10 +110,11 @@ public class AddCustomerController implements Initializable {
         return customerList;
     }
 
+
     /**
      * This method populates customer data on the tableview
      */
-    public void showCustomers() {
+    public void showCustomers() throws SQLException {
         ObservableList<Customer> list = getCustomerList();
         idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
@@ -123,9 +122,7 @@ public class AddCustomerController implements Initializable {
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));
-        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>(DBQuery.get;
-        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>("Country"));
-        //countryCol.setCellValueFactory(new PropertyValueFactory<Countries, String>("Country_Name"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("countryName"));
         customersTable.setItems(list);
     }
 
@@ -135,8 +132,7 @@ public class AddCustomerController implements Initializable {
     public void verify() {
 
         if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty() || country_box.getItems().isEmpty()
-        || division2_box.getItems().isEmpty())
-        {
+                || division2_box.getItems().isEmpty()) {
             Alerts.checkFields();
         }
     }
@@ -145,16 +141,14 @@ public class AddCustomerController implements Initializable {
     /**
      * This method allows users to add new customers to the database provided they fill out textfields correctly and
      * make proper combobox selections
+     *
      * @param event (mouse button click on add customer)
      * @throws IOException
      * @throws SQLException
      */
     @FXML
     public void addCustomer(ActionEvent event) throws IOException, SQLException {
-        //addCustomer();
-        // insertCustomer();
-        //verify();
-        // if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || tfDivision.getText().isEmpty()) {
+
         if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostalCode.getText().isEmpty() || tfPhone.getText().isEmpty() || country_box.getValue() == null || division2_box.getValue() == null) {
             Alerts.checkFields();
             tfName.clear();
@@ -177,6 +171,7 @@ public class AddCustomerController implements Initializable {
 
     /**
      * This method directs the user to menu where they can modify customer data.
+     *
      * @param event (mouse click on modify customer button)
      * @throws IOException
      * @throws SQLException
@@ -196,6 +191,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     public void preparedInsert() {
         //verify();
+
         PreparedStatement pstatement;
         String sql = "INSERT into customers(Customer_Name, Address, Postal_Code, Phone, Division_ID) Values(?,?,?,?,?)";
         try {
@@ -204,14 +200,11 @@ public class AddCustomerController implements Initializable {
             pstatement.setString(2, tfAddress.getText());
             pstatement.setString(3, tfPostalCode.getText());
             pstatement.setString(4, tfPhone.getText());
-            //pstatement.setInt(5, Integer.parseInt(tfDivision.getText()));
 
             ObservableList<Division> divisionsOL = getDivisionIDList();
             String tempVal = division2_box.getSelectionModel().getSelectedItem();
             int divisionID = 0;
-            for (Division division : divisionsOL)
-
-            {
+            for (Division division : divisionsOL) {
                 if (tempVal == null) {
                     Alerts.checkFields();
                 }
@@ -223,13 +216,11 @@ public class AddCustomerController implements Initializable {
             pstatement.setInt(5, Integer.parseInt(String.valueOf(divisionID)));
             pstatement.execute();
         } catch (SQLException throwables) {
-            //Alerts.checkFields();
             throwables.printStackTrace();
         }
     }
 
     /**
-     *
      * @return Returns an array of division data (division id, division (name), country id)
      */
     public static ObservableList<Division> getDivisionIDList() {
@@ -256,11 +247,9 @@ public class AddCustomerController implements Initializable {
     }
 
 
-
-
-
     /**
      * This method redirects the user back to the main menu
+     *
      * @param event (mouse click on back to main menu button)
      * @throws IOException
      */
@@ -274,36 +263,37 @@ public class AddCustomerController implements Initializable {
 
     /**
      * This method sets corresponding division data based on country selection
+     *
      * @param event
      * @throws IOException
      */
     @FXML
     public void onCountrySelect(ActionEvent event) throws IOException {
         division2_box.setDisable(false);
-        //division2_box.getItems().clear();
 
         String tempVal = country_box.getValue();
 
         if (tempVal != null)
-        switch (tempVal) {
-            case "U.S":
-                division2_box.setItems(DBQuery.getUsDivisionList());
-                break;
-            case "UK":
-                division2_box.setItems(DBQuery.getUKDivisionList());
-                break;
-            case "Canada":
-                division2_box.setItems(DBQuery.getCanadaDivisionList());
-                break;
+            switch (tempVal) {
+                case "U.S":
+                    division2_box.setItems(DBQuery.getUsDivisionList());
+                    break;
+                case "UK":
+                    division2_box.setItems(DBQuery.getUKDivisionList());
+                    break;
+                case "Canada":
+                    division2_box.setItems(DBQuery.getCanadaDivisionList());
+                    break;
 
-            default:
-                division2_box.setItems(DBQuery.getAllDivisionList());
+                default:
+                    division2_box.setItems(DBQuery.getAllDivisionList());
 
-        }
+            }
     }
 
     /**
      * This method sets country data based on division selection (the inverse of the method above)
+     *
      * @param event
      * @throws IOException
      */
@@ -323,32 +313,31 @@ public class AddCustomerController implements Initializable {
             }
         }
 
-        switch(tempVal){
-            case "U.S": division2_box.setItems(DBQuery.getUsDivisionList());
+        switch (tempVal) {
+            case "U.S":
+                division2_box.setItems(DBQuery.getUsDivisionList());
 
-            break;
-            case "UK": division2_box.setItems(DBQuery.getUKDivisionList());
-            break;
-            case "Canada": division2_box.setItems(DBQuery.getCanadaDivisionList());
-            break;
+                break;
+            case "UK":
+                division2_box.setItems(DBQuery.getUKDivisionList());
+                break;
+            case "Canada":
+                division2_box.setItems(DBQuery.getCanadaDivisionList());
+                break;
 
-            default: division2_box.setItems(DBQuery.getAllDivisionList());
-            String divisionName = division2_box.getValue();
+            default:
+                division2_box.setItems(DBQuery.getAllDivisionList());
+                String divisionName = division2_box.getValue();
         }
-
-
-
-
 
 
     }
 
     /**
-     *
      * @return Returns selected country based on combo box selection
      */
     @FXML
-    public String getCountry(){
+    public String getCountry() {
         String selectedCountry = country_box.getValue();
         return selectedCountry;
     }
@@ -357,7 +346,7 @@ public class AddCustomerController implements Initializable {
      * @return returns division based on division combobox selection
      */
     @FXML
-    public String getDivision(){
+    public String getDivision() {
         String selectedDivision = division2_box.getValue();
         return selectedDivision;
     }
@@ -365,12 +354,17 @@ public class AddCustomerController implements Initializable {
     /**
      * This method initializes the Add Customer menu. It sets the comboboxes (country & division) based on
      * a specified DB query.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showCustomers();
+        try {
+            showCustomers();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         country_box.setItems(DBQuery.getCountryList());
         division2_box.setItems(DBQuery.getAllDivisionList());
         division2_box.setDisable(true);

@@ -16,16 +16,14 @@ public class Contacts {
     }
 
     /**
-     *
      * @param contact_name
      * @return Returns contact id
      */
-    public int getContactID(String contact_name){
+    public int getContactID(String contact_name) {
         return contact_id;
     }
 
     /**
-     *
      * @param contact_id
      * @return Returns contact id
      */
@@ -49,7 +47,6 @@ public class Contacts {
     }
 
     /**
-     *
      * @return Returns contact name
      */
     public String getContact_name() {
@@ -64,7 +61,6 @@ public class Contacts {
     }
 
     /**
-     *
      * @return Returns email
      */
     public String getEmail() {
@@ -72,7 +68,6 @@ public class Contacts {
     }
 
     /**
-     *
      * @param email sets email
      */
     public void setEmail(String email) {

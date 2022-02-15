@@ -9,16 +9,14 @@ public class Division {
     private int country_id;
 
 
-
-    public Division(int id, String division_name, int country_id){
-    this.id = id;
-    this.division_name = division_name;
-    this.country_id = country_id;
+    public Division(int id, String division_name, int country_id) {
+        this.id = id;
+        this.division_name = division_name;
+        this.country_id = country_id;
 
     }
 
     /**
-     *
      * @return returns division id
      */
     public int getId() {
@@ -26,7 +24,6 @@ public class Division {
     }
 
     /**
-     *
      * @param id sets division id
      */
     public void setId(int id) {
@@ -35,6 +32,7 @@ public class Division {
 
     /**
      * this method returns division name
+     *
      * @return returns division name
      */
     public String getDivision_name() {
@@ -43,6 +41,7 @@ public class Division {
 
     /**
      * this method sets division name
+     *
      * @param division_name
      */
     public void setDivision_name(String division_name) {
@@ -51,6 +50,7 @@ public class Division {
 
     /**
      * This method returns country id
+     *
      * @return returns country id
      */
     public int getCountry_id() {
@@ -59,6 +59,7 @@ public class Division {
 
     /**
      * This method sets country id
+     *
      * @param country_id
      */
     public void setCountry_id(int country_id) {

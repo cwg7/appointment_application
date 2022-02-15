@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 /**
  * This is the ModCustomerController class
  */
+
 public class ModCustomerController implements Initializable {
 
     @FXML
@@ -45,6 +46,8 @@ public class ModCustomerController implements Initializable {
     private TableColumn<Customer, String> phoneCol;
     @FXML
     private TableColumn<Customer, Integer> divisionCol;
+    @FXML
+    private TableColumn<Customer, String> countryCol;
     @FXML
     private Label lblName;
     @FXML
@@ -128,19 +131,17 @@ public class ModCustomerController implements Initializable {
      */
     @FXML
     public void handleModClick(ActionEvent event) throws IOException, SQLException {
-        //String countrySelection = country_box.getValue().toString();
-        //String divisionSelection = division2_box.getValue().toString();
+
         Customer selectedCustomer;
         selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
-        //selectedCustomer.get
 
         if (selectedCustomer == null) {
             Alerts.modHandler();
         } else {
+            saveButton.setDisable(false);
             int selectedCustomerID = selectedCustomer.getId();
             int divisionID = selectedCustomer.getDivision_id();
 
-            //String countryName = selectedCustomer.getCountryName();
             Countries countryName;
 
 
@@ -154,7 +155,6 @@ public class ModCustomerController implements Initializable {
             tfPhone.setText(selectedCustomer.getPhoneNumber());
             tfDivision.setDisable(true);
             tfDivision.setText(String.valueOf(divisionID));
-            //tfCountry2.setText(countryName);
 
             country_box.setDisable(false);
 
@@ -165,7 +165,6 @@ public class ModCustomerController implements Initializable {
 
 
             country_box.setValue(DBQuery.getCountryNameByCountryID(countryID));
-
 
             modCustomersTable.setDisable(true);
             saveButton.setDisable(false);
@@ -182,8 +181,13 @@ public class ModCustomerController implements Initializable {
      */
     @FXML
     public void handleDelete(ActionEvent event) throws IOException {
+        if (modCustomersTable.getSelectionModel().getSelectedItem() == null) {
+            Alerts.delHandler();
+            return;
+        }
         Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
         int customerID = selectedCustomer.getId();
+
 
         if (DBQuery.getAppointmentsPerCustomer(customerID).isEmpty()) {
 
@@ -230,21 +234,27 @@ public class ModCustomerController implements Initializable {
     @FXML
     public void saveButtonClick(ActionEvent event) throws IOException {
 
-        preparedUpdate();
-        modCustomersTable.setDisable(false);
-        showCustomers();
-        saveButton.setDisable(true);
-        tfName.clear();
-        tfName.setDisable(true);
-        tfAddress.clear();
-        tfAddress.setDisable(true);
-        tfPostal.clear();
-        tfPostal.setDisable(true);
-        tfPhone.clear();
-        tfPhone.setDisable(true);
-        tfDivision.clear();
-        tfDivision.setDisable(true);
-        modButton.setDisable(false);
+
+        if (checkFields(true)) {
+
+            preparedUpdate();
+            modCustomersTable.setDisable(false);
+            showCustomers();
+            saveButton.setDisable(true);
+            tfName.clear();
+            tfName.setDisable(true);
+            tfAddress.clear();
+            tfAddress.setDisable(true);
+            tfPostal.clear();
+            tfPostal.setDisable(true);
+            tfPhone.clear();
+            tfPhone.setDisable(true);
+            tfDivision.clear();
+            tfDivision.setDisable(true);
+            modButton.setDisable(false);
+        } else {
+            return;
+        }
 
     }
 
@@ -259,14 +269,11 @@ public class ModCustomerController implements Initializable {
         PreparedStatement pstatement;
         String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
         try {
-            // assert pstatement != null;
             pstatement = DBConnection.getConnection().prepareStatement(sql);
             pstatement.setString(1, tfName.getText());
             pstatement.setString(2, tfAddress.getText());
             pstatement.setString(3, tfPostal.getText());
             pstatement.setString(4, tfPhone.getText());
-            //pstatement.setInt(5, Integer.parseInt(tfDivision.getText()));
-            //pstatement.setInt(6, selectedCustomer.getId());
             ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
             String tempVal = division2_box.getSelectionModel().getSelectedItem();
             int divisionID = 0;
@@ -290,6 +297,20 @@ public class ModCustomerController implements Initializable {
     }
 
     /**
+     * This method checks to see if all textfields have been filled out before clicking the save button
+     */
+
+    public boolean checkFields(boolean isValid) {
+        if (tfName.getText().isEmpty() || tfAddress.getText().isEmpty() || tfPostal.getText().isEmpty() || tfPhone.getText().isEmpty() || country_box.getValue() == null || division2_box.getValue() == null) {
+            isValid = false;
+            Alerts.checkFields2();
+        } else {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    /**
      * This method sets the division combo box in accordance with country selection
      *
      * @param event
@@ -298,7 +319,6 @@ public class ModCustomerController implements Initializable {
     @FXML
     public void onCountrySelect(ActionEvent event) throws IOException {
         division2_box.setDisable(false);
-        //division2_box.getItems().clear();
 
         String tempVal = country_box.getValue();
 
@@ -333,9 +353,6 @@ public class ModCustomerController implements Initializable {
     public void onDivisionSelect(ActionEvent event) throws IOException {
 
         ObservableList<Division> divisionsOL = AddCustomerController.getDivisionIDList();
-        //String tempVal = division2_box.getSelectionModel().getSelectedItem();
-
-        //Thread.sleep(1000);
 
         String tempVal = country_box.getValue();
 
@@ -351,7 +368,6 @@ public class ModCustomerController implements Initializable {
             }
         }
         if (tempVal == null) {
-            //Alerts.checkFields();
 
         } else {
             switch (tempVal) {
@@ -390,6 +406,7 @@ public class ModCustomerController implements Initializable {
         postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("division_id"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("countryName"));
         modCustomersTable.setItems(list);
     }
 
@@ -419,7 +436,6 @@ public class ModCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showCustomers();
-        //saveButton.setDisable(true);
         tfName.setDisable(true);
         tfAddress.setDisable(true);
         tfPostal.setDisable(true);
@@ -429,6 +445,7 @@ public class ModCustomerController implements Initializable {
         division2_box.setDisable(true);
         country_box.setItems(DBQuery.getCountryList());
         division2_box.setItems(DBQuery.getAllDivisionList());
+        saveButton.setDisable(true);
 
     }
 }

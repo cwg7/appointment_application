@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 /**
  * This is the LoginForm class
  */
+
 public class LoginForm implements Initializable {
 
     @FXML
@@ -52,13 +53,13 @@ public class LoginForm implements Initializable {
 
     public static boolean notLoggedIn;
 
-
     String enteredPassword;
     String correctPassword;
 
     /**
      * This method looks up usernames from the database and checks them against a user-input username via textfield.
      * It then checks the password of the given username (if valid) to see if it matches as per db data.
+     *
      * @param event
      * @throws IOException
      */
@@ -66,22 +67,13 @@ public class LoginForm implements Initializable {
     public void handleUserLogin(ActionEvent event) throws IOException {
         DBQuery.getUserNames();
         grabLoginData(tfUserName.getText());
-        //recordLoginActivity2();
 
 
         if (DBQuery.searchUserNames(tfUserName.getText())) {
-            //System.out.println("Okay. Now checking the password. . . . ");
-            //String enteredPassword = tfPassword.getText();
             enteredPassword = tfPassword.getText();
-            //String correctPassword = DBQuery.getUserPassword(tfUserName.getText());
             correctPassword = DBQuery.getUserPassword(tfUserName.getText());
-            //System.out.println("correct password: " + correctPassword);
 
             if (enteredPassword.equals(correctPassword)) {
-                //System.out.println("Correct Password");
-                //loginSuccessful(true);
-                //recordLoginActivity();
-                //recordLoginActivity2();
 
                 Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -91,30 +83,16 @@ public class LoginForm implements Initializable {
 
             } else {
                 System.out.println("Sorry, incorrect password");
-                //loginSuccessful(false);
-                //recordLoginActivity();
-                //recordLoginActivity2();
-
-                //Alerts.incorectPassword();
-                //loginFalse(false);
-
-
                 incorectPassword();
                 clearFields();
-                // incorrectLogin();
             }
 
         } else {
-            //System.out.println("Sorry, incorrect username");
-            //loginSuccessful(false);
-
-            //Alerts.incorectUserName();
             incorrectUsername();
             clearFields();
 
         }
 
-        //recordLoginActivity();
         recordLoginActivity();
 
 
@@ -129,14 +107,9 @@ public class LoginForm implements Initializable {
     }
 
 
-
-
-
-
-
-
     /**
      * This method captures login data, attempted username via username textfield
+     *
      * @param username
      * @return returns username
      */
@@ -153,6 +126,7 @@ public class LoginForm implements Initializable {
 
     /**
      * This method grabs a timestamp of an attempted login time
+     *
      * @param timestamp
      * @return returns formatted date time
      */
@@ -171,11 +145,6 @@ public class LoginForm implements Initializable {
     ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(zoneID);
     public ZonedDateTime userTime = zonedDateTime;
 
-/*
-    public static <ZonedDateTime getZonedDateTime(){
-        return userTime;
-    }
-*/
 
     /**
      * This method records login activity (attempts) and logs them to login_activity.txt
@@ -208,9 +177,7 @@ public class LoginForm implements Initializable {
     }
 
     private static String errorTitle;
-    //private static String errorHeaderMissing;
     private static String errorHeaderIncorrect;
-    //private static String errorContentMissing;
     private static String errorContentIncorrect;
 
     Alert alert1;
@@ -225,12 +192,6 @@ public class LoginForm implements Initializable {
         alert1.setTitle(errorTitle);
         alert1.setHeaderText(errorHeaderIncorrect);
         alert1.setContentText(errorContentIncorrect);
-
-        //alert1.setTitle(alert1.getTitle());
-
-        //alert1.setHeaderText(alert1.getHeaderText());
-
-        // alert1.setContentText(alert1.getContentText());
         alert1.showAndWait();
     }
 
@@ -254,6 +215,7 @@ public class LoginForm implements Initializable {
     /**
      * Initializes the loginForm screen. Prompts user for username and password and translates languages based on
      * language settings of user's machine
+     *
      * @param url
      * @param resourceBundle
      */
@@ -286,7 +248,5 @@ public class LoginForm implements Initializable {
         System.out.println(currentLocale.getDisplayCountry());
 
 
-        // lblZoneID.setText("Zone ID: " +ZoneId.systemDefault().toString());
-        //DBQuery.getUserNames();
     }
 }

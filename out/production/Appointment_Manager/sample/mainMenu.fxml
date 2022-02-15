@@ -20,10 +20,10 @@
             <TableColumn fx:id="locationCol" prefWidth="75.0" text="Location" />
             <TableColumn fx:id="contactCol" prefWidth="75.0" text="Contact" />
             <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
-            <TableColumn fx:id="startCol" prefWidth="84.5" text="Start Time" />
-            <TableColumn fx:id="endCol" prefWidth="102.0" text="End Time" />
-            <TableColumn fx:id="customerIDCol" prefWidth="84.0" text="Customer ID" />
-            <TableColumn fx:id="userIDCol" prefWidth="64.5" text="User ID" />
+            <TableColumn fx:id="startCol" prefWidth="119.0" text="Start Time" />
+            <TableColumn fx:id="endCol" prefWidth="119.0" text="End Time" />
+            <TableColumn fx:id="customerIDCol" prefWidth="105.0" text="Customer ID" />
+            <TableColumn fx:id="userIDCol" prefWidth="78.0" text="User ID" />
         </columns>
       </TableView>
       <Label fx:id="lblMain" layoutX="370.0" layoutY="8.0" text="Scheduled Appointments">

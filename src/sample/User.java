@@ -17,6 +17,7 @@ public class User {
 
     /**
      * This method returns the user id
+     *
      * @return returns user id
      */
     public int getUser_id() {
@@ -25,6 +26,7 @@ public class User {
 
     /**
      * this method sets user id
+     *
      * @param user_id
      */
     public void setUser_id(int user_id) {
@@ -33,6 +35,7 @@ public class User {
 
     /**
      * This method returns user name
+     *
      * @return returns user name
      */
     public String getUser_name() {
@@ -41,6 +44,7 @@ public class User {
 
     /**
      * This metohd sets user name
+     *
      * @param user_name
      */
     public void setUser_name(String user_name) {
@@ -49,15 +53,17 @@ public class User {
 
     /**
      * This method returns user password
+     *
      * @return returns user password
      */
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
     /**
      * This method sets user password
+     *
      * @param password
      */
     public void setPassword(String password) {

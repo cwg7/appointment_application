@@ -25,7 +25,6 @@ public class Main extends Application {
     public static void main(String[] args) {
 
 
-
         //Locale locale1 = new Locale("fr");
         //Locale.setDefault(locale1);
 

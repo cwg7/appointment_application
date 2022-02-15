@@ -174,16 +174,7 @@ public class ReportsController implements Initializable {
 
 
     private Month currentMonth = LocalDateTime.now().getMonth();
-    //private Month nextMonth = LocalDateTime
 
-
-
- /*   public void determineMonth(int monthNum) throws IOException {
-        if (monthComboBox.getValue() == "January") {
-            monthNum = 1;
-
-        }
-    }*/
 
     /**
      * This method displays the current total of appointments on record (report #3)
@@ -211,9 +202,7 @@ public class ReportsController implements Initializable {
         endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end_time"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customer_id"));
         userIDCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("user_id"));
-        //contactCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         contactCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contact_id"));
-        //contactNameCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("contact_name"));
         apptTable.setItems(list);
 
         return null;
@@ -226,16 +215,12 @@ public class ReportsController implements Initializable {
      * @throws IOException
      */
     public void pressShow(ActionEvent event) throws IOException {
-        //showAppointments();
-        //apptTable.setItems(showAppointments());
 
         if (monthComboBox.getSelectionModel().getSelectedItem() == null) {
             Alerts.reportsAlert();
         } else {
             showAppointments();
 
-
-            //();
 
             viewApptByMonth2();
             tfApptType.setText(typeComboBox.getValue());
@@ -259,32 +244,11 @@ public class ReportsController implements Initializable {
     public void showAllAppts(ActionEvent event) throws IOException {
         apptTable.setItems(MainMenuController.getAppointments());
 
-        //tfNumAppts.clear();
     }
 
     public ObservableList<Appointment> getAppointments() {
         return null;
     }
-
-
-
-   /* @FXML
-    public void viewApptByMonth() throws IOException {
-        //apptTable.setItems(null);
-        //Month currentMonth = LocalDateTime.now().getMonth();
-        //int monthInt = currentMonth.getValue();
-        int currentMonth = LocalDateTime.now().getMonthValue();
-        int nextMonth = currentMonth + 1;
-
-        List<Appointment> apptsInFeb = MainMenuController.getAppointments()
-
-                .stream()
-                .filter(a -> Objects.equals(a.getStart_time().getMonthValue(), nextMonth))
-                .collect(Collectors.toList());
-
-        apptTable.setItems(FXCollections.observableList(apptsInFeb));
-
-    }*/
 
 
     /**
@@ -294,9 +258,7 @@ public class ReportsController implements Initializable {
      */
     @FXML
     public void viewApptByMonth2() throws IOException {
-        //apptTable.setItems(null);
-        //Month currentMonth = LocalDateTime.now().getMonth();
-        //int monthInt = currentMonth.getValue();
+
         int currentMonth = LocalDateTime.now().getMonthValue();
         int nextMonth = currentMonth + 1;
         int monthNum = 0;
@@ -390,8 +352,6 @@ public class ReportsController implements Initializable {
     public void sortByContactName(ActionEvent event) throws IOException {
         apptTable.setItems(getAppointments());
         viewApptByContactName();
-        //contactsComboBox.setItems(null);
-        //dcontactsComboBox.getItems().clear();
     }
 
     /**
@@ -408,7 +368,6 @@ public class ReportsController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        //contactsComboBox.setItems(null);
     }
 
 
@@ -420,7 +379,6 @@ public class ReportsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //contactsComboBox.setItems(null);
         showAppointments();
         addMonths();
         monthComboBox.setItems(months);

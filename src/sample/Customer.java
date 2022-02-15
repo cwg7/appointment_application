@@ -1,5 +1,7 @@
 package sample;
 
+import java.sql.SQLException;
+
 /**
  * This is the customer class
  */
@@ -19,7 +21,13 @@ public class Customer {
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
         this.division_id = division_id;
+        try {
+            this.countryName = DBQuery.getCountryNameByCountryID(DBQuery.getCountryIdByDivisionId(division_id));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
+
     public Customer(int id, String name, String address, String postalCode, String phoneNumber, int division_id, String countryName) {
         this.id = id;
         this.name = name;
@@ -31,7 +39,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns country name
      */
     public String getCountryName() {
@@ -39,15 +46,13 @@ public class Customer {
     }
 
     /**
-     *
      * @param countryName sets country name
      */
-    public void setCountryName(String countryName){
+    public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
     /**
-     *
      * @return returns customer id
      */
     public int getId() {
@@ -55,7 +60,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param id sets customer id
      */
     public void setId(int id) {
@@ -63,7 +67,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns customer name
      */
     public String getName() {
@@ -71,7 +74,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param name sets customer name
      */
     public void setName(String name) {
@@ -79,7 +81,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns address
      */
     public String getAddress() {
@@ -87,7 +88,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param address sets address
      */
     public void setAddress(String address) {
@@ -95,7 +95,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns postal code
      */
     public String getPostalCode() {
@@ -103,7 +102,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param postalCode sets postal code
      */
     public void setPostalCode(String postalCode) {
@@ -111,7 +109,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns phone number
      */
     public String getPhoneNumber() {
@@ -119,7 +116,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param phoneNumber sets phone number
      */
     public void setPhoneNumber(String phoneNumber) {
@@ -127,7 +123,6 @@ public class Customer {
     }
 
     /**
-     *
      * @return returns division id
      */
     public int getDivision_id() {
@@ -135,7 +130,6 @@ public class Customer {
     }
 
     /**
-     *
      * @param division_id sets division id
      */
     public void setDivision_id(int division_id) {

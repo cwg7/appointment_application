@@ -28,6 +28,19 @@ public class Alerts {
 
 
     /**
+     * This method verifies that all fields are filled out correctly before a user can attempt to modify customer
+     * records
+     */
+    public static void checkFields2() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Error");
+        alert.setHeaderText("Alert ");
+        alert.setContentText("Please fill out all fields to modify the selected customer's records");
+        alert.showAndWait();
+    }
+
+    /**
      * This method verifies that the user has selected a customer in the tableview before attempting to modify
      * a selected customer's info.
      */
@@ -142,7 +155,6 @@ public class Alerts {
         alert.setHeaderText("Warning");
         alert.setContentText("Please be sure to fill out all information related to creating a new appointment. This includes making selections for all comboboxes.");
         alert.showAndWait();
-
 
 
     }

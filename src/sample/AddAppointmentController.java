@@ -20,8 +20,6 @@ import java.sql.*;
 import java.time.*;
 import java.util.ResourceBundle;
 
-import static java.sql.Timestamp.valueOf;
-
 
 /**
  * This class allows the user to schedule new appointments. Users can select an existing customer from the database
@@ -142,8 +140,6 @@ public class AddAppointmentController implements Initializable {
         Statement st;
         ResultSet rs;
 
-        // rs.getInt("Customer_ID"),
-
         try {
             st = conn.createStatement();
             rs = st.executeQuery(query);
@@ -168,12 +164,9 @@ public class AddAppointmentController implements Initializable {
         customerIDCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
         customerTable.setItems(list);
-
-
     }
 
     /**
-     *
      * @return Returns an array of contact data (contact id, contact name, contact email)
      */
     public static ObservableList<Contacts> getContactsList() {
@@ -211,6 +204,7 @@ public class AddAppointmentController implements Initializable {
 
     /**
      * This method allows the user to leave the current screen and go back to the main menu.
+     *
      * @param event (mouse click on Go Back button)
      * @throws IOException
      */
@@ -226,6 +220,7 @@ public class AddAppointmentController implements Initializable {
     /**
      * This method allows the user to select an existing customer to make an appointment for. Upon clicking, customer
      * name and id are retrieved, so as to allow the user to make appointments for the selected customer.
+     *
      * @param event (mouse click on select customer button)
      * @throws IOException
      */
@@ -274,7 +269,7 @@ public class AddAppointmentController implements Initializable {
      */
     public void preparedInsert() {
 
-        if (validateFields2(true)){
+        if (validateFields2(true)) {
             PreparedStatement pstatement;
             String sql = "INSERT into appointments(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values(?,?,?,?,?,?,?,?,?)";
             try {
@@ -359,30 +354,27 @@ public class AddAppointmentController implements Initializable {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-
-    }
-    else{
-        return;
+        } else {
+            return;
         }
     }
 
 
     /**
      * This method allows the user to save new appointment information, so long as the data the user provided is valid
+     *
      * @param event (mouse click Save Button)
      * @throws IOException
      */
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
-        //if (validateFields(true)) {
-        //validateFields2();
-            preparedInsert();
-            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            // }
-        }
+        preparedInsert();
+        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        // }
+    }
 
 
     /**
@@ -423,13 +415,13 @@ public class AddAppointmentController implements Initializable {
     /**
      * This method initializes the add appointment screen. It populates both the customer and contact tables.
      * And sets the localdatetime options for the user to select appointment times in comboboxes.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //tfStart.se
         taHours.setDisable(true);
         addAppointmentButton.setDisable(true);
         DBQuery.userIDList.clear();
@@ -442,14 +434,9 @@ public class AddAppointmentController implements Initializable {
         tfCustomerID.setDisable(true);
         tfCustomerName.setDisable(true);
 
-
         DBQuery.getContactsList();
-
-
         userID_box.setItems(DBQuery.getUserIDList());
-
         contactName_box.setItems(DBQuery.getContactsNameList());
-
 
         cbStartTime.getItems().add(LocalTime.parse("00:00"));
         cbStartTime.getItems().add(LocalTime.parse("00:15"));
@@ -644,9 +631,6 @@ public class AddAppointmentController implements Initializable {
         cbEndTime.getItems().add(LocalTime.parse("23:15"));
         cbEndTime.getItems().add(LocalTime.parse("23:30"));
         cbEndTime.getItems().add(LocalTime.parse("23:45"));
-
-
-
     }
 
 }

@@ -123,7 +123,6 @@ public class ModAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactsComboBox;
 
-    //private LocalDate selectedDate;
     private LocalDateTime startDateAndTime;
     private LocalDateTime endDateAndTime;
 
@@ -150,7 +149,6 @@ public class ModAppointmentController implements Initializable {
 
     }
 
-    //LocalDateTime startTimeObject;
 
     /**
      * This method captures the data of the user-selected appointment via the tableview to later pass to the
@@ -166,8 +164,7 @@ public class ModAppointmentController implements Initializable {
         if (appointmentsTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectHandler2();
         } else if (appointmentsTable.getItems() != null) {
-            // ObservableList<Appointment> appointment = appointmentsTable.getSelectionModel().getSelectedItems();
-            //tfApptID =
+
             Appointment selectedAppointment;
             selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
 
@@ -176,9 +173,6 @@ public class ModAppointmentController implements Initializable {
 
             LocalTime startClock = startDateAndTime.toLocalTime();
 
-            /*startDateAndTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
-            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
-
             LocalDateTime endTime = selectedAppointment.getEnd_time();
             LocalTime endClock = endTime.toLocalTime();
 
@@ -186,29 +180,14 @@ public class ModAppointmentController implements Initializable {
             String selectedContactName = DBQuery.getContactNameByContactID(selectedContactID);
 
 
-            //Customer selectedCustomer;
-            //selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
-
             if (selectedAppointment == null) {
                 Alerts.modHandler2();
             } else {
                 int appointmentID = selectedAppointment.getAppointment_id();
-                //int divisionID = selectedCustomer.getDivision_id();
-
-                // = (Customer) modCustomersTable.getSelectionModel().getSelectedItems();
-
-
-                //tfApptID.setDisable(false);
-                // tfApptID.setText(selectedAppointment.getAppointment_id());
-                // tfApptID.setText(Integer.parseInt(selectedAppointment.getAppointment_id()));
-                // tfApptID.setText(selectedAppointment.getAppointment_id());
-                tfTitle.setDisable(false);
                 tfDescription.setDisable(false);
                 tfLocation.setDisable(false);
                 tfContactID.setDisable(false);
                 tfUserID.setDisable(false);
-                //tfStart.setDisable(false);
-                //tfEnd.setDisable(false);
                 tfType.setDisable(false);
                 tfCustomerID.setDisable(false);
                 tfApptID.setText(String.valueOf(selectedAppointment.getAppointment_id()));
@@ -221,25 +200,12 @@ public class ModAppointmentController implements Initializable {
                 tfEnd.setText(String.valueOf(Timestamp.valueOf(selectedAppointment.getEnd_time())));
                 tfCustomerID.setText(String.valueOf(selectedAppointment.getCustomer_id()));
                 tfUserID.setText(String.valueOf(selectedAppointment.getUser_id()));
-
-
-                //int contactID = tfContactID.get
-                // contactsComboBox.setItems(DBQuery.getContactNameByContactID(contactID));
-
                 datePicker.setValue(selectedDate);
                 cbStartTime.setValue(startClock);
                 cbEndTime.setValue(endClock);
 
-                //tfContactID.setDisable(true);
-                //contactsComboBox.setValue(selectedContactName);
-
                 setComboBoxStart();
                 setComboBoxEnd();
-
-                //selectedContactName = contactName_box.getValue();
-
-
-                //tfContactID.setText(DBQuery.getContactIDByContactName(selectedContactName));
 
             }
 
@@ -255,20 +221,12 @@ public class ModAppointmentController implements Initializable {
      */
     public void preparedUpdate() {
         Appointment selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
-       /*
-        int selectedAppointmentId = selectedAppointment.getAppointment_id();
-        String selectedUserID = tfUserID.getText();
 
-        ObservableList users = FXCollections.observableArrayList();
-        users.add(DBQuery.getUserNames());
-        int usersCount = users.size();*/
-
-        //String selectedName = contactName_box.getSelectionModel().getSelectedItem();
 
         PreparedStatement pstatement;
         String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
-            // assert pstatement != null;
+
             pstatement = DBConnection.getConnection().prepareStatement(sql);
             pstatement.setString(1, tfTitle.getText());
             pstatement.setString(2, tfDescription.getText());
@@ -279,41 +237,30 @@ public class ModAppointmentController implements Initializable {
             LocalTime startTime = cbStartTime.getValue();
             LocalTime endTime = cbEndTime.getValue();
 
-            /*selectedDate = datePicker.getValue();
-            startTime = LocalDateTime.of(selectedDate,cbStartTime.getValue());
-            endDateAndTime = LocalDateTime.of(selectedDate,cbEndTime.getValue());*/
 
             LocalDateTime startTimeAndDate = LocalDateTime.of(selectedDate, startTime);
             LocalDateTime endTimeAndDate = LocalDateTime.of(selectedDate, endTime);
 
-
-            /// playing around with this stuff here.............
 
             selectedDate = datePicker.getValue();
             startDateAndTime = LocalDateTime.of(selectedDate, cbStartTime.getValue());
             endDateAndTime = LocalDateTime.of(selectedDate, cbEndTime.getValue());
 
 
-            //////////
-            ///////////
-            ///////////
-            // experimenting w/ ZonedDateTime here..
-
-            //Use system default zone Id:
             ZoneId userZoneId = ZoneId.systemDefault();
 
-            //assign customer selected times to system default ZoneId:
+
             ZonedDateTime zoneDateTimeStart = ZonedDateTime.of(startDateAndTime, userZoneId);
             ZonedDateTime zoneDateTimeEnd = ZonedDateTime.of(endDateAndTime, userZoneId);
 
-            //assign variable for eastern time zone:
+
             ZoneId estZoneId = ZoneId.of("US/Eastern");
 
-            //convert times user picked from system default time to Eastern time:
+
             ZonedDateTime estZoneDateTimeStart = zoneDateTimeStart.withZoneSameInstant(estZoneId);
             ZonedDateTime estZoneDateTimeEnd = zoneDateTimeEnd.withZoneSameInstant(estZoneId);
 
-            //convert Eastern time zone to LocalDateTime again to compare to final LocalTime absoluteStart/End:
+
             LocalTime userStartEST = estZoneDateTimeStart.toLocalDateTime().toLocalTime();
             LocalTime userEndEST = estZoneDateTimeEnd.toLocalDateTime().toLocalTime();
 
@@ -328,7 +275,7 @@ public class ModAppointmentController implements Initializable {
                 return;
             }
 
-            //compare converted Eastern time zone appt times picked by user to set business hours in EST:
+
             if (userStartEST.isBefore(absoluteStart) || userEndEST.isAfter(absoluteEnd)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
@@ -382,16 +329,11 @@ public class ModAppointmentController implements Initializable {
                 pstatement.cancel();
                 return;
             }
-            //pstatement.setInt(10, Integer.parseInt(tfApptID.getText()));
 
 
-            // pstatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             Alerts.invalidTextFields();
-            //return;
-
-            //Alerts.invalidContactID();
         }
 
 
@@ -443,13 +385,9 @@ public class ModAppointmentController implements Initializable {
             alert.setHeaderText("Deletion Successful!");
             alert.setContentText("Appointment ID: " + apptID + "\n" + "Appointment type: " + apptType + "\n" + "This appointment has been successfully deleted from the database ");
             alert.showAndWait();
-            //Alerts.deleteSuccessful2();
-            //appointmentsTable.refresh();
         } else
             Alerts.delHandler2();
-        }
-
-
+    }
 
 
     /**
@@ -746,8 +684,6 @@ public class ModAppointmentController implements Initializable {
         saveChangesButton.setDisable(true);
         MainMenuController.getAppointments();
         showAppointments();
-        //contactsComboBox.getItems().clear();
-        //contactsComboBox.setItems(DBQuery.getContactsNameList());
 
         tfApptID.setDisable(true);
         tfTitle.setDisable(true);

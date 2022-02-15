@@ -12,12 +12,13 @@
    <children>
       <TableView fx:id="customersTable" layoutX="9.0" layoutY="205.0" prefHeight="339.0" prefWidth="767.0">
         <columns>
-          <TableColumn fx:id="idCol" prefWidth="61.5" text="ID" />
-          <TableColumn fx:id="nameCol" prefWidth="181.0" text="Name" />
-            <TableColumn fx:id="addressCol" prefWidth="198.5" text="Address" />
-            <TableColumn fx:id="postalCodeCol" prefWidth="100.5" text="Postal Code" />
-            <TableColumn fx:id="phoneCol" prefWidth="123.5" text="Phone Number" />
-            <TableColumn fx:id="divisionCol" prefWidth="101.0" text="Division ID" />
+          <TableColumn fx:id="idCol" prefWidth="39.5" text="ID" />
+          <TableColumn fx:id="nameCol" prefWidth="192.5" text="Name" />
+            <TableColumn fx:id="addressCol" prefWidth="193.0" text="Address" />
+            <TableColumn fx:id="postalCodeCol" prefWidth="72.0" text="Postal Code" />
+            <TableColumn fx:id="phoneCol" prefWidth="127.5" text="Phone Number" />
+            <TableColumn fx:id="divisionCol" prefWidth="71.0" text="Division ID" />
+            <TableColumn fx:id="countryCol" prefWidth="70.5" text="Country" />
         </columns>
       </TableView>
       <Label fx:id="lblName" layoutX="71.0" layoutY="31.0" text="Name" />

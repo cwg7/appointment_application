@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 /**
  * This is the MainMenuController class
  */
+
 public class MainMenuController implements Initializable {
 
     private Stage stage;
@@ -78,8 +79,6 @@ public class MainMenuController implements Initializable {
     private Button reportsButton;
 
 
-
-
     @FXML
     private RadioButton monthRadioButton;
     @FXML
@@ -111,9 +110,13 @@ public class MainMenuController implements Initializable {
     public static LocalDateTime upcomingApptDate;
 
 
-    /** This method filters appointment by current date.
+    /**
+     * This method filters appointment by current date.
      * This Lambda Expression filters out and lists appointments for current day
-     * @return Returns a list of appointments for selected day.*/
+     *
+     * @return Returns a list of appointments for selected day.
+     */
+
     public void viewApptsToday() throws IOException {
 
         LocalDateTime rightNow = LocalDateTime.now();
@@ -134,6 +137,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method calls the showAppointments() method which displays a list of all appointments on record
+     *
      * @throws SQLException
      */
     public void viewAllAppointments() throws SQLException {
@@ -141,9 +145,12 @@ public class MainMenuController implements Initializable {
     }
 
 
-    /** This method filters appointment by current month
+    /**
+     * This method filters appointment by current month
      * This Lambda Expression filters out and lists appointments for current month
-     * @return Returns a list of appointments for current monnth.*/
+     *
+     * @return Returns a list of appointments for current monnth.
+     */
 
     public void viewApptByMonth(ActionEvent event) throws IOException {
         //apptTable.setItems(null);
@@ -151,13 +158,6 @@ public class MainMenuController implements Initializable {
         //int monthInt = currentMonth.getValue();
         int currentMonth = LocalDateTime.now().getMonthValue();
         int nextMonth = currentMonth + 1;
-
-
-        //Calendar now = Calendar.getInstance();
-
-
-        //System.out.println(currentMonth);
-        //System.out.println(monthInt);
 
         List<Appointment> apptsThisMonth = MainMenuController.getAppointments()
 
@@ -167,85 +167,51 @@ public class MainMenuController implements Initializable {
 
         apptTable.setItems(FXCollections.observableList(apptsThisMonth));
 
-
-
     }
 
 
-    /** This method filters appointment that start within the next 15 minutes of login time.
+    /**
+     * This method filters appointment that start within the next 15 minutes of login time.
      * This Lambda Expression filters out and only lists appointments which are to occur within the next 15 minutes
+     *
      * @return Returns a list of appointments within the next 15 minutes
-     * */
+     */
     public void viewApptsIn15() {
         LocalDate currentDate = LocalDate.now();
         Calendar now = Calendar.getInstance();
 
         ZoneId zoneID = ZonedDateTime.now().getZone();
-
         ZonedDateTime loginTime = LocalDateTime.now().atZone(zoneID);
 
-
-        //ZoneId zoneID = ZonedDateTime.now().getZone();
         ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(zoneID);
         ZonedDateTime userTime = zonedDateTime;
-        LocalTime currTime = userTime.toLocalTime();
 
-        //now = userTime;
+        LocalTime currTime = userTime.toLocalTime();
 
         List<Appointment> appointments = MainMenuController.getAppointments()
 
                 .stream()
 
-                //originally was this next line below vvvv
-                //.filter(a -> a.getStart_time().isAfter(LocalDateTime.now()) && a.getStart_time().isBefore(LocalDateTime.now().plusMinutes(15)))
-                /// this one here ^^^^^
-
-                ///going to try this one though vvvv
                 .filter(a -> a.getStart_time().isAfter(loginTime.toLocalDateTime()) && a.getStart_time().isBefore(loginTime.toLocalDateTime().plusMinutes(15)))
-                // trying this ^^^^^^^
 
-
-                //.filter(a -> a.getStart_time().isAfter(currTime)) && a.getStart_time().isBefore(ChronoLocalDateTime.from(currTime.plusMinutes(15))))
-                //.filter(a -> a.getStart_time().isAfter(ChronoLocalDateTime.from(userTime))) && a.getStart_time().isBefore(userTime.plusMinutes(15))
                 .collect(Collectors.toList());
 
         apptTable.setItems(FXCollections.observableList(appointments));
-        //System.out.println(apptTable.getSelectionModel().getSelectedItems());
-        //int apptID = apptIDCol.getCellData(0);
 
-
-        //trying to figure out how to pull this info and provide it via an alert
-        //
-        //upcomingApptID = apptIDCol.getCellData(0);
         if (appointments.size() != 0) {
             upcomingApptID = appointments.get(0).getAppointment_id();
             upcomingApptDate = appointments.get(0).getStart_time();
-        }
-        else{
+        } else {
             upcomingApptID = -1;
             upcomingApptDate = null;
         }
 
-
-       // upcomingApptDate = appointments.get(0).getStart_time();
-
-
-
-        //System.out.println("Appointment ID: " + upcomingApptID);
-        //LocalDateTime startTime = startCol.getCellData(0);
-
-        // same with this one
-        //
-        // upcomingApptDate = startCol.getCellData(0);
-
-
     }
 
 
-    // methods below are attempt at retrieving info for alerts relating to upcoming appt
-
     /**
      * This method returns upcoming appointment ID
+     *
      * @return returns the id of the appointment which starts within the next 15 minutes
      */
     public static int getUpcomingApptID() {
@@ -254,6 +220,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method returns the date of the upcoming appointment
+     *
      * @return returns date of upcoming appointment
      */
     public static LocalDateTime getUpcomingApptDate() {
@@ -261,10 +228,12 @@ public class MainMenuController implements Initializable {
     }
 
 
-    /** This method filters appointment by current week.
+    /**
+     * This method filters appointment by current week.
      * This Lambda Expression filters out and lists appointments for current week
+     *
      * @return Returns a list of appointments for current week
-     * */
+     */
 
     public void viewApptByWeek(ActionEvent event) throws IOException {
         TemporalField currentWeekBasedYear = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
@@ -286,6 +255,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method returns list of all appointments
+     *
      * @return returns all appointments
      */
     public static ObservableList<Appointment> getAppointments() {
@@ -356,6 +326,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method directs the user to the modify appointment menu
+     *
      * @param event mouse click on mod appt button
      * @throws IOException
      */
@@ -365,14 +336,13 @@ public class MainMenuController implements Initializable {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        // stage.setResizable(true);
         stage.show();
-        //stage.setMaximized(true);
     }
 
 
     /**
      * This method directs the user to the reports menu
+     *
      * @param event moust click on reports button
      * @throws IOException
      */
@@ -381,7 +351,6 @@ public class MainMenuController implements Initializable {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        // stage.setResizable(true);
         stage.show();
 
     }
@@ -389,6 +358,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method directs the user to the Add Customer menu
+     *
      * @param event mouse click on add customer button
      * @throws IOException
      */
@@ -404,6 +374,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This method directs the user to the add appointment menu
+     *
      * @param event mouse click on add appointment button
      * @throws IOException
      */
@@ -419,6 +390,7 @@ public class MainMenuController implements Initializable {
 
     /**
      * This button logs the user out and directs them to the login menu
+     *
      * @param event mouse click on logout button
      * @throws IOException
      */
@@ -433,35 +405,30 @@ public class MainMenuController implements Initializable {
 
     /**
      * Initializes the MainMenuController, displays all appointments
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //showAppointments();
         viewApptsIn15();
 
         while (LoginForm.notLoggedIn)
-        if (apptTable.getItems().isEmpty()) {
+            if (apptTable.getItems().isEmpty()) {
 
-            showAppointments();
-            Alerts.noUpcomingAppts();
-            LoginForm.notLoggedIn = false;
+                showAppointments();
+                Alerts.noUpcomingAppts();
+                LoginForm.notLoggedIn = false;
 
-        }
-        else{
-            // need to use this below
-            //viewApptsIn15();
-            //
-            //going to try this
-            showApptsIn15();
-            viewApptsIn15();
-            Alerts.upcomingAppt();
-            LoginForm.notLoggedIn = false;
-        }
+            } else {
+                showApptsIn15();
+                viewApptsIn15();
+                Alerts.upcomingAppt();
+                LoginForm.notLoggedIn = false;
+            }
         showAppointments();
 
     }
-    }
+}
 

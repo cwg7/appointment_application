@@ -15,7 +15,6 @@ public class Countries {
     }
 
     /**
-     *
      * @return Returns country id
      */
     public int getCountry_id() {
@@ -23,7 +22,6 @@ public class Countries {
     }
 
     /**
-     *
      * @param country_id sets country id
      */
     public void setCountry_id(int country_id) {
@@ -31,7 +29,6 @@ public class Countries {
     }
 
     /**
-     *
      * @return returns country name
      */
     public String getCountry_name() {
@@ -39,7 +36,6 @@ public class Countries {
     }
 
     /**
-     *
      * @param country_name sets country name
      */
     public void setCountry_name(String country_name) {

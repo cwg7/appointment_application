@@ -16,8 +16,6 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    //private String start_time;
-    //private String end_time;
     private LocalDateTime start_time;
     private LocalDateTime end_time;
     private int customer_id;
@@ -37,6 +35,7 @@ public class Appointment {
         this.user_id = user_id;
         this.contact_id = contact_id;
     }
+
     public Appointment(int appointment_id, String title, String description, String location, String type, LocalDateTime start_time, LocalDateTime end_time, int customer_id, int user_id, String contact_name) {
         this.appointment_id = appointment_id;
         this.title = title;
@@ -51,7 +50,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns the appointment id
      */
     public int getAppointment_id() {
@@ -59,7 +57,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param appointment_id sets appointment id
      */
     public void setAppointment_id(int appointment_id) {
@@ -88,7 +85,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param description sets appointment description
      */
     public void setDescription(String description) {
@@ -96,7 +92,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns appointment location
      */
     public String getLocation() {
@@ -104,7 +99,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param location sets appointment location
      */
     public void setLocation(String location) {
@@ -112,7 +106,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns appointment type
      */
     public String getType() {
@@ -127,7 +120,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns appointment start time
      */
     public LocalDateTime getStart_time() {
@@ -135,7 +127,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param start_time sets appointment start time
      */
     public void setStart_time(LocalDateTime start_time) {
@@ -143,7 +134,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns appointment end time
      */
     public LocalDateTime getEnd_time() {
@@ -158,7 +148,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns customer id
      */
     public int getCustomer_id() {
@@ -166,7 +155,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param customer_id sets customer id
      */
     public void setCustomer_id(int customer_id) {
@@ -174,7 +162,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns user id
      */
     public int getUser_id() {
@@ -189,7 +176,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns contact id
      */
     public int getContact_id() {
@@ -197,7 +183,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param contact_id sets contact id
      */
     public void setContact_id(int contact_id) {
@@ -205,7 +190,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @return Returns contact name
      */
     public String getContact_name() {
@@ -213,7 +197,6 @@ public class Appointment {
     }
 
     /**
-     *
      * @param contact_name sets contact name
      */
     public void setContact_name(String contact_name) {

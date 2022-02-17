@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -251,7 +252,13 @@ public class AddAppointmentController implements Initializable {
             //removed this: 'datePicker.getValue() == null' from the above ^, still got exception
             //
             isValid = false;
-            Alerts.invalidFieldHandler();
+            //Alerts.invalidFieldHandler();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.NONE);
+            alert.setTitle("Error");
+            alert.setHeaderText("Warning");
+            alert.setContentText("Please be sure to fill out all information related to creating a new appointment. This includes making selections for all comboboxes.");
+            alert.showAndWait();
 
 
         } else {
@@ -352,7 +359,13 @@ public class AddAppointmentController implements Initializable {
                 }
                 pstatement.setInt(9, Integer.parseInt(String.valueOf(contactID)));
                 pstatement.execute();
-            } catch (SQLException throwables) {
+
+                Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+                stage = (Stage) (backToMainButton.getScene().getWindow());
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
         }
@@ -367,12 +380,6 @@ public class AddAppointmentController implements Initializable {
      */
     public void addAppointmentButtonClick(ActionEvent event) throws IOException {
         preparedInsert();
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        // }
     }
 
 
@@ -390,6 +397,8 @@ public class AddAppointmentController implements Initializable {
             LocalDateTime startAppt = appt.getStart_time();
             LocalDateTime endAppt = appt.getEnd_time();
 
+
+            // if appoint id != selected appt
             if (startDateAndTime.isAfter(startAppt.minusMinutes(0)) && startDateAndTime.isBefore(endAppt.plusMinutes(0))) {
                 match = true;
                 break;

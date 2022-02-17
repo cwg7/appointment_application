@@ -392,6 +392,7 @@ public class AddAppointmentController implements Initializable {
     public boolean checkApptOverlap() {
         ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
         boolean match = false;
+
         for (int i = 0; i < apptMatches.size(); i++) {
             Appointment appt = apptMatches.get(i);
             LocalDateTime startAppt = appt.getStart_time();

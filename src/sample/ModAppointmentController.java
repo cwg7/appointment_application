@@ -421,6 +421,9 @@ public class ModAppointmentController implements Initializable {
     public boolean checkApptOverlap() {
         ObservableList<Appointment> apptMatches = DBQuery.getAppointmentsPerCustomer(Integer.parseInt(tfCustomerID.getText()));
         int selectedApptId = Integer.parseInt(tfApptID.getText());
+        int customerID = Integer.parseInt(tfCustomerID.getText());
+
+
         boolean match = false;
 
         for (int i = 0; i < apptMatches.size(); i++) {
@@ -428,8 +431,10 @@ public class ModAppointmentController implements Initializable {
             LocalDateTime startAppt = appt.getStart_time();
             LocalDateTime endAppt = appt.getEnd_time();
 
-            //if (selectedApptId != selectedApptId)
+            if (selectedApptId == appt.getAppointment_id()) {
+                continue;
 
+            }
             if (startDateAndTime.isAfter(startAppt.minusMinutes(0)) && startDateAndTime.isBefore(endAppt.plusMinutes(0))) {
                 match = true;
                 break;

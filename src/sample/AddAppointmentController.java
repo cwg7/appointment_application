@@ -253,6 +253,7 @@ public class AddAppointmentController implements Initializable {
             isValid = false;
             Alerts.invalidFieldHandler();
 
+
         } else {
             isValid = true;
 
@@ -354,8 +355,6 @@ public class AddAppointmentController implements Initializable {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        } else {
-            return;
         }
     }
 

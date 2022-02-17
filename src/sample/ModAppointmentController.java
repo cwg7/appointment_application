@@ -446,6 +446,7 @@ public class ModAppointmentController implements Initializable {
         return match;
     }
 
+
     /**
      * This method sets combobox selections for users to select appointment start times
      */

@@ -114,7 +114,21 @@ public class Alerts {
         alert.initModality(Modality.NONE);
         alert.setTitle("Error");
         alert.setHeaderText("Warning");
-        alert.setContentText("Sorry, you cannot delete a customer who has appointments scheduled. You will need to delete this customer's appointments manually first before you are able to delete this customer.");
+        //alert.setContentText("Sorry, you cannot delete a customer who has appointments scheduled. You will need to delete this customer's appointments manually first before you are able to delete this customer.");
+        alert.setContentText("This customer has appointments scheduled. Are you sure you want to delete this customer?");
+        alert.showAndWait();
+    }
+
+    /**
+     * This method alerts the user that the customer and corresponding appointments have been successfully deleted.
+     */
+    public static void delHandler4() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.NONE);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Successful");
+        //alert.setContentText("Sorry, you cannot delete a customer who has appointments scheduled. You will need to delete this customer's appointments manually first before you are able to delete this customer.");
+        alert.setContentText("Customer and all of their appointments have been successfully deleted");
         alert.showAndWait();
     }
 
@@ -155,7 +169,6 @@ public class Alerts {
         alert.setHeaderText("Warning");
         alert.setContentText("Please be sure to fill out all information related to creating a new appointment. This includes making selections for all comboboxes.");
         alert.showAndWait();
-
 
     }
 

@@ -202,9 +202,15 @@ public class ModCustomerController implements Initializable {
             }
         } else {
             Alerts.delHandler3();
+            deleteAllCustomerAppts();
+            preparedDelete();
+            showCustomers();
+            Alerts.delHandler4();
+
         }
 
     }
+
 
     /**
      * This method handles the delete customer function via a prepared statement
@@ -215,6 +221,25 @@ public class ModCustomerController implements Initializable {
 
         PreparedStatement pstatement;
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+        try {
+            pstatement = DBConnection.getConnection().prepareStatement(sql);
+            pstatement.setInt(1, selectedCustomerID);
+            pstatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * This method deletes all appointments for a selected customer.
+     */
+    public void deleteAllCustomerAppts() {
+        Customer selectedCustomer = (Customer) modCustomersTable.getSelectionModel().getSelectedItem();
+        int selectedCustomerID = selectedCustomer.getId();
+
+        PreparedStatement pstatement;
+        String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
         try {
             pstatement = DBConnection.getConnection().prepareStatement(sql);
             pstatement.setInt(1, selectedCustomerID);

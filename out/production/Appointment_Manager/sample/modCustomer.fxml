@@ -14,10 +14,11 @@
         <columns>
           <TableColumn fx:id="idCol" prefWidth="49.5" text="ID" />
           <TableColumn fx:id="nameCol" prefWidth="134.5" text="Name" />
-            <TableColumn fx:id="addressCol" prefWidth="186.5" text="Address" />
+            <TableColumn fx:id="addressCol" prefWidth="151.0" text="Address" />
             <TableColumn fx:id="postalCol" prefWidth="87.5" text="Postal Code" />
-            <TableColumn fx:id="phoneCol" prefWidth="99.5" text="Phone Number" />
-            <TableColumn fx:id="divisionCol" prefWidth="130.5" text="Division_ID" />
+            <TableColumn fx:id="phoneCol" prefWidth="121.5" text="Phone Number" />
+            <TableColumn fx:id="divisionCol" prefWidth="74.5" text="Division_ID" />
+            <TableColumn fx:id="countryCol" prefWidth="82.0" text="Country" />
         </columns>
       </TableView>
       <Label fx:id="lblName" layoutX="179.0" layoutY="397.0" text="Name" />
